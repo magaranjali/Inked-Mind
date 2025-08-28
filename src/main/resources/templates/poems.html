@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Poems | Inked Mind</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .mainContainer{
+            top: 100px;
+            position: relative;
+        }
+        .poems-header {
+            top: 130px;
+            background-color: var(--light-color);
+            padding: 60px 0;
+            text-align: center;
+        }
+    
+        
+        .poems-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .poems-header p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .poems-feed{
+            margin-bottom: 130px;
+        }
+        
+        .poems-filters {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 40px;
+        }
+        
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filter-toggle {
+            display: none;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+        }
+       
+        .poems-container {
+            height: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .poem-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .poem-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .poem-card-header {
+            margin-bottom: 15px;
+        }
+        
+        .poem-card-header h3 {
+            margin-bottom: 5px;
+        }
+        
+        .poem-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .author-info .name {
+            font-weight: 600;
+        }
+        
+        .author-info .date {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .poem-excerpt {
+            font-style: italic;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .poem-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .poem-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .poem-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .poem-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .poem-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .poem-tag {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .pagination-list {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        .pagination-list li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            box-shadow: var(--box-shadow);
+            font-weight: 600;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+        
+        .pagination-list li a.active,
+        .pagination-list li a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-toggle {
+                display: block;
+                cursor: pointer;
+            }
+            
+            .filter-options {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .filter-options.active {
+                display: flex;
+            }
+            
+            .filter-group {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .filter-group select,
+            .filter-group input {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../assets/images/logo.png" alt="">
+                </a>
+            </div>
+            <nav id="main-nav">
+                <div class="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="./poems.html" class="active">Poems</a></li>
+                    <li><a href="./contests.html">Contests</a></li>
+                    <li><a href="./pricing.html">Pricing</a></li>
+                                        <li class="auth-links">
+                        <a href="./login.html" class="btn-login">Log In</a>
+                        <a href="./signup.html" class="btn-primary">Sign Up</a>
+                    </li>
+                    <li class="theme-switcher">
+                        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="mainContainer">
+
+        <section class="poems-header">
+            <div class="container">
+                <h1>Explore <span class="highlight">Poems</span></h1>
+                <p>Discover a world of emotions, thoughts, and experiences expressed through the art of poetry.</p>
+            </div>
+        </section>
+
+        <section class="poems-feed">
+            <div class="container">
+                <div class="poems-filters">
+                    <div class="filters-header">
+                        <h3>Filter Poems</h3>
+                        <div class="filter-toggle">
+                            <i class="fas fa-filter"></i> Show Filters
+                        </div>
+                    </div>
+                    <div class="filter-options">
+                        <div class="filter-group">
+                            <label for="category-filter">Category:</label>
+                            <select id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="nature">Nature</option>
+                                <option value="love">Love</option>
+                                <option value="life">Life</option>
+                                <option value="spirituality">Spirituality</option>
+                                <option value="social">Social Issues</option>
+                                <option value="urban">Urban Life</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="sort-filter">Sort By:</label>
+                            <select id="sort-filter">
+                                <option value="newest">Newest First</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="trending">Trending</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="text" placeholder="Search poems..." id="poem-search">
+                            <button class="btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="poems-container">
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>Whispers of Dawn</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">E</div>
+                            <div class="author-info">
+                                <div class="name">Emily Wright</div>
+                                <div class="date">2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            In the quiet moments before sunrise,<br>
+                            When the world still dreams,<br>
+                            I find myself in the spaces between<br>
+                            Darkness and light...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Nature</span>
+                                <span class="poem-tag">Dawn</span>
+                            </div>
+                            <a href="./poem.html?id=1" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 120</span>
+                                <span><i class="fas fa-heart"></i> 43</span>
+                                <span><i class="fas fa-comment"></i> 12</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>Midnight Thoughts</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">M</div>
+                            <div class="author-info">
+                                <div class="name">Marcus Chen</div>
+                                <div class="date">1 week ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            Stars scattered like memories,<br>
+                            Across the vast expanse of night.<br>
+                            Each one a story untold,<br>
+                            A light that shines through time...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Night</span>
+                                <span class="poem-tag">Reflection</span>
+                            </div>
+                            <a href="./poem.html?id=2" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 87</span>
+                                <span><i class="fas fa-heart"></i> 31</span>
+                                <span><i class="fas fa-comment"></i> 8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>Ocean's Embrace</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">A</div>
+                            <div class="author-info">
+                                <div class="name">Amara Johnson</div>
+                                <div class="date">3 days ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            Waves crash against weathered shores,<br>
+                            A timeless dance of give and take.<br>
+                            The salt of tears, the salt of sea,<br>
+                            In their embrace, I find myself free...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Ocean</span>
+                                <span class="poem-tag">Freedom</span>
+                            </div>
+                            <a href="./poem.html?id=3" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 102</span>
+                                <span><i class="fas fa-heart"></i> 57</span>
+                                <span><i class="fas fa-comment"></i> 15</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>City Lights</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">J</div>
+                            <div class="author-info">
+                                <div class="name">James Sullivan</div>
+                                <div class="date">5 days ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            Concrete jungles reaching high,<br>
+                            A symphony of light and noise.<br>
+                            Behind each window, stories unfold,<br>
+                            Lives intertwined, yet alone...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Urban</span>
+                                <span class="poem-tag">City</span>
+                            </div>
+                            <a href="./poem.html?id=4" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 76</span>
+                                <span><i class="fas fa-heart"></i> 28</span>
+                                <span><i class="fas fa-comment"></i> 7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>Autumn Leaves</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">L</div>
+                            <div class="author-info">
+                                <div class="name">Lily Zhang</div>
+                                <div class="date">1 week ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            Crimson and gold dance in the wind,<br>
+                            Nature's final vibrant display.<br>
+                            Before winter's slumber takes hold,<br>
+                            A reminder that beauty fades but returns...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Autumn</span>
+                                <span class="poem-tag">Nature</span>
+                            </div>
+                            <a href="./poem.html?id=5" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 92</span>
+                                <span><i class="fas fa-heart"></i> 38</span>
+                                <span><i class="fas fa-comment"></i> 11</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poem-card">
+                        <div class="poem-card-header">
+                            <h3>Unspoken Words</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar">R</div>
+                            <div class="author-info">
+                                <div class="name">Ryan Park</div>
+                                <div class="date">4 days ago</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt">
+                            The weight of all I never said,<br>
+                            Heavy on my chest like stone.<br>
+                            In silence, truths remain concealed,<br>
+                            Yet somehow still felt in bones...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span class="poem-tag">Emotions</span>
+                                <span class="poem-tag">Reflection</span>
+                            </div>
+                            <a href="./poem.html?id=6" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 65</span>
+                                <span><i class="fas fa-heart"></i> 24</span>
+                                <span><i class="fas fa-comment"></i> 5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <ul class="pagination-list">
+                        <li><a href="#" class="active">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../assets/images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="./poems.html">Poems</a></li>
+                            <li><a href="./contests.html">Contests</a></li>
+                            <li><a href="./pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter toggle on mobile
+            const filterToggle = document.querySelector('.filter-toggle');
+            const filterOptions = document.querySelector('.filter-options');
+            
+            if (filterToggle && filterOptions) {
+                filterToggle.addEventListener('click', function() {
+                    filterOptions.classList.toggle('active');
+                    
+                    if (filterOptions.classList.contains('active')) {
+                        this.innerHTML = '<i class="fas fa-times"></i> Hide Filters';
+                    } else {
+                        this.innerHTML = '<i class="fas fa-filter"></i> Show Filters';
+                    }
+                });
+            }
+            
+            // Filter functionality (simplified for demo)
+            const categoryFilter = document.getElementById('category-filter');
+            const sortFilter = document.getElementById('sort-filter');
+            const searchInput = document.getElementById('poem-search');
+            const searchBtn = searchInput?.nextElementSibling;
+            
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', function() {
+                    alert('Filtering by category: ' + this.value);
+                    // In a real app, we would filter the poems here
+                });
+            }
+            
+            if (sortFilter) {
+                sortFilter.addEventListener('change', function() {
+                    alert('Sorting by: ' + this.value);
+                    // In a real app, we would sort the poems here
+                });
+            }
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    if (searchInput.value.trim() !== '') {
+                        alert('Searching for: ' + searchInput.value);
+                        // In a real app, we would search for poems here
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterToggle = document.querySelector('.filter-toggle');
+            const filterOptions = document.querySelector('.filter-options');
+
+            if (filterToggle) {
+                filterToggle.addEventListener('click', function() {
+                    filterOptions.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/poems.js"></script>
+</body>
+
+</html>

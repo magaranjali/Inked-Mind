@@ -1,0 +1,152 @@
+/* Header Styles */
+#site-header {
+    background-color: var(--light-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 100;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--box-shadow);
+}
+
+#site-header.scrolled {
+    background-color: var(--light-color);
+    box-shadow: var(--box-shadow);
+}
+
+
+#site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo img{
+    max-width: 54px;
+   
+    
+}
+
+#main-nav {
+    flex-grow: 1;
+}
+
+#main-nav .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-nav .nav-links li {
+    margin-left: 25px;
+}
+
+#main-nav .nav-links a {
+    font-weight: 500;
+    position: relative;
+}
+
+
+#main-nav .nav-links a:hover {
+    color: var(--primary-color);
+    
+}
+
+#main-nav .nav-links a.active:after,
+#main-nav .nav-links a:not(.btn-login):not(.btn-primary):hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.btn-login {
+    font-weight: 600;
+}
+
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn .fa-sun {
+    display: none;
+}
+
+body.dark-mode .theme-toggle-btn .fa-sun {
+    display: inline-block;
+}
+
+body.dark-mode .theme-toggle-btn .fa-moon {
+    display: none;
+}
+
+.nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Responsive Header */
+@media (max-width: 768px) {
+    #main-nav{
+        text-align: right;
+    }
+    #main-nav .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background-color: var(--light-color);
+        box-shadow: var(--box-shadow);
+        padding: 20px;
+    }
+    
+    #main-nav .nav-links.active {
+        display: flex;
+    }
+    
+    #main-nav .nav-links li {
+        margin: 10px 0;
+    }
+    
+    .auth-links {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .auth-links a {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+    }
+    
+    .nav-toggle {
+        display: block;
+    }
+}

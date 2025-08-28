@@ -1,12 +1,285 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Inked Mind | Poetry Community</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<style>
+    .mainContainer{
+        top: 90px;
+    position: relative;
+}
+
+</style>
+
 <body>
+    <header id="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="./index.html">
+                    <img src="images/logo.png" alt="">
+                </a>
+            </div>
+            <nav id="main-nav">
+                <div class="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="./index.html" class="active">Home</a></li>
+                    <li><a href="./pages/poems.html">Poems</a></li>
+                    <li><a href="./pages/contests.html">Contests</a></li>
+                    <li><a href="./pages/pricing.html">Pricing</a></li>
+                    
+                    <li class="auth-links">
+                        <a href="login" class="btn-login">Log In</a>
+                        <a href="signup" class="btn-primary">Sign Up</a>
+                    </li>
+                    <li class="theme-switcher">
+                        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<h1>Index</h1>
+    <main class="mainContainer">
+        <section class="hero">
+            <video autoplay muted loop id="hero-video">
+                <source src="video/poet.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Where Words <span class="highlight">Come Alive</span></h1>
+                    <p>Join our vibrant community of poets and readers. Share your verses, discover new voices, and celebrate the art of poetry.</p>
+                    <div class="hero-cta">
+                        <a href="./pages/signup.html" class="btn-primary">Join Now</a>
+                        <a href="./pages/poems.html" class="btn-secondary">Explore Poems</a>
+                    </div>
+                </div>
+                <div class="hero-image-placeholder"></div>
+            </div>
+        </section>
 
+        <section class="features">
+            <div class="container">
+                <h2>Why <span class="highlight">Inked Mind</span>?</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-pencil-alt"></i>
+                        <h3>Express Yourself</h3>
+                        <p>Write and share your poetry with a supportive community of fellow poets and readers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Join Contests</h3>
+                        <p>Participate in themed poetry contests and get recognition for your work.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-comment"></i>
+                        <h3>Get Feedback</h3>
+                        <p>Receive constructive feedback to refine your writing and grow as a poet.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Build Community</h3>
+                        <p>Connect with like-minded individuals who share your passion for poetry.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-poems">
+            <div class="container">
+                <h2>Featured <span class="highlight">Poems</span></h2>
+                <div class="poem-cards">
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Whispers of Dawn</h3>
+                            <p class="poem-excerpt">In the quiet moments before sunrise,<br>
+                                When the world still dreams,<br>
+                                I find myself in the spaces between...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Emily Wright</span>
+                                <span class="date">2 days ago</span>
+                            </div>
+                        </div>
+                        <a href="./pages/poem.html?id=1" class="btn-text">Read More</a>
+                    </div>
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Midnight Thoughts</h3>
+                            <p class="poem-excerpt">Stars scattered like memories,<br>
+                                Across the vast expanse of night.<br>
+                                Each one a story untold...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Marcus Chen</span>
+                                <span class="date">1 week ago</span>
+                            </div>
+                        </div>
+                        <a href="./pages/poem.html?id=2" class="btn-text">Read More</a>
+                    </div>
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Ocean's Embrace</h3>
+                            <p class="poem-excerpt">Waves crash against weathered shores,<br>
+                                A timeless dance of give and take.<br>
+                                The salt of tears, the salt of sea...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Amara Johnson</span>
+                                <span class="date">3 days ago</span>
+                            </div>
+                        </div>
+                        <a href="./pages/poem.html?id=3" class="btn-text">Read More</a>
+                    </div>
+                </div>
+                <div class="center-btn">
+                    <a href="./pages/poems.html" class="btn-secondary">View All Poems</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="current-contest">
+            <div class="container">
+                <div class="contest-info">
+                    <h2>Current <span class="highlight">Contest</span></h2>
+                    <h3>"Nature's Whispers"</h3>
+                    <p>Create a poem that captures the subtle beauty and messages of nature. How does nature speak to you?</p>
+                    <ul class="contest-details">
+                        <li><i class="fas fa-calendar"></i> Submission Deadline: August 15, 2025</li>
+                        <li><i class="fas fa-award"></i> Prize: Featured spot on homepage + Premium subscription</li>
+                    </ul>
+                    <a href="./pages/contests.html" class="btn-primary">Enter Contest</a>
+                </div>
+                <div class="contest-image">
+                    <img src="./assets/images/NatureContest.jpg" alt="Nature contest illustration">
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <h2>What Our <span class="highlight">Community Says</span></h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial active">
+                        <div class="testimonial-content">
+                            <p>"Inked Mind has transformed how I share my poetry. The feedback from the community has helped me grow immensely as a writer."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Sarah Jameson</span>
+                                <span class="role">Poet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"I've discovered so many incredible poets through this platform. As a reader, it's like having a curated collection of emotional experiences at my fingertips."</p>
+                            <div class="testimonial-author">
+                                <span class="name">David Reynolds</span>
+                                <span class="role">Reader</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"The contests are what drew me in, but the community is what made me stay. Inked Mind feels like a home for my creative expression."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Mei Lin</span>
+                                <span class="role">Poet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <span class="slider-dot active" data-index="0"></span>
+                    <span class="slider-dot" data-index="1"></span>
+                    <span class="slider-dot" data-index="2"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Start Your <span class="highlight">Poetic Journey</span>?</h2>
+                <p>Join Inked Mind today and become part of a vibrant community celebrating the art of poetry.</p>
+                <div class="cta-buttons">
+                    <a href="./pages/signup.html" class="btn-primary">Sign Up Now</a>
+                    <a href="./pages/pricing.html" class="btn-secondary">View Plans</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./pages/poems.html">Poems</a></li>
+                            <li><a href="./pages/contests.html">Contests</a></li>
+                            <li><a href="./pages/pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./pages/faq.html">FAQ</a></li>
+                            <li><a href="./pages/guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./pages/about.html">About Us</a></li>
+                            <li><a href="./pages/contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./pages/terms.html">Terms of Service</a></li>
+                            <li><a href="./pages/privacy.html">Privacy Policy</a></li>
+                            <li><a href="./pages/copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/slider.js"></script>
 </body>
+
 </html>
