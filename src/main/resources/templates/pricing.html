@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Pricing | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .mainContainer{
+            top: 120px;
+            position: relative;
+        }
+        .pricing-header {
+            background-color: var(--light-color);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .pricing-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-header p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .pricing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+        
+        .toggle-option {
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: var(--primary-color);
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: white;
+            top: 3px;
+            left: 3px;
+            transition: var(--transition);
+        }
+        
+        .toggle-switch.annual::before {
+            left: 33px;
+        }
+        
+        .toggle-option.active {
+            color: var(--primary-color);
+        }
+        
+        .pricing-plans {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .price-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            width: 350px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .price-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .price-card.popular {
+            border: 2px solid var(--primary-color);
+            transform: scale(1.05);
+        }
+        
+        .price-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .price-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+        }
+        
+        .plan-name {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .plan-name h2 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        
+        .plan-name p {
+            color: var(--text-color);
+        }
+        
+        .plan-price {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .plan-price .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .plan-price .price sup {
+            font-size: 1.5rem;
+            top: -0.8em;
+        }
+        
+        .plan-price .period {
+            color: var(--text-color);
+        }
+        
+        .plan-features {
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .plan-features li i.fas.fa-check {
+            color: #2ecc71;
+        }
+        
+        .plan-features li i.fas.fa-times {
+            color: #e74c3c;
+        }
+        
+        .plan-features li strong {
+            color: var(--text-color);
+        }
+        
+        .plan-cta {
+            text-align: center;
+        }
+        
+        .plan-cta .btn-primary,
+        .plan-cta .btn-secondary {
+            width: 100%;
+            padding: 15px;
+        }
+        
+        .pricing-faq {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .pricing-faq h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            background-color: var(--light-color);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question i {
+            transition: var(--transition);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            /* padding: 20px 25px; */
+            max-height: 500px;
+        }
+        
+        .testimonials-section {
+            text-align: center;
+            
+            
+            background-color: var(--light-color);
+            margin-bottom: 130px;
+        }
+        
+        .testimonials-section h2 {
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .price-card {
+                width: 100%;
+            }
+            
+            .price-card.popular {
+                transform: none;
+            }
+            
+            .price-card.popular:hover {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+   <div th:insert="navbar.html"></div>
+
+    <main class="mainContainer">
+        <section class="pricing-header">
+            <div class="container">
+                <h1>Choose Your <span class="highlight">Plan</span></h1>
+                <p>Select the membership that fits your creative needs and take your poetry journey to the next level.</p>
+                
+                <div class="pricing-toggle">
+                    <div class="toggle-option monthly active">Monthly</div>
+                    <div class="toggle-switch"></div>
+                    <div class="toggle-option annual">Annual <span class="highlight">(Save 20%)</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing-plans-section">
+            <div class="container">
+                <div class="pricing-plans">
+                    <div class="price-card">
+                        <div class="plan-name">
+                            <h2>Free</h2>
+                            <p>Perfect for beginners</p>
+                        </div>
+                        <div class="plan-price">
+                            <div class="price">Rs 0</div>
+                            <div class="period">Forever</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> <strong>Basic poem publishing (5 poems/month)</strong></li>
+                            <li><i class="fas fa-check"></i> Access to community feedback</li>
+                            <li><i class="fas fa-check"></i> Participate in basic contests</li>
+                            <li><i class="fas fa-check"></i> Basic formatting tools</li>
+                            <li><i class="fas fa-times"></i> Premium contests access</li>
+                            <li><i class="fas fa-times"></i> Advanced writing tools</li>
+                            <li><i class="fas fa-times"></i> Featured profile and poems</li>
+                        </ul>
+                        <div class="plan-cta">
+                            <a href="signup" class="btn-secondary">Sign Up Free</a>
+                        </div>
+                    </div>
+                    
+                    <div class="price-card popular">
+                        <div class="plan-name">
+                            <h2>Premium</h2>
+                            <p>For dedicated poets</p>
+                        </div>
+                        <div class="plan-price monthly-price">
+                            <div class="price">Rs 999</div>
+                            <div class="period">per month</div>
+                        </div>
+                        <div class="plan-price annual-price" style="display: none;">
+                            <div class="price">Rs 799</div>
+                            <div class="period">per month, billed annually</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> <strong>Unlimited poem publishing</strong></li>
+                            <li><i class="fas fa-check"></i> <strong>Priority community feedback</strong></li>
+                            <li><i class="fas fa-check"></i> <strong>Access to all contests</strong></li>
+                            <li><i class="fas fa-check"></i> Advanced formatting and writing tools</li>
+                            <li><i class="fas fa-check"></i> Featured profile in the community</li>
+                            <li><i class="fas fa-check"></i> Monthly featured poem opportunity</li>
+                            <li><i class="fas fa-check"></i> Ad-free experience</li>
+                        </ul>
+                        <div class="plan-cta">
+                            <a href="payment?plan=premium" class="btn-primary">Get Premium</a>
+                        </div>
+                    </div>
+                    
+                    <div class="price-card">
+                        <div class="plan-name">
+                            <h2>Pro</h2>
+                            <p>For professional poets</p>
+                        </div>
+                        <div class="plan-price monthly-price">
+                            <div class="price">Rs 1999</div>
+                            <div class="period">per month</div>
+                        </div>
+                        <div class="plan-price annual-price" style="display: none;">
+                            <div class="price">Rs 1599</div>
+                            <div class="period">per month, billed annually</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> <strong>All Premium features</strong></li>
+                            <li><i class="fas fa-check"></i> <strong>1-on-1 feedback from professional poets</strong></li>
+                            <li><i class="fas fa-check"></i> <strong>Publishing opportunities in partner journals</strong></li>
+                            <li><i class="fas fa-check"></i> Exclusive workshops and webinars</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics for your poems</li>
+                            <li><i class="fas fa-check"></i> Custom poet portfolio website</li>
+                            <li><i class="fas fa-check"></i> Early access to new features</li>
+                        </ul>
+                        <div class="plan-cta">
+                            <a href="payment?plan=pro" class="btn-primary">Get Pro</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="pricing-faq-section">
+            <div class="container">
+                <div class="pricing-faq">
+                    <h2>Frequently Asked <span class="highlight">Questions</span></h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What payment methods do you accept?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and local payment methods like eSewa and Khalti for our Nepalese users.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can I upgrade or downgrade my plan at any time?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can upgrade your plan at any time and the new benefits will be available immediately. If you downgrade, the changes will take effect at the end of your current billing cycle.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is there a refund policy?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We offer a 14-day money-back guarantee for all new subscriptions. If you're not satisfied with our service, contact our support team within 14 days of your purchase for a full refund.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What happens to my poems if I cancel my subscription?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Your poems will remain on the platform, but you'll lose access to premium features. If you were on a paid plan and published more than the Free plan allows (5 poems/month), those poems will still be visible, but you won't be able to add new ones beyond the Free plan limit until you upgrade again.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can I try Premium or Pro features before subscribing?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We occasionally offer free trials for new users. Sign up for our newsletter to be notified when these promotions are available. Additionally, you can contact our support team for a feature demonstration.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="testimonials-section">
+            <div class="container">
+                <h2>What Our <span class="highlight">Members Say</span></h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial active">
+                        <div class="testimonial-content">
+                            <p>"Upgrading to Premium was the best decision for my poetry journey. The advanced tools and feedback from the community have transformed my writing."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Michael Chen</span>
+                                <span class="role">Premium Member</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"As a Pro member, the 1-on-1 feedback sessions with established poets have been invaluable. I've had two poems published in journals thanks to the connections I've made."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Samantha Taylor</span>
+                                <span class="role">Pro Member</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"The unlimited publishing and contest access with Premium has given me the freedom to experiment with my poetry and reach a wider audience."</p>
+                            <div class="testimonial-author">
+                                <span class="name">James Wilson</span>
+                                <span class="role">Premium Member</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <span class="slider-dot active" data-index="0"></span>
+                    <span class="slider-dot" data-index="1"></span>
+                    <span class="slider-dot" data-index="2"></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="index">Home</a></li>
+                            <li><a href="poems">Poems</a></li>
+                            <li><a href="contests">Contests</a></li>
+                            <li><a href="pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Inline main.js essentials + slider
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+        // slider.js
+        const testimonials = document.querySelectorAll('.testimonial'); const dots = document.querySelectorAll('.slider-dot'); let currentIndex = 0;
+        function updateSlider(index){ testimonials.forEach((t,i)=> t.style.display = i===index? 'block':'none'); dots.forEach((d,i)=> d.classList.toggle('active', i===index)); }
+        dots.forEach(dot => { dot.addEventListener('click', function(){ currentIndex = parseInt(this.getAttribute('data-index')); updateSlider(currentIndex); }); });
+        updateSlider(currentIndex);
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pricing toggle
+            const toggleSwitch = document.querySelector('.toggle-switch');
+            const monthlyOption = document.querySelector('.toggle-option.monthly');
+            const annualOption = document.querySelector('.toggle-option.annual');
+            const monthlyPrices = document.querySelectorAll('.monthly-price');
+            const annualPrices = document.querySelectorAll('.annual-price');
+            
+            if (toggleSwitch && monthlyOption && annualOption) {
+                toggleSwitch.addEventListener('click', function() {
+                    this.classList.toggle('annual');
+                    
+                    if (this.classList.contains('annual')) {
+                        monthlyOption.classList.remove('active');
+                        annualOption.classList.add('active');
+                        
+                        monthlyPrices.forEach(p => p.style.display = 'none');
+                        annualPrices.forEach(p => p.style.display = 'block');
+                    } else {
+                        annualOption.classList.remove('active');
+                        monthlyOption.classList.add('active');
+                        
+                        annualPrices.forEach(p => p.style.display = 'none');
+                        monthlyPrices.forEach(p => p.style.display = 'block');
+                    }
+                });
+                
+                monthlyOption.addEventListener('click', function() {
+                    if (toggleSwitch.classList.contains('annual')) {
+                        toggleSwitch.click();
+                    }
+                });
+                
+                annualOption.addEventListener('click', function() {
+                    if (!toggleSwitch.classList.contains('annual')) {
+                        toggleSwitch.click();
+                    }
+                });
+            }
+            
+            // FAQ accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    // Close other open items
+                    faqItems.forEach(i => {
+                        if (i !== item && i.classList.contains('active')) {
+                            i.classList.remove('active');
+                        }
+                    });
+                    
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Check user login status for CTA buttons
+            const loginStatus = localStorage.getItem('inkedMind_userLoggedIn') === 'true';
+            const ctaButtons = document.querySelectorAll('.plan-cta a');
+            
+            if (loginStatus) {
+                // User is logged in, update the first button
+                const freeButton = ctaButtons[0];
+                if (freeButton.textContent.includes('Sign Up')) {
+                    freeButton.textContent = 'Current Plan';
+                    freeButton.classList.remove('btn-secondary');
+                    freeButton.classList.add('btn-text');
+                    freeButton.style.cursor = 'default';
+                    freeButton.href = '#';
+                    freeButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                    });
+                }
+            }
+        });
+    </script>
+    
+</body>
+
+</html>

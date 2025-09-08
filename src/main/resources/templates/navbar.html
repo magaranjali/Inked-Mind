@@ -1,0 +1,110 @@
+<style>
+.user-dropdown {
+    display: none;
+    position: absolute;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    margin-top: 8px;
+    padding: 10px;
+    min-width: 160px;
+    z-index: 999;
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+}
+
+.user-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+.user-dropdown.show {
+    display: block;
+}
+
+</style>
+<header id="site-header">
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/index}">
+                <img th:src="@{/images/logo.png}" src="images/logo.png" alt="">
+            </a>
+        </div>
+        <nav id="main-nav">
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a th:href="@{/index}">Home</a></li>
+                <li><a th:href="${currentUser != null ? '/poems' : '/login'}">Poems</a></li>
+                <li><a th:href="${currentUser != null ? '/contests' : '/login'}">Contests</a></li>
+                <li><a th:href="${currentUser != null ? '/pricing' : '/login'}">Pricing</a></li>
+
+                <!-- Show when NOT logged in -->
+                <li class="auth-links" data-rendered="server" th:if="${currentUser == null}">
+                    <a th:href="@{/login}" class="btn-login">Log In</a>
+                    <a th:href="@{/signup}" class="btn-primary active">Sign Up</a>
+                    <a th:href="@{/admin/login}" class="btn-login">Admin</a>
+                </li>
+
+                <!-- Show when logged in: show username with dropdown -->
+                <li class="auth-links user-menu" th:if="${currentUser != null}">
+			    <div class="user-nav">
+				        <span class="user-avatar"
+				              th:text="${(currentUser != null and currentUser.firstName != null) ? #strings.substring(currentUser.firstName, 0, 1) : 'U'}">U</span>
+				        <button class="user-name-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown(this)">
+				            <span class="user-name"
+				                  th:text="${(currentUser != null and currentUser.firstName != null) ? currentUser.firstName : ((activeUser != null) ? activeUser : 'User')}">User</span>
+				            <i class="fas fa-chevron-down"></i>
+				        </button>
+				        <div class="user-dropdown" role="menu">
+				            <a th:if="${currentUser != null and currentUser.role != null and #strings.equalsIgnoreCase(currentUser.role, 'Admin')}"
+				               th:href="@{/admin/subscribers}" role="menuitem"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+				            <a th:href="@{/dashboard}" role="menuitem"><i class="fas fa-user"></i> Dashboard</a>
+				            <a th:href="@{/logout}" role="menuitem"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+				        </div>
+				    </div>
+				</li>
+
+
+                <li class="theme-switcher">
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<script>
+function toggleDropdown(btn) {
+    const userNav = btn.parentElement;
+    const isOpen = userNav.classList.contains("open");
+    
+    // Close all open dropdowns first
+    document.querySelectorAll('.user-nav.open').forEach(nav => nav.classList.remove('open'));
+    
+    // Toggle current dropdown
+    if (!isOpen) {
+        userNav.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+    } else {
+        btn.setAttribute("aria-expanded", "false");
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function handler(e) {
+        if (!userNav.contains(e.target)) {
+            userNav.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+            document.removeEventListener("click", handler);
+        }
+    });
+}
+</script>
+

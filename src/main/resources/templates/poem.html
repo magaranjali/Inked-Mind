@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Poem | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .poem-page {
+            padding: 60px 0;
+        }
+        
+        .poem-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .poem-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .poem-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .poem-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .author-info .name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .author-info .date {
+            color: #666;
+        }
+        
+        .poem-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .poem-text {
+            white-space: pre-line;
+            text-align: center;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .poem-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .poem-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .poem-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+        }
+        
+        .poem-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .poem-actions button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            background-color: var(--light-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .poem-actions button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .poem-actions button.liked {
+            color: var(--accent-color);
+        }
+        
+        .poem-tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .poem-tag {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .comments-section {
+            margin-top: 50px;
+        }
+        
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .comments-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .comment-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-form button {
+            float: right;
+        }
+        
+        .comments-list {
+            margin-top: 20px;
+        }
+        
+        .comment {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .comment-author-name {
+            font-weight: 600;
+        }
+        
+        .comment-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .related-poems {
+            margin-top: 60px;
+        }
+        
+        .related-poems h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+        
+        .related-poems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .related-poem-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .related-poem-card h4 {
+            margin-bottom: 10px;
+        }
+        
+        .related-poem-card .author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .poem-header h1 {
+                font-size: 2rem;
+            }
+            
+            .poem-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main>
+        <section class="poem-page">
+            <div class="container">
+                <div class="poem-container">
+                    <div class="poem-header">
+                        <h1 id="poem-title">Whispers of Dawn</h1>
+                        <div class="poem-author">
+                            <div class="author-avatar">E</div>
+                            <div class="author-info">
+                                <div class="name">Emily Wright</div>
+                                <div class="date">Published on July 30, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="poem-content">
+                        <div class="poem-text">
+In the quiet moments before sunrise,
+When the world still dreams,
+I find myself in the spaces between
+Darkness and light.
+
+The whispers of dawn call to me,
+Soft tendrils of pink and gold
+Reaching across the sleeping sky,
+Promising renewal, promising hope.
+
+Dew drops glisten like scattered diamonds,
+Each one holding a universe within.
+The gentle breath of morning
+Carries secrets from yesterday.
+
+I stand at the threshold of becoming,
+As nature awakens around me,
+A symphony of birdsong and rustling leaves,
+Conducting the arrival of a new day.
+
+In this sacred space of transition,
+Where night surrenders to morning light,
+I too am transformed, reborn,
+Ready to begin again.
+                        </div>
+                        
+                        <div class="poem-tags">
+                            <span class="poem-tag">Nature</span>
+                            <span class="poem-tag">Dawn</span>
+                            <span class="poem-tag">Reflection</span>
+                            <span class="poem-tag">Hope</span>
+                        </div>
+                        
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 120 Views</span>
+                                <span class="likes-count"><i class="fas fa-heart"></i> 43 Likes</span>
+                                <span><i class="fas fa-comment"></i> 12 Comments</span>
+                            </div>
+                            <div class="poem-actions">
+                                <button id="like-btn"><i class="far fa-heart"></i> Like</button>
+                                <button><i class="fas fa-share"></i> Share</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-header">
+                            <h3>Comments (12)</h3>
+                        </div>
+                        
+                        <div class="comment-form">
+                            <textarea placeholder="Add your comment..."></textarea>
+                            <button class="btn-primary">Post Comment</button>
+                            <div style="clear: both;"></div>
+                        </div>
+                        
+                        <div class="comments-list">
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-author">
+                                        <div class="comment-avatar">S</div>
+                                        <div class="comment-author-info">
+                                            <div class="comment-author-name">Sarah Wilson</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-date">2 days ago</div>
+                                </div>
+                                <div class="comment-body">
+                                    <p>The imagery in this poem is absolutely stunning. I can almost feel the morning dew and hear the birds. The way you've captured that magical moment between night and day is beautiful.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-author">
+                                        <div class="comment-avatar">M</div>
+                                        <div class="comment-author-info">
+                                            <div class="comment-author-name">Michael Thompson</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-date">1 day ago</div>
+                                </div>
+                                <div class="comment-body">
+                                    <p>I love how you've connected the physical dawn with personal transformation. It feels both intimate and universal. This really spoke to me today - thank you for sharing your gift.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-author">
+                                        <div class="comment-avatar">L</div>
+                                        <div class="comment-author-info">
+                                            <div class="comment-author-name">Lisa Chen</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-date">12 hours ago</div>
+                                </div>
+                                <div class="comment-body">
+                                    <p>"Dew drops glisten like scattered diamonds, Each one holding a universe within." - This line is pure magic! Your way with words makes me want to wake up early just to experience this moment.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="related-poems">
+                        <h3>You May Also Enjoy</h3>
+                        <div class="related-poems-grid">
+                            <div class="related-poem-card">
+                                <h4>Midnight Thoughts</h4>
+                                <span class="author">By Marcus Chen</span>
+                                <p>Stars scattered like memories,<br>Across the vast expanse of night...</p>
+                                <a href="./poem.html?id=2" class="btn-text">Read More</a>
+                            </div>
+                            
+                            <div class="related-poem-card">
+                                <h4>Autumn Leaves</h4>
+                                <span class="author">By Lily Zhang</span>
+                                <p>Crimson and gold dance in the wind,<br>Nature's final vibrant display...</p>
+                                <a href="./poem.html?id=5" class="btn-text">Read More</a>
+                            </div>
+                            
+                            <div class="related-poem-card">
+                                <h4>Forest Dreams</h4>
+                                <span class="author">By Thomas Green</span>
+                                <p>Ancient trees whisper secrets,<br>Their roots deep in sacred soil...</p>
+                                <a href="./poem.html?id=7" class="btn-text">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="./poems.html">Poems</a></li>
+                            <li><a href="./contests.html">Contests</a></li>
+                            <li><a href="./pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get poem ID from URL query params
+            const urlParams = new URLSearchParams(window.location.search);
+            const poemId = urlParams.get('id');
+            
+            // In a real app, we would fetch the poem data from an API using the poemId
+            // Here we'll just simulate with static content
+            
+            // Like button functionality
+            const likeBtn = document.getElementById('like-btn');
+            const likesCount = document.querySelector('.likes-count');
+            
+            if (likeBtn) {
+                likeBtn.addEventListener('click', function() {
+                    if (localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
+                        alert('Please login to like this poem');
+                        window.location.href = './login.html';
+                        return;
+                    }
+                    
+                    const likeKey = `poem_${poemId}_liked`;
+                    const isLiked = localStorage.getItem(likeKey) === 'true';
+                    
+                    if (isLiked) {
+                        // Unlike
+                        localStorage.setItem(likeKey, 'false');
+                        this.innerHTML = '<i class="far fa-heart"></i> Like';
+                        this.classList.remove('liked');
+                        
+                        // Update count
+                        const currentLikes = parseInt(likesCount.textContent.split(' ')[1]);
+                        likesCount.innerHTML = `<i class="fas fa-heart"></i> ${currentLikes - 1} Likes`;
+                    } else {
+                        // Like
+                        localStorage.setItem(likeKey, 'true');
+                        this.innerHTML = '<i class="fas fa-heart"></i> Liked';
+                        this.classList.add('liked');
+                        
+                        // Update count
+                        const currentLikes = parseInt(likesCount.textContent.split(' ')[1]);
+                        likesCount.innerHTML = `<i class="fas fa-heart"></i> ${currentLikes + 1} Likes`;
+                    }
+                });
+                
+                // Check if user has already liked this poem
+                const likeKey = `poem_${poemId}_liked`;
+                if (localStorage.getItem(likeKey) === 'true') {
+                    likeBtn.innerHTML = '<i class="fas fa-heart"></i> Liked';
+                    likeBtn.classList.add('liked');
+                }
+            }
+            
+            // Comment form
+            const commentForm = document.querySelector('.comment-form');
+            if (commentForm) {
+                commentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const commentText = commentForm.querySelector('textarea').value;
+                    
+                    if (!commentText.trim()) {
+                        alert('Please enter a comment');
+                        return;
+                    }
+                    
+                    if (localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
+                        alert('Please login to comment');
+                        window.location.href = './login.html';
+                        return;
+                    }
+                    
+                    alert('Comment posted successfully!');
+                    commentForm.reset();
+                    
+                    // In a real app, we would send the comment to an API
+                });
+            }
+            
+            // Share button
+            const shareBtn = document.querySelector('.poem-actions button:last-child');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', function() {
+                    // In a real app, we would use the Web Share API or show a custom share dialog
+                    alert('Share this poem with the link: ' + window.location.href);
+                });
+            }
+        });
+    </script>
+    
+    <script>
+    // Inline main.js essentials
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+    });
+    </script>
+</body>
+
+</html>

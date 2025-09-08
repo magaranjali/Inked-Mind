@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<style>
+        .create-poem-page {
+            min-height: 100vh;
+            background-color: var(--background-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .create-poem-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--light-color);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+        
+        /* Ensure text remains visible in dark mode */
+        body.dark-mode .form-control {
+            background-color: var(--light-color);
+            color: var(--text-color);
+        }
+        
+        /* Style for select dropdown in dark mode */
+        body.dark-mode select.form-control {
+            background-color: var(--light-color);
+            color: var(--text-color);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 250px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.8;
+            padding: 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+        }
+        
+        .btn i {
+            font-size: 1.1em;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--light-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        /* Dark mode button styles */
+        body.dark-mode .btn-outline {
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        body.dark-mode .btn-outline:hover {
+            background-color: var(--dark-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        body.dark-mode .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        body.dark-mode .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            min-height: 3rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .tags-input {
+            background-color: var(--light-color);
+            border-color: var(--border-color);
+        }
+        
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        body.dark-mode .tag {
+            background-color: var(--primary-dark);
+            color: var(--primary-light);
+        }
+        
+        .tag-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: 1rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .tag-remove:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tag-input {
+            flex: 1;
+            min-width: 120px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.25rem;
+            background: transparent;
+            color: var(--text-color);
+        }
+        
+        .character-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        /* Style for file input */
+        .file-upload {
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 0.8rem 1rem;
+            background-color: var(--light-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(var(--primary-rgb), 0.05);
+        }
+        
+        .file-upload small {
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        /* Dark mode specific styles */
+        body.dark-mode .file-upload-label {
+            background-color: var(--light-color);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        body.dark-mode .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(var(--primary-rgb), 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .create-poem-page {
+                padding: 100px 0 40px;
+            }
+            
+            .create-poem-container {
+                margin: 0 10px;
+                padding: 20px 15px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: 2rem;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .tags-input {
+                min-height: 2.8rem;
+                padding: 0.4rem;
+            }
+            
+            .tag {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+        
+        /* Add animation for better UX */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .create-poem-container {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        /* Add focus styles for better accessibility */
+        .form-control:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        /* Style for select dropdown */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Dashboard | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+   <div th:insert="navbar.html"></div>
+
+    <main>
+        <section class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div class="user-welcome">
+                        <h1>Welcome, <span class="user-name highlight" th:text="${(user != null) ? user.firstName : 'User'}">User</span>!</h1>
+                        <p>Manage your poems, contests, and subscription here.</p>
+                    </div>
+                    <div class="dashboard-actions" th:if="${user == null or (user.role == 'Poet')}">
+                        <a href="#" class="btn-primary" id="write-poem-btn"><i class="fas fa-pencil-alt"></i> Write New Poem</a>
+                    </div>
+                </div>
+
+                <div class="dashboard-container">
+                    <div class="dashboard-sidebar">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-details">
+                                <h3 class="user-name" th:text="${(user != null) ? user.firstName : 'User'}">User</h3>
+                                <span class="user-role" th:text="${(user != null) ? user.role : 'Poet'}">Poet</span>
+                            </div>
+                        </div>
+                        <ul class="sidebar-menu">
+                            <li><a href="#" class="active" data-tab="overview"><i class="fas fa-home"></i> Overview</a></li>
+                            <li th:if="${user == null or (user.role == 'Poet')}"><a href="#" data-tab="my-poems"><i class="fas fa-feather-alt"></i> My Poems</a></li>
+                            <li><a href="#" data-tab="contests"><i class="fas fa-trophy"></i> Contests</a></li>
+                            <li th:if="${user == null or (user.role == 'Poet')}"><a href="#" data-tab="write-poem"><i class="fas fa-pencil-alt"></i> Write Poem</a></li>
+                            <li><a href="#" data-tab="subscription"><i class="fas fa-star"></i> Subscription</a></li>
+                            <li><a href="#" data-tab="profile"><i class="fas fa-user"></i> Profile</a></li>
+                            <li><a href="#" data-tab="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        </ul>
+                    </div>
+                    <div class="dashboard-content">
+                        <!-- Overview Tab -->
+                        <div class="dashboard-tab active" id="overview-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Dashboard Overview</h2>
+                            </div>
+                            
+                            <div class="subscription-status">
+                                <div class="subscription-header">
+                                    <h3>Subscription Status</h3>
+                                    <span class="subscription-badge free-badge">Free Plan</span>
+                                </div>
+                                <ul class="subscription-details">
+                                    <li><i class="fas fa-check"></i> Basic poem publishing (5 poems/month)</li>
+                                    <li><i class="fas fa-check"></i> Access to community feedback</li>
+                                    <li><i class="fas fa-times"></i> Participate in premium contests</li>
+                                    <li><i class="fas fa-times"></i> Advanced writing tools</li>
+                                </ul>
+                                <a th:href="@{/pricing}" href="pricing" class="btn-primary">Upgrade to Premium</a>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <i class="fas fa-feather-alt"></i>
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-label">Poems Published</div>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="fas fa-eye"></i>
+                                    <div class="stat-value">127</div>
+                                    <div class="stat-label">Total Views</div>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="fas fa-heart"></i>
+                                    <div class="stat-value">43</div>
+                                    <div class="stat-label">Likes Received</div>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="fas fa-comment"></i>
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">Comments</div>
+                                </div>
+                            </div>
+                            
+                            <h3>Recent Poems</h3>
+                            <div class="poems-list">
+                                <div class="poem-item">
+                                    <div class="poem-details">
+                                        <h3>Whispers in the Wind</h3>
+                                        <div class="poem-meta">
+                                            <span>Published: 3 days ago</span> • 
+                                            <span>Views: 43</span> • 
+                                            <span>Likes: 12</span>
+                                        </div>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
+                                        <a href="#"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </div>
+                                <div class="poem-item">
+                                    <div class="poem-details">
+                                        <h3>Autumn Memories</h3>
+                                        <div class="poem-meta">
+                                            <span>Published: 1 week ago</span> • 
+                                            <span>Views: 72</span> • 
+                                            <span>Likes: 24</span>
+                                        </div>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
+                                        <a href="#"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </div>
+                                <div class="poem-item">
+                                    <div class="poem-details">
+                                        <h3>Ocean's Embrace</h3>
+                                        <div class="poem-meta">
+                                            <span>Published: 2 weeks ago</span> • 
+                                            <span>Views: 12</span> • 
+                                            <span>Likes: 7</span>
+                                        </div>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
+                                        <a href="#"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h3>Active Contests</h3>
+                            <div class="contest-cards">
+                                <div class="contest-card">
+                                    <h3>"Nature's Whispers"</h3>
+                                    <ul class="contest-details">
+                                        <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
+                                        <li><i class="fas fa-users"></i> Participants: 47</li>
+                                        <li><i class="fas fa-award"></i> Prize: Featured spot + Premium subscription</li>
+                                    </ul>
+                                    <a th:href="@{/contests}" href="./contests.html" class="btn-secondary">View Contest</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- My Poems Tab -->
+                        <div class="dashboard-tab" id="my-poems-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>My Poems</h2>
+                                
+                                    
+                                </a>
+                            </div>
+                            <div class="poems-list">
+                                <div th:if="${userPoems != null and !userPoems.isEmpty()}">
+                                    <div class="poem-item" th:each="poem : ${userPoems}">
+                                        <div class="poem-details">
+                                            <h3 th:text="${poem.title}">Poem Title</h3>
+                                            <div class="poem-meta">
+                                                <span th:if="${poem.published}" th:text="'Published: ' + ${#temporals.format(poem.createdAt, 'MMM dd, yyyy')}">Published: Date</span>
+                                                <span th:if="${!poem.published}" th:text="'Draft: ' + ${#temporals.format(poem.createdAt, 'MMM dd, yyyy')}">Draft: Date</span>
+                                                <span th:if="${poem.published}" th:class="'status-published'">Published</span>
+                                                <span th:if="${!poem.published}" th:class="'status-draft'">Draft</span>
+                                            </div>
+                                        </div>
+                                        <div class="poem-actions">
+                                            <a href="#" title="View"><i class="fas fa-eye"></i></a>
+                                            <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                            <a th:if="${!poem.published}" href="#" class="btn-primary btn-sm" title="Publish">Publish</a>
+                                            <a href="#" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${userPoems == null or userPoems.isEmpty()}" class="no-poems">
+                                    <p>You haven't created any poems yet.</p>
+                                    <a href="#" class="btn-primary" onclick="document.querySelector('.sidebar-menu a[data-tab=\'write-poem\']').click()">
+                                        <i class="fas fa-plus"></i> Create Your First Poem
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contests Tab -->
+                        <div class="dashboard-tab" id="contests-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Poetry Contests</h2>
+                            </div>
+                            <div class="contest-cards">
+                                <div class="contest-card">
+                                    <h3>"Nature's Whispers"</h3>
+                                    <ul class="contest-details">
+                                        <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
+                                        <li><i class="fas fa-users"></i> Participants: 47</li>
+                                        <li><i class="fas fa-award"></i> Prize: Featured spot + Premium subscription</li>
+                                        <li><i class="fas fa-tag"></i> Theme: Nature, Environment</li>
+                                    </ul>
+                                    <div class="contest-actions">
+                                        <a href="#" class="btn-primary">Participate</a>
+                                        <a href="#" class="btn-secondary">View Details</a>
+                                    </div>
+                                </div>
+                                <div class="contest-card">
+                                    <h3>"Love & Relationships"</h3>
+                                    <ul class="contest-details">
+                                        <li><i class="fas fa-calendar"></i> Deadline: September 1, 2025</li>
+                                        <li><i class="fas fa-users"></i> Participants: 23</li>
+                                        <li><i class="fas fa-award"></i> Prize: $500 + Publication</li>
+                                        <li><i class="fas fa-tag"></i> Theme: Love, Romance, Relationships</li>
+                                    </ul>
+                                    <div class="contest-actions">
+                                        <a href="#" class="btn-primary">Participate</a>
+                                        <a href="#" class="btn-secondary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subscription Tab -->
+                        <div class="dashboard-tab" id="subscription-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Subscription Management</h2>
+                            </div>
+                            <div class="subscription-status">
+                                <div class="subscription-header">
+                                    <h3>Current Plan: Free</h3>
+                                    <span class="subscription-badge free-badge">Free Plan</span>
+                                </div>
+                                <ul class="subscription-details">
+                                    <li><i class="fas fa-check"></i> Basic poem publishing (5 poems/month)</li>
+                                    <li><i class="fas fa-check"></i> Access to community feedback</li>
+                                    <li><i class="fas fa-times"></i> Participate in premium contests</li>
+                                    <li><i class="fas fa-times"></i> Advanced writing tools</li>
+                                    <li><i class="fas fa-times"></i> Priority support</li>
+                                </ul>
+                                <div class="subscription-actions">
+                                    <a th:href="@{/pricing}" class="btn-primary">Upgrade to Premium</a>
+                                    <a href="#" class="btn-secondary">View All Plans</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Tab -->
+                        <div class="dashboard-tab" id="profile-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Profile Settings</h2>
+                            </div>
+                            <form class="profile-form">
+                                <div class="form-group">
+                                    <label for="profile-first-name">First Name</label>
+                                    <input type="text" id="profile-first-name" class="form-control" th:value="${(user != null) ? user.firstName : ''}" placeholder="Enter your first name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-last-name">Last Name</label>
+                                    <input type="text" id="profile-last-name" class="form-control" th:value="${(user != null) ? user.lastName : ''}" placeholder="Enter your last name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-email">Email</label>
+                                    <input type="email" id="profile-email" class="form-control" th:value="${(user != null) ? user.email : ''}" placeholder="Enter your email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-bio">Bio</label>
+                                    <textarea id="profile-bio" class="form-control" placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Update Profile</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Settings Tab -->
+                        <div class="dashboard-tab" id="settings-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Account Settings</h2>
+                            </div>
+                            <div class="settings-sections">
+                                <div class="settings-section">
+                                    <h3>Change Password</h3>
+                                    <form class="password-form">
+                                        <div class="form-group">
+                                            <label for="current-password">Current Password</label>
+                                            <input type="password" id="current-password" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="new-password">New Password</label>
+                                            <input type="password" id="new-password" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirm-password">Confirm New Password</label>
+                                            <input type="password" id="confirm-password" class="form-control" required>
+                                        </div>
+                                        <button type="submit" class="btn-primary">Update Password</button>
+                                    </form>
+                                </div>
+                                <div class="settings-section">
+                                    <h3>Notification Preferences</h3>
+                                    <form class="notification-form">
+                                        <div class="form-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" checked> Email notifications for new comments
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" checked> Contest announcements
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox"> Weekly poetry digest
+                                            </label>
+                                        </div>
+                                        <button type="submit" class="btn-primary">Save Preferences</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                       <!-- Write Poem Tab -->
+			<div class="dashboard-tab" id="write-poem-tab">
+                            <div class="dashboard-tab-header">
+                                <h2>Create New Poem</h2>
+                            </div>
+                            
+
+                            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 20px; padding: 12px 16px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; color: #155724;">
+                                <span th:text="${successMessage}"></span>
+                                <button type="button" class="btn-close" style="float: right; background: none; border: none; font-size: 18px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
+                            </div>
+                            
+
+                            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 20px; padding: 12px 16px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; color: #721c24;">
+                                <span th:text="${errorMessage}"></span>
+                                <button type="button" class="btn-close" style="float: right; background: none; border: none; font-size: 18px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
+                            </div>
+
+                            <form id="poem-form" th:action="@{/poem/save}" method="post">
+                                <div class="form-group">
+                                    <label for="poem-title">Title <span class="required">*</span></label>
+                                    <input type="text" id="poem-title" name="title" class="form-control" placeholder="Enter your poem title" required>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label for="author-name">Author Name <span class="required">*</span></label>
+                                    <input type="text" id="author-name" name="authorName" class="form-control" placeholder="Enter your name" th:value="${(user != null) ? user.firstName + ' ' + user.lastName : ''}" required>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label for="poem-content">Your Poem <span class="required">*</span></label>
+                                    <textarea id="poem-content" name="content" class="form-control" placeholder="Pour your heart out here..." required></textarea>
+                                    <div class="character-count"><span id="char-count">0</span> characters</div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label>Tags</label>
+                                    <div class="tags-input" id="tags-container">
+                                        <input type="text" id="tag-input" class="tag-input" placeholder="Add tags (press Enter to add)">
+                                    </div>
+                                    <input type="hidden" id="tags-hidden" name="tags" value="">
+                                    <small class="form-text text-muted">Add up to 5 tags to help others discover your poem</small>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label for="poem-category">Category</label>
+                                    <select id="poem-category" name="category" class="form-control">
+                                        <option value="">Select a category (optional)</option>
+                                        <option value="love">Love</option>
+                                        <option value="nature">Nature</option>
+                                        <option value="life">Life</option>
+                                        <option value="inspiration">Inspiration</option>
+                                        <option value="friendship">Friendship</option>
+                                        <option value="family">Family</option>
+                                        <option value="spirituality">Spirituality</option>
+                                        <option value="humor">Humor</option>
+                                        <option value="social">Social Issues</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <label for="poem-cover">Cover Image (optional)</label>
+                                    <div class="file-upload">
+                                        <label for="poem-cover" class="file-upload-label">
+                                            <i class="fas fa-upload"></i> Choose a cover image...
+                                        </label>
+                                        <input type="file" id="poem-cover" accept="image/*" class="form-control">
+                                        <small class="form-text text-muted">Recommended size: 1200x630px (2:1 ratio). Max file size: 5MB</small>
+                                    </div>
+                                    <div id="file-name" class="file-name"></div>
+                                </div>
+                                
+
+                                <div class="form-actions">
+                                    <button type="submit" name="action" value="draft" class="btn btn-outline">
+                                        <i class="fas fa-save"></i> Save as Draft
+                                    </button>
+                                    <button type="submit" name="action" value="publish" class="btn btn-primary">
+                                        <i class="fas fa-globe"></i> Publish Poem
+                                    </button>
+                                </div>
+                            </form>
+                        </div>     
+                   
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a th:href="@{/index}" href="index.html">Home</a></li>
+                            <li><a th:href="@{/poems}" href="./poems.html">Poems</a></li>
+                            <li><a th:href="@{/contests}" href="./contests.html">Contests</a></li>
+                            <li><a th:href="@{/pricing}" href="./pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ===== Theme Toggle =====
+    var body = document.body;
+    var themeToggle = document.getElementById('theme-toggle');
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+        });
+    }
+
+    // ===== Navigation Toggle =====
+    var navToggle = document.querySelector('.nav-toggle');
+    var navLinks = document.querySelector('.nav-links');
+    if (navToggle) navToggle.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+
+    var header = document.getElementById('site-header');
+    if (header) window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+    });
+
+    document.addEventListener('click', function(event) {
+        if (navLinks && navLinks.classList.contains('active')) {
+            if (!event.target.closest('#main-nav')) navLinks.classList.remove('active');
+        }
+    });
+
+    // ===== User Dropdown =====
+    var userNameBtn = document.querySelector('.user-name-btn');
+    var userNav = document.querySelector('.user-nav');
+    if (userNameBtn && userNav) {
+        userNameBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isOpen = userNav.classList.contains('open');
+            document.querySelectorAll('.user-nav.open').forEach(function(el){ el.classList.remove('open'); });
+            if (!isOpen) userNav.classList.add('open');
+        });
+        document.addEventListener('click', function(){ userNav.classList.remove('open'); });
+    }
+
+    // ===== Dashboard Tabs =====
+    var tabLinks = document.querySelectorAll('.sidebar-menu a');
+    var tabs = document.querySelectorAll('.dashboard-tab');
+    tabLinks.forEach(function(link){
+        link.addEventListener('click', function(e){
+            e.preventDefault();
+            var tab = this.getAttribute('data-tab');
+            tabLinks.forEach(function(l){ l.classList.remove('active'); });
+            this.classList.add('active');
+            tabs.forEach(function(t){ t.classList.remove('active'); });
+            var activeTab = document.getElementById(tab + '-tab');
+            if (activeTab) activeTab.classList.add('active');
+            if (tab === 'write-poem') showPoemForm(); else hidePoemForm();
+        });
+    });
+
+    // ===== Write Poem Buttons =====
+    var writePoemBtn = document.getElementById('write-poem-btn'); // top button
+    var sidebarWritePoemLink = document.querySelector('.sidebar-menu a[data-tab="write-poem"]'); // sidebar
+    
+    function openWritePoemTab() {
+        // Remove active class from all tab links
+        tabLinks.forEach(function(l){ l.classList.remove('active'); });
+        
+        // Add active class to write poem sidebar link
+        if (sidebarWritePoemLink) {
+            sidebarWritePoemLink.classList.add('active');
+        }
+        
+        // Hide all tabs
+        tabs.forEach(function(t){ t.classList.remove('active'); });
+        
+        // Show write poem tab
+        var writePoemTab = document.getElementById('write-poem-tab');
+        if (writePoemTab) {
+            writePoemTab.classList.add('active');
+        }
+    }
+    
+    // Add event listeners for both buttons
+    if (writePoemBtn) {
+        writePoemBtn.addEventListener('click', function(e){ 
+            e.preventDefault(); 
+            openWritePoemTab(); 
+        });
+    }
+    
+    if (sidebarWritePoemLink) {
+        sidebarWritePoemLink.addEventListener('click', function(e){ 
+            e.preventDefault(); 
+            openWritePoemTab(); 
+        });
+    }
+
+    // ===== Show/Hide Write Poem Form =====
+    function showPoemForm() { 
+        // The write poem form is already visible in the write-poem-tab, no need to hide/show
+    }
+    function hidePoemForm() { 
+        // The write poem form is already visible in the write-poem-tab, no need to hide/show
+    }
+
+    // ===== Poem Form =====
+    var poemForm = document.getElementById('poem-form');
+    
+    // Character counter
+    var poemContent = document.getElementById('poem-content');
+    var charCount = document.getElementById('char-count');
+    if (poemContent && charCount) {
+        poemContent.addEventListener('input', function() { charCount.textContent = this.value.length; });
+    }
+    
+    // File input display
+    var fileInput = document.getElementById('poem-cover');
+    var fileNameDisplay = document.getElementById('file-name');
+    if (fileInput && fileNameDisplay) {
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = 'Selected file: ' + this.files[0].name;
+                fileNameDisplay.style.marginTop = '0.5rem';
+                fileNameDisplay.style.color = 'var(--text-color)';
+            }
+        });
+    }
+    
+    // Tags functionality
+    var tagInput = document.getElementById('tag-input');
+    var tagsContainer = document.getElementById('tags-container');
+    var tagsHidden = document.getElementById('tags-hidden');
+    var maxTags = 5;
+    var tags = [];
+    
+    if (tagInput && tagsContainer) {
+        tagInput.addEventListener('keydown', function(e){
+            if ((e.key==='Enter'||e.key===',') && this.value.trim()!=='' && tags.length<maxTags){
+                e.preventDefault();
+                var tagText = this.value.trim().replace(/,/g,'');
+                if(tagText!=='' && tags.indexOf(tagText.toLowerCase())===-1){ 
+                    tags.push(tagText.toLowerCase()); 
+                    updateTags(); 
+                }
+                this.value='';
+            }
+        });
+        
+        function updateTags(){
+            // Remove existing tag elements
+            var existingTags = tagsContainer.querySelectorAll('.tag');
+            existingTags.forEach(function(tag) { tag.remove(); });
+            
+            // Add new tag elements
+            tags.forEach(function(tag,index){
+                var tagElement = document.createElement('div');
+                tagElement.className='tag';
+                tagElement.innerHTML = tag+' <button type="button" class="tag-remove" data-index="'+index+'">&times;</button>';
+                tagsContainer.insertBefore(tagElement, tagInput.parentNode);
+            });
+            
+            // Update hidden input for form submission
+            if (tagsHidden) {
+                tagsHidden.value = tags.join(',');
+            }
+            
+            // Update input state
+            if(tags.length>=maxTags){ 
+                tagInput.placeholder='Maximum tags reached'; 
+                tagInput.disabled=true; 
+            } else { 
+                tagInput.placeholder='Add tags (press Enter to add)'; 
+                tagInput.disabled=false; 
+            }
+        }
+        
+        tagsContainer.addEventListener('click', function(e){
+            if(e.target.classList.contains('tag-remove')){
+                var index=parseInt(e.target.getAttribute('data-index'));
+                tags.splice(index,1);
+                updateTags();
+            }
+        });
+    }
+
+    // ===== Profile Form =====
+    var profileForm = document.querySelector('.profile-form');
+    if(profileForm) profileForm.addEventListener('submit',function(e){ e.preventDefault(); alert('Profile updated successfully!'); });
+
+    // ===== Password Form =====
+    var passwordForm = document.querySelector('.password-form');
+    if(passwordForm) passwordForm.addEventListener('submit',function(e){
+        e.preventDefault();
+        var np=document.getElementById('new-password').value;
+        var cp=document.getElementById('confirm-password').value;
+        if(np!==cp){ alert('Passwords do not match!'); return; }
+        alert('Password updated successfully!'); passwordForm.reset();
+    });
+
+    // ===== Notification Form =====
+    var notificationForm=document.querySelector('.notification-form');
+    if(notificationForm) notificationForm.addEventListener('submit',function(e){ e.preventDefault(); alert('Notification preferences saved!'); });
+
+    // ===== Dashboard UI =====
+    function updateDashboardUI(){
+        var userName=localStorage.getItem('inkedMind_userName');
+        var userRole=localStorage.getItem('inkedMind_userRole');
+        if(userName) document.querySelectorAll('.user-name').forEach(function(el){ el.textContent=userName; });
+        if(userRole) document.querySelectorAll('.user-role').forEach(function(el){ el.textContent=userRole; });
+        var firstInitial=(userName||'U').charAt(0).toUpperCase();
+        document.querySelectorAll('.user-avatar').forEach(function(el){ if(el.querySelector('i')) el.innerHTML=firstInitial; });
+        var firstNameInput=document.getElementById('profile-first-name');
+        var emailInput=document.getElementById('profile-email');
+        if(firstNameInput && userName){ var parts=userName.split(' '); firstNameInput.value=parts[0]||''; var lastNameInput=document.getElementById('profile-last-name'); if(lastNameInput && parts.length>1) lastNameInput.value=parts[1]||''; }
+        if(emailInput) emailInput.value=localStorage.getItem('inkedMind_userEmail')||'';
+    }
+    updateDashboardUI();
+
+});
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Contest Submission | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .submission-page {
+            padding: 60px 0;
+        }
+        
+        .submission-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contest-details {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .contest-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .contest-image {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .contest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .contest-header-content h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .contest-info {
+            margin-bottom: 30px;
+        }
+        
+        .contest-info h3 {
+            margin-bottom: 15px;
+        }
+        
+        .contest-info-items {
+            margin-bottom: 20px;
+        }
+        
+        .contest-info-items li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .contest-info-items li i {
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .submission-form {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+        
+        .submission-form h2 {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+        
+        .character-count {
+            text-align: right;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+        
+        .rules-box {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+        
+        .rules-box h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rules-box h3 i {
+            color: var(--primary-color);
+        }
+        
+        .rules-box ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+        
+        .rules-box li {
+            margin-bottom: 10px;
+        }
+        
+        .premium-alert {
+            background-color: var(--premium-alert-bg, #fff3cd);
+            color: var(--premium-alert-text, #856404);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--premium-alert-border, #ffeeba);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .premium-alert i {
+            font-size: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .contest-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main>
+        <section class="submission-page">
+            <div class="container">
+                <div class="submission-container">
+                    <div class="contest-details">
+                        <div class="contest-header">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nature's Whispers" id="contest-img">
+                            </div>
+                            <div class="contest-header-content">
+                                <h1 id="contest-title">"Nature's Whispers"</h1>
+                                <p id="contest-description">Create a poem that captures the subtle beauty and messages of nature. How does nature speak to you?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contest-info">
+                            <h3>Contest Details</h3>
+                            <ul class="contest-info-items">
+                                <li id="contest-deadline"><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
+                                <li id="contest-participants"><i class="fas fa-users"></i> Participants: 47</li>
+                                <li id="contest-prize"><i class="fas fa-award"></i> Prize: Featured spot on homepage + Premium subscription</li>
+                                <li id="contest-status"><i class="fas fa-info-circle"></i> Status: Open for submissions</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="rules-box">
+                            <h3><i class="fas fa-gavel"></i> Contest Rules</h3>
+                            <ul>
+                                <li>Your poem must be original and not published elsewhere.</li>
+                                <li>Maximum length is 40 lines.</li>
+                                <li>You may submit only one entry to this contest.</li>
+                                <li>Poems must relate to the theme of the contest.</li>
+                                <li>By submitting, you grant Inked Mind non-exclusive rights to publish your work.</li>
+                                <li>Submissions are judged on originality, imagery, emotional impact, and technical skill.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-form">
+                        <h2>Submit Your Poem</h2>
+                        
+                        <form id="contest-submission-form">
+                            <div class="form-group">
+                                <label for="poem-title">Poem Title</label>
+                                <input type="text" id="poem-title" placeholder="Enter your poem title" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="poem-content">Your Poem</label>
+                                <textarea id="poem-content" placeholder="Write your poem here..." required></textarea>
+                                <div class="character-count">0/2000 characters</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="rules-check" required>
+                                    I have read and agree to the contest rules
+                                </label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="save-draft-btn">Save as Draft</button>
+                                <button type="submit" class="btn-primary">Submit Entry</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="./poems.html">Poems</a></li>
+                            <li><a href="./contests.html">Contests</a></li>
+                            <li><a href="./pricing.html">Pricing</a></li>
+                            <li><a href="./dashboard.html" >Dashboard</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+    // Inline main.js essentials
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn') === 'true';
+            
+            if (!isLoggedIn) {
+                alert('Please log in to submit to contests');
+                window.location.href = './login.html';
+                return;
+            }
+            
+            // Get contest ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const contestId = urlParams.get('id');
+            
+            // Contest data (in a real app, this would come from an API)
+            const contestData = {
+                '1': {
+                    title: '"Nature\'s Whispers"',
+                    description: 'Create a poem that captures the subtle beauty and messages of nature. How does nature speak to you?',
+                    deadline: 'August 15, 2025',
+                    participants: 47,
+                    prize: 'Featured spot on homepage + Premium subscription',
+                    status: 'Open for submissions',
+                    image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    premium: false
+                },
+                '2': {
+                    title: '"Urban Poetry"',
+                    description: 'Explore the rhythms, challenges, and beauty of city life through your verses. From skyscrapers to subway cars.',
+                    deadline: 'September 20, 2025',
+                    participants: 23,
+                    prize: '$100 Gift Card + Featured spot',
+                    status: 'Open for submissions',
+                    image: 'https://images.unsplash.com/photo-1516880711640-ef7db81be3e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    premium: false
+                },
+                '3': {
+                    title: '"Emotions Unveiled"',
+                    description: 'Dive deep into the spectrum of human emotions. Create a poem that explores the complexity of feelings.',
+                    deadline: 'October 5, 2025',
+                    participants: 31,
+                    prize: '$250 + Publication in Poetry Journal',
+                    status: 'Premium members only',
+                    image: 'https://images.unsplash.com/photo-1499209737892-1577141ee10e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    premium: true
+                }
+            };
+            
+            // Load contest data
+            const contest = contestData[contestId] || contestData['1'];
+            
+            document.getElementById('contest-title').textContent = contest.title;
+            document.getElementById('contest-description').textContent = contest.description;
+            document.getElementById('contest-deadline').innerHTML = `<i class="fas fa-calendar"></i> Deadline: ${contest.deadline}`;
+            document.getElementById('contest-participants').innerHTML = `<i class="fas fa-users"></i> Participants: ${contest.participants}`;
+            document.getElementById('contest-prize').innerHTML = `<i class="fas fa-award"></i> Prize: ${contest.prize}`;
+            document.getElementById('contest-status').innerHTML = `<i class="fas fa-info-circle"></i> Status: ${contest.status}`;
+            document.getElementById('contest-img').src = contest.image;
+            
+            // Check if this is a premium contest
+            if (contest.premium) {
+                const userRole = localStorage.getItem('inkedMind_userRole') || '';
+                const isPremium = userRole.includes('Premium');
+                
+                if (!isPremium) {
+                    // Insert premium alert
+                    const formElement = document.querySelector('.submission-form');
+                    const premiumAlert = document.createElement('div');
+                    premiumAlert.className = 'premium-alert';
+                    premiumAlert.innerHTML = `
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <strong>Premium Contest</strong>
+                            <p>This contest is only available to Premium members. Please upgrade your account to participate.</p>
+                            <a href="./pricing.html" class="btn-primary" style="display: inline-block; margin-top: 10px;">Upgrade Now</a>
+                        </div>
+                    `;
+                    
+                    const formContent = formElement.innerHTML;
+                    formElement.innerHTML = '';
+                    formElement.appendChild(premiumAlert);
+                    
+                    return;
+                }
+            }
+            
+            // Character count for poem content
+            const poemContent = document.getElementById('poem-content');
+            const charCount = document.querySelector('.character-count');
+            
+            if (poemContent && charCount) {
+                poemContent.addEventListener('input', function() {
+                    const count = this.value.length;
+                    charCount.textContent = `${count}/2000 characters`;
+                    
+                    if (count > 2000) {
+                        charCount.style.color = 'red';
+                    } else {
+                        charCount.style.color = '#666';
+                    }
+                });
+            }
+            
+            // Form submission
+            const submissionForm = document.getElementById('contest-submission-form');
+            if (submissionForm) {
+                submissionForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const title = document.getElementById('poem-title').value;
+                    const content = document.getElementById('poem-content').value;
+                    const rulesCheck = document.getElementById('rules-check').checked;
+                    
+                    if (!title || !content) {
+                        alert('Please fill in all required fields');
+                        return;
+                    }
+                    
+                    if (content.length > 2000) {
+                        alert('Your poem exceeds the maximum length. Please edit it to be under 2000 characters.');
+                        return;
+                    }
+                    
+                    if (!rulesCheck) {
+                        alert('You must agree to the contest rules');
+                        return;
+                    }
+                    
+                    // In a real app, we would submit to an API here
+                    alert('Your poem has been submitted successfully!');
+                    window.location.href = './contests.html';
+                });
+            }
+            
+            // Save draft button
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', function() {
+                    const title = document.getElementById('poem-title').value;
+                    const content = document.getElementById('poem-content').value;
+                    
+                    if (!title && !content) {
+                        alert('Nothing to save');
+                        return;
+                    }
+                    
+                    // In a real app, we would save to API/localStorage
+                    const draftKey = `contest_${contestId}_draft`;
+                    localStorage.setItem(draftKey, JSON.stringify({
+                        title,
+                        content,
+                        savedAt: new Date().toISOString()
+                    }));
+                    
+                    alert('Draft saved successfully');
+                });
+                
+                // Check for existing draft
+                const draftKey = `contest_${contestId}_draft`;
+                const existingDraft = localStorage.getItem(draftKey);
+                
+                if (existingDraft) {
+                    try {
+                        const draft = JSON.parse(existingDraft);
+                        
+                        if (confirm('We found a saved draft. Would you like to load it?')) {
+                            document.getElementById('poem-title').value = draft.title || '';
+                            document.getElementById('poem-content').value = draft.content || '';
+                            
+                            // Update character count
+                            if (poemContent && charCount) {
+                                const count = draft.content?.length || 0;
+                                charCount.textContent = `${count}/2000 characters`;
+                                
+                                if (count > 2000) {
+                                    charCount.style.color = 'red';
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error loading draft:', e);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

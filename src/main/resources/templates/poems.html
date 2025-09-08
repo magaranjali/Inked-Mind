@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Poems | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .mainContainer{
+            top: 100px;
+            position: relative;
+        }
+        .poems-header {
+            top: 130px;
+            background-color: var(--light-color);
+            padding: 60px 0;
+            text-align: center;
+        }
+    
+        
+        .poems-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .poems-header p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .poems-feed{
+            margin-bottom: 130px;
+        }
+        
+        .poems-filters {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 40px;
+        }
+        
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filter-toggle {
+            display: none;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+        }
+       
+        .poems-container {
+            height: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .poem-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .poem-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .poem-card-header {
+            margin-bottom: 15px;
+        }
+        
+        .poem-card-header h3 {
+            margin-bottom: 5px;
+        }
+        
+        .poem-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .author-info .name {
+            font-weight: 600;
+        }
+        
+        .author-info .date {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .poem-excerpt {
+            font-style: italic;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .poem-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .poem-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .poem-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .poem-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .poem-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .poem-tag {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .pagination-list {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        .pagination-list li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            box-shadow: var(--box-shadow);
+            font-weight: 600;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+        
+        .pagination-list li a.active,
+        .pagination-list li a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-toggle {
+                display: block;
+                cursor: pointer;
+            }
+            
+            .filter-options {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .filter-options.active {
+                display: flex;
+            }
+            
+            .filter-group {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .filter-group select,
+            .filter-group input {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main class="mainContainer">
+
+        <section class="poems-header">
+            <div class="container">
+                <h1>Explore <span class="highlight">Poems</span></h1>
+                <p>Discover a world of emotions, thoughts, and experiences expressed through the art of poetry.</p>
+            </div>
+        </section>
+
+        <section class="poems-feed">
+            <div class="container">
+                <div class="poems-filters">
+                    <div class="filters-header">
+                        <h3>Filter Poems</h3>
+                        <div class="filter-toggle">
+                            <i class="fas fa-filter"></i> Show Filters
+                        </div>
+                    </div>
+                    <div class="filter-options">
+                        <div class="filter-group">
+                            <label for="category-filter">Category:</label>
+                            <select id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="nature">Nature</option>
+                                <option value="love">Love</option>
+                                <option value="life">Life</option>
+                                <option value="spirituality">Spirituality</option>
+                                <option value="social">Social Issues</option>
+                                <option value="urban">Urban Life</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="sort-filter">Sort By:</label>
+                            <select id="sort-filter">
+                                <option value="newest">Newest First</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="trending">Trending</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="text" placeholder="Search poems..." id="poem-search">
+                            <button class="btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="poems-container">
+                    <div class="poem-card" th:each="poem : ${poems}" th:if="${poems != null and !poems.isEmpty()}">
+                        <div class="poem-card-header">
+                            <h3 th:text="${poem.title}">Poem Title</h3>
+                        </div>
+                        <div class="poem-author">
+                            <div class="author-avatar" th:text="${#strings.substring(poem.authorName, 0, 1)}">A</div>
+                            <div class="author-info">
+                                <div class="name" th:text="${poem.authorName}">Author Name</div>
+                                <div class="date" th:text="${#temporals.format(poem.createdAt, 'MMM dd, yyyy')}">Date</div>
+                            </div>
+                        </div>
+                        <div class="poem-excerpt" th:text="${#strings.abbreviate(poem.content, 150)}">
+                            Poem excerpt...
+                        </div>
+                        <div class="poem-footer">
+                            <div class="poem-tags">
+                                <span th:if="${poem.category != null and !#strings.isEmpty(poem.category)}" 
+                                      class="poem-tag" th:text="${poem.category}">Category</span>
+                                <span th:if="${poem.tags != null and !#strings.isEmpty(poem.tags)}" 
+                                      th:each="tag : ${#strings.arraySplit(poem.tags, ',')}" 
+                                      class="poem-tag" th:text="${#strings.trim(tag)}">Tag</span>
+                            </div>
+                            <a th:href="@{'/poem/' + ${poem.id}}" class="btn-text">Read More</a>
+                        </div>
+                        <div class="poem-meta">
+                            <div class="poem-stats">
+                                <span><i class="fas fa-eye"></i> 0</span>
+                                <span><i class="fas fa-heart"></i> 0</span>
+                                <span><i class="fas fa-comment"></i> 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div th:if="${poems == null or poems.isEmpty()}" class="no-poems-message" style="grid-column: 1 / -1;">
+                        <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                            <i class="fas fa-feather-alt" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>No poems published yet</h3>
+                            <p>Be the first to share your poetry with the community!</p>
+                            <a th:if="${currentUser != null}" th:href="@{/dashboard}" class="btn-primary" style="margin-top: 20px;">
+                                <i class="fas fa-pencil-alt"></i> Write Your First Poem
+                            </a>
+                            <a th:if="${currentUser == null}" th:href="@{/signup}" class="btn-primary" style="margin-top: 20px;">
+                                <i class="fas fa-user-plus"></i> Join to Share Your Poetry
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <ul class="pagination-list">
+                        <li><a href="#" class="active">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="index">Home</a></li>
+                            <li><a href="poems">Poems</a></li>
+                            <li><a href="contests">Contests</a></li>
+                            <li><a href="pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter toggle on mobile
+            const filterToggle = document.querySelector('.filter-toggle');
+            const filterOptions = document.querySelector('.filter-options');
+            
+            if (filterToggle && filterOptions) {
+                filterToggle.addEventListener('click', function() {
+                    filterOptions.classList.toggle('active');
+                    
+                    if (filterOptions.classList.contains('active')) {
+                        this.innerHTML = '<i class="fas fa-times"></i> Hide Filters';
+                    } else {
+                        this.innerHTML = '<i class="fas fa-filter"></i> Show Filters';
+                    }
+                });
+            }
+            
+            // Filter functionality (simplified for demo)
+            const categoryFilter = document.getElementById('category-filter');
+            const sortFilter = document.getElementById('sort-filter');
+            const searchInput = document.getElementById('poem-search');
+            const searchBtn = searchInput?.nextElementSibling;
+            
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', function() {
+                    alert('Filtering by category: ' + this.value);
+                    // In a real app, we would filter the poems here
+                });
+            }
+            
+            if (sortFilter) {
+                sortFilter.addEventListener('change', function() {
+                    alert('Sorting by: ' + this.value);
+                    // In a real app, we would sort the poems here
+                });
+            }
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    if (searchInput.value.trim() !== '') {
+                        alert('Searching for: ' + searchInput.value);
+                        // In a real app, we would search for poems here
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterToggle = document.querySelector('.filter-toggle');
+            const filterOptions = document.querySelector('.filter-options');
+
+            if (filterToggle) {
+                filterToggle.addEventListener('click', function() {
+                    filterOptions.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+    <script>
+    // Inline main.js essentials + poems.js
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+        const poemsContainer = document.querySelector('.poems-container');
+        if (!poemsContainer) return;
+        const poems = Array.from(poemsContainer.querySelectorAll('.poem-card'));
+        const categoryFilter = document.getElementById('category-filter');
+        const sortFilter = document.getElementById('sort-filter');
+        const searchInput = document.getElementById('poem-search');
+        const searchButton = document.querySelector('.filter-group button');
+        function filterAndSortPoems() {
+            const category = categoryFilter.value;
+            const sortBy = sortFilter.value;
+            const searchTerm = searchInput.value.toLowerCase();
+            let filteredPoems = poems;
+            if (category) {
+                filteredPoems = filteredPoems.filter(poem => {
+                    const tags = Array.from(poem.querySelectorAll('.poem-tag')).map(tag => tag.textContent.toLowerCase());
+                    return tags.includes(category.toLowerCase());
+                });
+            }
+            if (searchTerm) {
+                filteredPoems = filteredPoems.filter(poem => {
+                    const title = poem.querySelector('h3').textContent.toLowerCase();
+                    const author = poem.querySelector('.name').textContent.toLowerCase();
+                    const excerpt = poem.querySelector('.poem-excerpt').textContent.toLowerCase();
+                    return title.includes(searchTerm) || author.includes(searchTerm) || excerpt.includes(searchTerm);
+                });
+            }
+            if (sortBy === 'popular') {
+                filteredPoems.sort((a, b) => {
+                    const likesA = parseInt(a.querySelector('.fa-heart').nextSibling.textContent.trim());
+                    const likesB = parseInt(b.querySelector('.fa-heart').nextSibling.textContent.trim());
+                    return likesB - likesA;
+                });
+            } else if (sortBy === 'trending') {
+                filteredPoems.sort((a, b) => {
+                    const scoreA = parseInt(a.querySelector('.fa-heart').nextSibling.textContent.trim()) + parseInt(a.querySelector('.fa-comment').nextSibling.textContent.trim());
+                    const scoreB = parseInt(b.querySelector('.fa-heart').nextSibling.textContent.trim()) + parseInt(b.querySelector('.fa-comment').nextSibling.textContent.trim());
+                    return scoreB - scoreA;
+                });
+            } else {
+                filteredPoems.sort((a, b) => {
+                    const dateA = new Date(a.querySelector('.date').textContent);
+                    const dateB = new Date(b.querySelector('.date').textContent);
+                    return dateB - dateA;
+                });
+            }
+            poemsContainer.innerHTML = '';
+            if (filteredPoems.length > 0) { filteredPoems.forEach(poem => poemsContainer.appendChild(poem)); }
+            else { poemsContainer.innerHTML = '<p>No poems match your criteria.</p>'; }
+        }
+        if (categoryFilter) categoryFilter.addEventListener('change', filterAndSortPoems);
+        if (sortFilter) sortFilter.addEventListener('change', filterAndSortPoems);
+        if (searchButton) searchButton.addEventListener('click', filterAndSortPoems);
+        if (searchInput) searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') filterAndSortPoems(); });
+        const filterToggle = document.querySelector('.filter-toggle');
+        const filterOptions = document.querySelector('.filter-options');
+        if(filterToggle && filterOptions) filterToggle.addEventListener('click', () => { filterOptions.classList.toggle('active'); });
+    });
+    </script>
+</body>
+
+</html>

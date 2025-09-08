@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Contests | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         .mainContainer{
+            top: 130px;
+            position: relative;
+        }
+        .contests-header {
+            background-color: var(--light-color);
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .contests-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .contests-header p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .contests-content{
+            margin-bottom: 150px;
+        }
+        .contests-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 5px;
+            box-shadow: var(--box-shadow);
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        
+        .contest-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .contest-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .contest-section {
+            display: none;
+        }
+        
+        .contest-section.active {
+            display: block;
+        }
+        
+        .contests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .contest-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .contest-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .contest-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .contest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .contest-card:hover .contest-image img {
+            transform: scale(1.05);
+        }
+        
+        .contest-content {
+            padding: 25px;
+        }
+        
+        .contest-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .contest-content p {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .contest-details {
+            margin-bottom: 25px;
+        }
+        
+        .contest-details li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .contest-details li i {
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .contest-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .contest-footer .btn-primary {
+            flex-shrink: 0;
+        }
+        
+        .participants {
+            display: flex;
+            align-items: center;
+        }
+        
+        .participants-count {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .winner-badge {
+            background-color: gold;
+            color: var(--dark-color);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .premium-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .contest-empty {
+            text-align: center;
+            padding: 60px 0;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .contest-empty i {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .contest-empty h3 {
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+        
+        .contest-empty p {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            color: var(--text-color);
+        }
+        
+        @media (max-width: 768px) {
+            .contests-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main class="mainContainer">
+        <section class="contests-header">
+            <div class="container">
+                <h1>Poetry <span class="highlight">Contests</span></h1>
+                <p>Showcase your talent, challenge yourself, and compete with fellow poets in our carefully curated contests.</p>
+                
+                <div class="contests-tabs">
+                    <div class="contest-tab active" data-tab="active">Active Contests</div>
+                    <div class="contest-tab" data-tab="past">Past Contests</div>
+                    <div class="contest-tab" data-tab="my">My Submissions</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contests-content">
+            <div class="container">
+                <!-- Active Contests -->
+                <div class="contest-section active" id="active-contests">
+                    <div class="contests-grid">
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nature's Whispers">
+                            </div>
+                            <div class="contest-content">
+                                <h3>"Nature's Whispers"</h3>
+                                <p>Create a poem that captures the subtle beauty and messages of nature. How does nature speak to you?</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 47</li>
+                                    <li><i class="fas fa-award"></i> Prize: Featured spot + Premium subscription</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">47 poets participating</span>
+                                    </div>
+                                    <a href="./contest-submission.html?id=1" class="btn-primary">Enter Contest</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1516880711640-ef7db81be3e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Urban Poetry">
+                            </div>
+                            <div class="contest-content">
+                                <h3>"Urban Poetry"</h3>
+                                <p>Explore the rhythms, challenges, and beauty of city life through your verses. From skyscrapers to subway cars.</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar"></i> Deadline: September 20, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 23</li>
+                                    <li><i class="fas fa-award"></i> Prize: $100 Gift Card + Featured spot</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">23 poets participating</span>
+                                    </div>
+                                    <a href="./contest-submission.html?id=2" class="btn-primary">Enter Contest</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://www.artsy.net/artwork/mayumi-yamae-emotions-unveiled" alt="Emotions Unveiled">
+                            </div>
+                            <div class="contest-content">
+                                <span class="premium-badge">Premium Only</span>
+                                <h3>"Emotions Unveiled"</h3>
+                                <p>Dive deep into the spectrum of human emotions. Create a poem that explores the complexity of feelings.</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar"></i> Deadline: October 5, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 31</li>
+                                    <li><i class="fas fa-award"></i> Prize: $250 + Publication in Poetry Journal</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">31 poets participating</span>
+                                    </div>
+                                    <a href="./pricing.html" class="btn-primary">Upgrade to Enter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Past Contests -->
+                <div class="contest-section" id="past-contests">
+                    <div class="contests-grid">
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dreams and Nightmares">
+                            </div>
+                            <div class="contest-content">
+                                <span class="winner-badge">Winner Announced</span>
+                                <h3>"Dreams and Nightmares"</h3>
+                                <p>This contest explored the surreal landscape of dreams and the shadowy realm of nightmares.</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar-check"></i> Ended: July 10, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 68</li>
+                                    <li><i class="fas fa-trophy"></i> Winner: Amara Johnson - "The Midnight Visitor"</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">68 poets participated</span>
+                                    </div>
+                                    <a href="./poem.html?id=10" class="btn-secondary">View Winning Poem</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Reflections">
+                            </div>
+                            <div class="contest-content">
+                                <span class="winner-badge">Winner Announced</span>
+                                <h3>"Reflections"</h3>
+                                <p>Poets were invited to contemplate mirrors, water surfaces, and the concept of reflection itself.</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar-check"></i> Ended: June 5, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 52</li>
+                                    <li><i class="fas fa-trophy"></i> Winner: Marcus Chen - "The Other Side of Glass"</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">52 poets participated</span>
+                                    </div>
+                                    <a href="./poem.html?id=11" class="btn-secondary">View Winning Poem</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contest-card">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1486520299386-6d106b22014b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beyond the Stars">
+                            </div>
+                            <div class="contest-content">
+                                <span class="winner-badge">Winner Announced</span>
+                                <h3>"Beyond the Stars"</h3>
+                                <p>A journey through space, cosmos, and the infinite possibilities that exist in the universe.</p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-calendar-check"></i> Ended: May 20, 2025</li>
+                                    <li><i class="fas fa-users"></i> Participants: 73</li>
+                                    <li><i class="fas fa-trophy"></i> Winner: Sophia Lee - "Cosmic Whispers"</li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count">73 poets participated</span>
+                                    </div>
+                                    <a href="./poem.html?id=12" class="btn-secondary">View Winning Poem</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- My Submissions -->
+                <div class="contest-section" id="my-submissions">
+                    <div class="contest-empty">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>No Submissions Yet</h3>
+                        <p>You haven't submitted any poems to our contests. Participate in a contest to see your submissions here.</p>
+                        <a href="#active-contests" class="btn-primary show-active-tab">Browse Active Contests</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="index">Home</a></li>
+                            <li><a href="poems">Poems</a></li>
+                            <li><a href="contests">Contests</a></li>
+                            <li><a href="pricing">Pricing</a></li>
+                            
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.contest-tab');
+            const sections = document.querySelectorAll('.contest-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show correct section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === tabId + '-contests') {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // If user is not logged in and clicks on "My Submissions"
+                    if (tabId === 'my' && localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
+                        alert('Please login to view your submissions');
+                        window.location.href = './login.html';
+                    }
+                });
+            });
+            
+            // "Browse Active Contests" button in empty submissions tab
+            const showActiveTabBtn = document.querySelector('.show-active-tab');
+            if (showActiveTabBtn) {
+                showActiveTabBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('[data-tab="active"]').click();
+                });
+            }
+            
+            // Check if user is logged in
+            updateMySubmissionsTab();
+        });
+        
+        function updateMySubmissionsTab() {
+            const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                const mySubmissionsSection = document.getElementById('my-submissions');
+                const hasMockSubmissions = Math.random() > 0.5; // Random for demo purposes
+                
+                if (hasMockSubmissions) {
+                    mySubmissionsSection.innerHTML = `
+                        <div class="contests-grid">
+                            <div class="contest-card">
+                                <div class="contest-image">
+                                    <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nature's Whispers">
+                                </div>
+                                <div class="contest-content">
+                                    <h3>"Nature's Whispers"</h3>
+                                    <p>Your submission: "Forest Echoes"</p>
+                                    <ul class="contest-details">
+                                        <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
+                                        <li><i class="fas fa-check-circle"></i> Status: Submitted on July 28, 2025</li>
+                                        <li><i class="fas fa-users"></i> Participants: 47</li>
+                                    </ul>
+                                    <div class="contest-footer">
+                                        <div class="participants">
+                                            <span>Submission pending review</span>
+                                        </div>
+                                        <a href="#" class="btn-secondary">View Submission</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+    </script>
+    <script>
+    // Inline main.js essentials
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Payment | Inked Mind</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .payment-page {
+            top: 100px;
+            position: relative;
+            margin-bottom: 130px;
+            padding: 60px 0;
+            min-height: calc(100vh - 300px);
+        }
+        
+        .payment-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .payment-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .payment-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .payment-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+        
+        .order-summary {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+        
+        .order-summary h2 {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+        
+        .order-details {
+            margin-bottom: 30px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .order-item.total {
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 1px solid var(--secondary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .subscription-details {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        
+        .subscription-details h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .subscription-details ul {
+            list-style: none;
+        }
+        
+        .subscription-details li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subscription-details li i {
+            color: var(--primary-color);
+        }
+        
+        .payment-methods {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+        
+        .payment-methods h2 {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+        
+        .payment-tabs {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .payment-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid var(--secondary-color);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .payment-tab:first-child {
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+        }
+        
+        .payment-tab:last-child {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+        
+        .payment-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .payment-form-container {
+            margin-bottom: 30px;
+        }
+        
+        .payment-method {
+            display: none;
+        }
+        
+        .payment-method.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+        }
+        
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            margin-top: 5px;
+        }
+        
+        .card-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .payment-logos {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-logos img {
+            height: 30px;
+            object-fit: contain;
+        }
+        
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .secure-badge i {
+            color: #2ecc71;
+        }
+        
+        .local-payment {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .local-payment-option {
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .local-payment-option:hover,
+        .local-payment-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(98, 70, 234, 0.05);
+        }
+        
+        .local-payment-option img {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .payment-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 50px auto;
+        }
+        
+        .payment-success i {
+            font-size: 5rem;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        .payment-success h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .payment-success p {
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+        
+        @media (max-width: 768px) {
+            .payment-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main>
+        <section class="payment-page">
+            <div class="container">
+                <div class="payment-header">
+                    <h1>Complete Your <span class="highlight">Payment</span></h1>
+                    <p>You're one step away from unlocking premium poetry tools and experiences.</p>
+                </div>
+                
+                <div id="payment-form-section">
+                    <div class="payment-container">
+                        <div class="payment-layout">
+                            <div class="order-summary">
+                                <h2>Order Summary</h2>
+                                <div class="order-details">
+                                    <div class="order-item">
+                                        <span class="item-name" id="item-name">Plan Name</span>
+                                        <span class="item-price" id="item-price">Rs 0.00</span>
+                                    </div>
+                                    <div class="order-item">
+                                        <span>Processing Fee</span>
+                                        <span>Rs 0.00</span>
+                                    </div>
+                                    <div class="order-item total">
+                                        <span>Total</span>
+                                        <span class="total-price" id="total-price">Rs 0.00</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="subscription-details">
+                                    <h3>What's included:</h3>
+                                    <ul>
+                                        <li><i class="fas fa-check"></i> Unlimited poem publishing</li>
+                                        <li><i class="fas fa-check"></i> Priority community feedback</li>
+                                        <li><i class="fas fa-check"></i> Access to all contests</li>
+                                        <li><i class="fas fa-check"></i> Advanced formatting and writing tools</li>
+                                        <li><i class="fas fa-check"></i> Featured profile in the community</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-methods">
+                                <h2>Payment Method</h2>
+                                
+                                <div class="payment-tabs">
+                                    <div class="payment-tab active" data-method="card">Credit Card</div>
+                                    <div class="payment-tab" data-method="local">eSewa/Khalti</div>
+                                </div>
+                                
+                                <div class="payment-form-container">
+                                    <!-- Credit Card Payment -->
+                                    <div class="payment-method active" id="card-payment">
+                                        <div class="payment-logos">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1200px-Visa_Inc._logo.svg.png" alt="Visa">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1200px-American_Express_logo_%282018%29.svg.png" alt="American Express">
+                                        </div>
+                                        
+                                        <form id="card-form">
+                                            <div class="form-group">
+                                                <label for="card-name">Name on Card</label>
+                                                <input type="text" id="card-name" placeholder="e.g. John Smith" required>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="card-number">Card Number</label>
+                                                <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+                                            </div>
+                                            
+                                            <div class="card-row">
+                                                <div class="form-group">
+                                                    <label for="card-expiry">Expiry Date</label>
+                                                    <input type="text" id="card-expiry" placeholder="MM/YY" required>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label for="card-cvc">CVC</label>
+                                                    <input type="text" id="card-cvc" placeholder="123" required>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label for="card-zip">ZIP Code</label>
+                                                    <input type="text" id="card-zip" placeholder="12345" required>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    <!-- Local Payment Options -->
+                                    <div class="payment-method" id="local-payment">
+                                        <p>Select a payment provider:</p>
+                                        
+                                        <div class="local-payment">
+                                            <div class="local-payment-option" data-provider="esewa">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/ESewa_logo.png/800px-ESewa_logo.png" alt="eSewa">
+                                                <span>eSewa</span>
+                                            </div>
+                                            
+                                            <div class="local-payment-option" data-provider="khalti">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Khalti_Digital_Wallet_Logo.png/1200px-Khalti_Digital_Wallet_Logo.png" alt="Khalti">
+                                                <span>Khalti</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label for="local-phone">Mobile Number</label>
+                                            <input type="text" id="local-phone" placeholder="e.g. 9801234567" required>
+                                            <div class="hint">We'll send payment instructions to this number</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn-primary order-btn" id="complete-payment">Complete Payment</button>
+                                
+                                <div class="secure-badge">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Secure Payment - Your data is protected with 256-bit encryption</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Success Screen -->
+                <div class="payment-success" id="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Payment Successful!</h2>
+                    <p>Thank you for subscribing to Inked Mind Premium. Your account has been upgraded and all premium features are now available to you.</p>
+                    <div>
+                        <a href="dashboard" class="btn-primary">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="index">Home</a></li>
+                            <li><a href="poems">Poems</a></li>
+                            <li><a href="contests">Contests</a></li>
+                            <li><a href="pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Inline main.js essentials
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body; const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle'); const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+    });
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Get plan from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'premium';
+    const isAnnual = urlParams.get('annual') === 'true';
+
+    // Plan data
+    const planData = {
+        premium: { name: 'Premium Plan', monthlyPrice: 999, annualPrice: 799 * 12 },
+        pro: { name: 'Pro Plan', monthlyPrice: 1999, annualPrice: 1599 * 12 }
+    };
+
+    const selectedPlan = planData[plan] || planData.premium;
+    const price = isAnnual ? selectedPlan.annualPrice : selectedPlan.monthlyPrice;
+    const billingCycle = isAnnual ? 'Annual' : 'Monthly';
+
+    // Update order summary
+    document.getElementById('item-name').textContent = `${selectedPlan.name} (${billingCycle})`;
+    document.getElementById('item-price').textContent = `Rs ${price.toFixed(2)}`;
+    document.getElementById('total-price').textContent = `Rs ${price.toFixed(2)}`;
+
+    // Payment method tabs
+    const paymentTabs = document.querySelectorAll('.payment-tab');
+    const paymentMethods = document.querySelectorAll('.payment-method');
+
+    paymentTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const method = this.getAttribute('data-method');
+
+            // Update active tab
+            paymentTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            // Show correct payment method
+            paymentMethods.forEach(m => m.classList.remove('active'));
+            document.getElementById(method + '-payment').classList.add('active');
+        });
+    });
+
+    // Local payment option selection
+    const localOptions = document.querySelectorAll('.local-payment-option');
+    localOptions.forEach(option => {
+        option.addEventListener('click', function () {
+            localOptions.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+
+    // Complete payment button
+    const completePaymentBtn = document.getElementById('complete-payment');
+    completePaymentBtn.addEventListener('click', function () {
+        const activeMethodDiv = document.querySelector('.payment-method.active');
+        let paymentMethod = '';
+        let phoneNumber = '';
+        let cardName = '';
+        let cardNumber = '';
+        let cardExpiry = '';
+        let cardCvc = '';
+        let cardZip = '';
+
+        if (activeMethodDiv.id === 'card-payment') {
+            cardName = document.getElementById('card-name').value.trim();
+            cardNumber = document.getElementById('card-number').value.trim();
+            cardExpiry = document.getElementById('card-expiry').value.trim();
+            cardCvc = document.getElementById('card-cvc').value.trim();
+            cardZip = document.getElementById('card-zip').value.trim();
+
+            if (!cardName || !cardNumber || !cardExpiry || !cardCvc || !cardZip) {
+                alert('Please fill in all card details');
+                return;
+            }
+
+            paymentMethod = 'CARD';
+        } else if (activeMethodDiv.id === 'local-payment') {
+            const selectedProvider = document.querySelector('.local-payment-option.selected');
+            phoneNumber = document.getElementById('local-phone').value.trim();
+
+            if (!selectedProvider) {
+                alert('Please select a payment provider');
+                return;
+            }
+            if (!phoneNumber) {
+                alert('Please enter your mobile number');
+                return;
+            }
+
+            paymentMethod = selectedProvider.getAttribute('data-provider').toUpperCase(); // ESEWA or KHALTI
+        }
+
+        // Show processing state
+        completePaymentBtn.textContent = 'Processing...';
+        completePaymentBtn.disabled = true;
+
+        // Prepare payment data
+        const planType = selectedPlan.name.toUpperCase().includes('PRO') ? 'PRO' : 'PREMIUM';
+        const transactionId = 'TXN-' + Math.floor(Math.random() * 1000000);
+        const paymentData = {
+            planType: planType,
+            amount: price,
+            transactionId: transactionId,
+            paymentStatus: 'SUCCESS',
+            paymentMethod: paymentMethod
+        };
+
+        if (paymentMethod !== 'CARD') {
+            paymentData.phoneNumber = phoneNumber; // for eSewa/Khalti
+        } else {
+            paymentData.cardName = cardName;
+            paymentData.cardNumber = cardNumber;
+            paymentData.cardExpiry = cardExpiry;
+            paymentData.cardCvc = cardCvc;
+            paymentData.cardZip = cardZip;
+        }
+
+        // Simulate processing and send to backend
+        setTimeout(() => {
+            fetch('/api/payment/complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'SUCCESS') {
+                    document.getElementById('payment-form-section').style.display = 'none';
+                    document.querySelector('.payment-header').style.display = 'none';
+                    document.getElementById('payment-success').style.display = 'block';
+                    localStorage.setItem('inkedMind_userRole', plan === 'pro' ? 'Pro Poet' : 'Premium Poet');
+                } else {
+                    alert('Payment saving failed: ' + data);
+                    completePaymentBtn.textContent = 'Complete Payment';
+                    completePaymentBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Payment saving failed.');
+                completePaymentBtn.textContent = 'Complete Payment';
+                completePaymentBtn.disabled = false;
+            });
+        }, 2000);
+    });
+
+    // Credit card number formatting
+    const cardNumberInput = document.getElementById('card-number');
+    cardNumberInput?.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.substr(0, 16);
+        e.target.value = value.replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    // Expiry date formatting
+    const cardExpiryInput = document.getElementById('card-expiry');
+    cardExpiryInput?.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.substr(0, 4);
+        if (value.length > 2) value = value.substr(0, 2) + '/' + value.substr(2);
+        e.target.value = value;
+    });
+});
+</script>
+
+
+</body>
+
+</html>

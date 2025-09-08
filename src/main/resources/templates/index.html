@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
+    <title>Inked Mind | Poetry Community</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    .mainContainer{
+        top: 90px;
+    position: relative;
+}
+
+</style>
+
+<body>
+   <div th:insert="navbar.html"></div>
+
+    <main class="mainContainer">
+        <section class="hero">
+            <video autoplay muted loop id="hero-video">
+                <source src="video/poet.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Where Words <span class="highlight">Come Alive</span></h1>
+                    <p>Join our vibrant community of poets and readers. Share your verses, discover new voices, and celebrate the art of poetry.</p>
+                    <div class="hero-cta">
+                        <a th:href="@{/signup}" href="signup" class="btn-primary">Join Now</a>
+                        <a th:href="@{/poems}" href="poems" class="btn-secondary">Explore Poems</a>
+                    </div>
+                </div>
+                <div class="hero-image-placeholder"></div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Why <span class="highlight">Inked Mind</span>?</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-pencil-alt"></i>
+                        <h3>Express Yourself</h3>
+                        <p>Write and share your poetry with a supportive community of fellow poets and readers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Join Contests</h3>
+                        <p>Participate in themed poetry contests and get recognition for your work.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-comment"></i>
+                        <h3>Get Feedback</h3>
+                        <p>Receive constructive feedback to refine your writing and grow as a poet.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Build Community</h3>
+                        <p>Connect with like-minded individuals who share your passion for poetry.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-poems">
+            <div class="container">
+                <h2>Featured <span class="highlight">Poems</span></h2>
+                <div class="poem-cards">
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Whispers of Dawn</h3>
+                            <p class="poem-excerpt">In the quiet moments before sunrise,<br>
+                                When the world still dreams,<br>
+                                I find myself in the spaces between...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Emily Wright</span>
+                                <span class="date">2 days ago</span>
+                            </div>
+                        </div>
+                        <a href="poem.html?id=1" class="btn-text">Read More</a>
+                    </div>
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Midnight Thoughts</h3>
+                            <p class="poem-excerpt">Stars scattered like memories,<br>
+                                Across the vast expanse of night.<br>
+                                Each one a story untold...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Marcus Chen</span>
+                                <span class="date">1 week ago</span>
+                            </div>
+                        </div>
+                        <a href="poem.html?id=2" class="btn-text">Read More</a>
+                    </div>
+                    <div class="poem-card">
+                        <div class="poem-content">
+                            <h3>Ocean's Embrace</h3>
+                            <p class="poem-excerpt">Waves crash against weathered shores,<br>
+                                A timeless dance of give and take.<br>
+                                The salt of tears, the salt of sea...</p>
+                            <div class="poem-meta">
+                                <span class="author">By Amara Johnson</span>
+                                <span class="date">3 days ago</span>
+                            </div>
+                        </div>
+                        <a href="poem.html?id=3" class="btn-text">Read More</a>
+                    </div>
+                </div>
+                <div class="center-btn">
+                    <a href="poems.html" class="btn-secondary">View All Poems</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="current-contest">
+            <div class="container">
+                <div class="contest-info">
+                    <h2>Current <span class="highlight">Contest</span></h2>
+                    <h3>"Nature's Whispers"</h3>
+                    <p>Create a poem that captures the subtle beauty and messages of nature. How does nature speak to you?</p>
+                    <ul class="contest-details">
+                        <li><i class="fas fa-calendar"></i> Submission Deadline: August 15, 2025</li>
+                        <li><i class="fas fa-award"></i> Prize: Featured spot on homepage + Premium subscription</li>
+                    </ul>
+                    <a href="contests.html" class="btn-primary">Enter Contest</a>
+                </div>
+                <div class="contest-image">
+                    <img src="images/NatureContest.jpg" alt="Nature contest illustration">
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <h2>What Our <span class="highlight">Community Says</span></h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial active">
+                        <div class="testimonial-content">
+                            <p>"Inked Mind has transformed how I share my poetry. The feedback from the community has helped me grow immensely as a writer."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Sarah Jameson</span>
+                                <span class="role">Poet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"I've discovered so many incredible poets through this platform. As a reader, it's like having a curated collection of emotional experiences at my fingertips."</p>
+                            <div class="testimonial-author">
+                                <span class="name">David Reynolds</span>
+                                <span class="role">Reader</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"The contests are what drew me in, but the community is what made me stay. Inked Mind feels like a home for my creative expression."</p>
+                            <div class="testimonial-author">
+                                <span class="name">Mei Lin</span>
+                                <span class="role">Poet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <span class="slider-dot active" data-index="0"></span>
+                    <span class="slider-dot" data-index="1"></span>
+                    <span class="slider-dot" data-index="2"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Start Your <span class="highlight">Poetic Journey</span>?</h2>
+                <p>Join Inked Mind today and become part of a vibrant community celebrating the art of poetry.</p>
+                <div class="cta-buttons">
+                    <a th:href="@{/signup}" href="signup" class="btn-primary">Sign Up Now</a>
+                    <a th:href="@{/pricing}" href="pricing" class="btn-secondary">View Plans</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a th:href="@{/index}" href="./index.html">Home</a></li>
+                            <li><a th:href="@{/poems}" href="./pages/poems.html">Poems</a></li>
+                            <li><a th:href="@{/contests}" href="./pages/contests.html">Contests</a></li>
+                            <li><a th:href="@{/pricing}" href="./pages/pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="faq.html">FAQ</a></li>
+                            <li><a href="guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="terms.html">Terms of Service</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="newsletter">
+                        <h3>Subscribe to Newsletter</h3>
+                        <form class="newsletter-form" method="post" th:action="@{/newsletter/subscribe}">
+                            <input type="email" name="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                        <p th:if="${newsletterMessage != null}" th:text="${newsletterMessage}" style="margin-top:8px;"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Inline main.js
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme && savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+            });
+        }
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        document.addEventListener('click', function(event) { if (navLinks && navLinks.classList.contains('active')) { if (!event.target.closest('#main-nav')) navLinks.classList.remove('active'); } });
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) newsletterForm.addEventListener('submit', function(e) { e.preventDefault(); const emailInput = this.querySelector('input[type="email"]'); if (emailInput.value) { alert('Thank you for subscribing to our newsletter!'); emailInput.value = ''; }});
+        updateUserInterface();
+        // ===== User Dropdown =====
+        const userNameBtn = document.querySelector('.user-name-btn');
+        const userNav = document.querySelector('.user-nav');
+        if (userNameBtn && userNav) {
+            userNameBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = userNav.classList.contains('open');
+                document.querySelectorAll('.user-nav.open').forEach(function(el){ el.classList.remove('open'); });
+                if (!isOpen) userNav.classList.add('open');
+            });
+            document.addEventListener('click', function(){ userNav.classList.remove('open'); });
+        }
+        
+        // ===== Dropdown Toggle Function (for navbar compatibility) =====
+        window.toggleDropdown = function(btn) {
+            const userNav = btn.parentElement;
+            const isOpen = userNav.classList.contains('open');
+            
+            // Close all open dropdowns first
+            document.querySelectorAll('.user-nav.open').forEach(nav => nav.classList.remove('open'));
+            
+            // Toggle current dropdown
+            if (!isOpen) {
+                userNav.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                btn.setAttribute('aria-expanded', 'false');
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function handler(e) {
+                if (!userNav.contains(e.target)) {
+                    userNav.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                    document.removeEventListener('click', handler);
+                }
+            });
+        };
+    });
+    function updateUserInterface() {
+        const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn');
+        const userName = localStorage.getItem('inkedMind_userName');
+        const authLinks = document.querySelector('.auth-links');
+        
+        // Check if server-side rendering already handled this
+        if (authLinks && authLinks.getAttribute('data-rendered') === 'server') return;
+        
+        // If user is logged in but no server-side dropdown, create client-side dropdown
+        if (isLoggedIn === 'true' && authLinks && !document.querySelector('.user-menu')) {
+            const userInitial = userName ? userName.charAt(0).toUpperCase() : 'U';
+            const displayName = userName || 'User';
+            
+            authLinks.innerHTML = `
+                <div class="user-nav">
+                    <span class="user-avatar">${userInitial}</span>
+                    <button class="user-name-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown(this)">
+                        <span class="user-name">${displayName}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" role="menu">
+                        <a href="/dashboard" role="menuitem"><i class="fas fa-user"></i> Dashboard</a>
+                        <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                    </div>
+                </div>
+            `;
+            authLinks.classList.add('user-menu');
+            
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) logoutBtn.addEventListener('click', function(e) { e.preventDefault(); logoutUser(); });
+        }
+    }
+    function logoutUser() {
+        localStorage.removeItem('inkedMind_userLoggedIn');
+        localStorage.removeItem('inkedMind_userRole');
+        localStorage.removeItem('inkedMind_userName');
+        localStorage.removeItem('inkedMind_userEmail');
+        alert('You have been logged out successfully!');
+        window.location.href = '/logout';
+    }
+    
+    // Set localStorage values if user is logged in (for client-side dropdown fallback)
+    function setUserLoginState() {
+        // Check if we have server-side user data
+        const serverUserMenu = document.querySelector('.auth-links[data-rendered="server"] .user-menu');
+        if (serverUserMenu) {
+            const userName = serverUserMenu.querySelector('.user-name');
+            if (userName) {
+                localStorage.setItem('inkedMind_userLoggedIn', 'true');
+                localStorage.setItem('inkedMind_userName', userName.textContent.trim());
+            }
+        }
+    }
+    
+    // Call this after DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setUserLoginState();
+    });
+    // Inline slider.js
+    document.addEventListener('DOMContentLoaded', function() {
+        const testimonials = document.querySelectorAll('.testimonial');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentIndex = 0;
+        function updateSlider(index){ testimonials.forEach((t,i)=> t.style.display = i===index? 'block':'none'); dots.forEach((d,i)=> d.classList.toggle('active', i===index)); }
+        dots.forEach(dot => { dot.addEventListener('click', function(){ currentIndex = parseInt(this.getAttribute('data-index')); updateSlider(currentIndex); }); });
+        updateSlider(currentIndex);
+    });
+    </script>
+</body>
+
+</html>

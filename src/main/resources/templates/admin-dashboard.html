@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>Admin Dashboard | Inked Mind</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div th:insert="navbar.html"></div>
+
+    <main>
+        <section class="admin-dashboard">
+            <div class="container">
+                <div class="admin-header">
+                    <div class="admin-welcome">
+                        <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
+                        <p>Manage poets, poems, and platform content</p>
+                    </div>
+                    <div class="admin-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Pending Approvals</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">247</span>
+                            <span class="stat-label">Total Poets</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1,834</span>
+                            <span class="stat-label">Total Poems</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-container">
+                    <div class="admin-sidebar">
+                        <ul class="admin-menu">
+                            <li><a href="#" class="active" data-tab="overview"><i class="fas fa-tachometer-alt"></i> Overview</a></li>
+                            <li><a href="#" data-tab="poets"><i class="fas fa-users"></i> Manage Poets</a></li>
+                            <li><a href="#" data-tab="pending"><i class="fas fa-clock"></i> Pending Approvals</a></li>
+                            <li><a href="#" data-tab="poems"><i class="fas fa-feather-alt"></i> Manage Poems</a></li>
+                            <li><a href="#" data-tab="contests"><i class="fas fa-trophy"></i> Contests</a></li>
+                            <li><a href="#" data-tab="subscribers"><i class="fas fa-envelope"></i> Newsletter Subscribers</a></li>
+                            <li><a href="#" data-tab="subscriptions"><i class="fas fa-credit-card"></i> Subscriptions</a></li>
+                            <li><a href="#" data-tab="users"><i class="fas fa-user-shield"></i> Users</a></li>
+                            <li><a href="#" data-tab="reports"><i class="fas fa-flag"></i> Reports</a></li>
+                            <li><a href="#" data-tab="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="admin-content">
+                        <!-- Overview Tab -->
+                        <div class="admin-tab active" id="overview-tab">
+                            <div class="tab-header">
+                                <h2>Dashboard Overview</h2>
+                            </div>
+                            
+                            <div class="overview-cards">
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>New Registrations</h3>
+                                        <p class="card-number">23</p>
+                                        <p class="card-subtitle">This week</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Pending Reviews</h3>
+                                        <p class="card-number">12</p>
+                                        <p class="card-subtitle">Requires attention</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Active Poets</h3>
+                                        <p class="card-number">189</p>
+                                        <p class="card-subtitle">Last 30 days</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recent-activity">
+                                <h3>Recent Activity</h3>
+                                <div class="activity-list">
+                                    <div class="activity-item">
+                                        <i class="fas fa-user-plus text-success"></i>
+                                        <div class="activity-content">
+                                            <p><strong>Sarah Johnson</strong> registered as a new poet</p>
+                                            <span class="activity-time">2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <i class="fas fa-feather-alt text-info"></i>
+                                        <div class="activity-content">
+                                            <p><strong>Michael Chen</strong> submitted a new poem for review</p>
+                                            <span class="activity-time">4 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <i class="fas fa-flag text-warning"></i>
+                                        <div class="activity-content">
+                                            <p>Poem "<strong>Midnight Dreams</strong>" was reported</p>
+                                            <span class="activity-time">6 hours ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Poets Tab -->
+                        <div class="admin-tab" id="poets-tab">
+                            <div class="tab-header">
+                                <h2>Manage Poets</h2>
+                                <div class="tab-actions">
+                                    <input type="text" placeholder="Search poets..." class="search-input">
+                                    <select class="filter-select">
+                                        <option value="all">All Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="suspended">Suspended</option>
+                                        <option value="pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="poets-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Poet</th>
+                                            <th>Email</th>
+                                            <th>Joined</th>
+                                            <th>Poems</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="poet-info">
+                                                    <div class="poet-avatar">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong>Emily Rodriguez</strong>
+                                                        <br><small>@emily_poet</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>emily.rodriguez@email.com</td>
+                                            <td>Jan 15, 2025</td>
+                                            <td>23</td>
+                                            <td><span class="status-badge active">Active</span></td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn-sm btn-info" onclick="viewPoet('emily')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-warning" onclick="suspendPoet('emily')">
+                                                        <i class="fas fa-pause"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-danger" onclick="deletePoet('emily')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="poet-info">
+                                                    <div class="poet-avatar">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong>David Kim</strong>
+                                                        <br><small>@david_writes</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>david.kim@email.com</td>
+                                            <td>Dec 28, 2024</td>
+                                            <td>41</td>
+                                            <td><span class="status-badge active">Active</span></td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn-sm btn-info" onclick="viewPoet('david')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-warning" onclick="suspendPoet('david')">
+                                                        <i class="fas fa-pause"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-danger" onclick="deletePoet('david')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="poet-info">
+                                                    <div class="poet-avatar">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong>Sarah Johnson</strong>
+                                                        <br><small>@sarah_verses</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>sarah.johnson@email.com</td>
+                                            <td>Aug 18, 2025</td>
+                                            <td>0</td>
+                                            <td><span class="status-badge suspended">Suspended</span></td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn-sm btn-info" onclick="viewPoet('sarah')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-success" onclick="activatePoet('sarah')">
+                                                        <i class="fas fa-play"></i>
+                                                    </button>
+                                                    <button class="btn-sm btn-danger" onclick="deletePoet('sarah')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Pending Approvals Tab -->
+                        <div class="admin-tab" id="pending-tab">
+                            <div class="tab-header">
+                                <h2>Pending Approvals</h2>
+                                <p class="tab-subtitle">Review and approve new poet registrations</p>
+                            </div>
+
+                            <div class="pending-list">
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <div class="poet-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="pending-details">
+                                            <h4>Alex Thompson</h4>
+                                            <p>alex.thompson@email.com</p>
+                                            <p class="pending-bio">"Passionate about nature poetry and environmental themes. Looking to share my work with fellow poets."</p>
+                                            <small class="pending-date">Applied 2 days ago</small>
+                                        </div>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="btn-success" onclick="approvePoet('alex')">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button class="btn-danger" onclick="rejectPoet('alex')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                        <button class="btn-info" onclick="viewApplication('alex')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <div class="poet-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="pending-details">
+                                            <h4>Maria Garcia</h4>
+                                            <p>maria.garcia@email.com</p>
+                                            <p class="pending-bio">"Spanish-English bilingual poet interested in cultural identity and migration stories."</p>
+                                            <small class="pending-date">Applied 1 day ago</small>
+                                        </div>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="btn-success" onclick="approvePoet('maria')">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button class="btn-danger" onclick="rejectPoet('maria')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                        <button class="btn-info" onclick="viewApplication('maria')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <div class="poet-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="pending-details">
+                                            <h4>James Wilson</h4>
+                                            <p>james.wilson@email.com</p>
+                                            <p class="pending-bio">"Contemporary poet focusing on urban life and social commentary."</p>
+                                            <small class="pending-date">Applied 3 hours ago</small>
+                                        </div>
+                                    </div>
+                                    <div class="pending-actions">
+                                        <button class="btn-success" onclick="approvePoet('james')">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button class="btn-danger" onclick="rejectPoet('james')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                        <button class="btn-info" onclick="viewApplication('james')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Poems Tab -->
+                        <div class="admin-tab" id="poems-tab">
+                            <div class="tab-header">
+                                <h2>Manage Poems</h2>
+                                <div class="tab-actions">
+                                    <input type="text" placeholder="Search poems..." class="search-input">
+                                    <select class="filter-select">
+                                        <option value="all">All Poems</option>
+                                        <option value="published">Published</option>
+                                        <option value="draft">Draft</option>
+                                        <option value="reported">Reported</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="poems-grid">
+                                <div class="poem-card-admin">
+                                    <div class="poem-header">
+                                        <h4>Whispers of Dawn</h4>
+                                        <span class="poem-status published">Published</span>
+                                    </div>
+                                    <p class="poem-author">by Emily Rodriguez</p>
+                                    <p class="poem-excerpt">In the quiet moments before sunrise, when the world holds its breath...</p>
+                                    <div class="poem-stats">
+                                        <span><i class="fas fa-heart"></i> 45 likes</span>
+                                        <span><i class="fas fa-comment"></i> 12 comments</span>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <button class="btn-sm btn-info" onclick="viewPoem('poem1')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-sm btn-warning" onclick="editPoem('poem1')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem1')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="poem-card-admin">
+                                    <div class="poem-header">
+                                        <h4>Ocean's Embrace</h4>
+                                        <span class="poem-status reported">Reported</span>
+                                    </div>
+                                    <p class="poem-author">by David Kim</p>
+                                    <p class="poem-excerpt">Waves crash against the weathered shore, carrying stories untold...</p>
+                                    <div class="poem-stats">
+                                        <span><i class="fas fa-heart"></i> 32 likes</span>
+                                        <span><i class="fas fa-comment"></i> 8 comments</span>
+                                        <span><i class="fas fa-flag text-danger"></i> 2 reports</span>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <button class="btn-sm btn-info" onclick="viewPoem('poem2')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-sm btn-success" onclick="resolveReports('poem2')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem2')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="poem-card-admin">
+                                    <div class="poem-header">
+                                        <h4>Autumn Memories</h4>
+                                        <span class="poem-status draft">Draft</span>
+                                    </div>
+                                    <p class="poem-author">by Sarah Johnson</p>
+                                    <p class="poem-excerpt">Golden leaves dance in the crisp October air...</p>
+                                    <div class="poem-stats">
+                                        <span><i class="fas fa-heart"></i> 0 likes</span>
+                                        <span><i class="fas fa-comment"></i> 0 comments</span>
+                                    </div>
+                                    <div class="poem-actions">
+                                        <button class="btn-sm btn-info" onclick="viewPoem('poem3')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-sm btn-success" onclick="publishPoem('poem3')">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem3')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Newsletter Subscribers Tab -->
+                        <div class="admin-tab" id="subscribers-tab">
+                            <div class="tab-header">
+                                <h2>Newsletter Subscribers</h2>
+                                <div class="tab-actions">
+                                    <form th:action="@{/admin/subscribers/add}" method="post" style="display:flex; gap:10px; align-items:center;">
+                                        <input type="email" name="email" class="search-input" placeholder="Add email..." required>
+                                        <button type="submit" class="btn-primary">Add</button>
+                                    </form>
+                                    <a th:href="@{/admin/subscribers/export}" class="btn-secondary">Export CSV</a>
+                                    <button type="button" class="btn-secondary" id="save-local">Save to Local Storage</button>
+                                </div>
+                            </div>
+                            <div class="poets-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Email</th>
+                                            <th>Subscribed At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="s : ${subs}">
+                                            <td th:text="${s.id}">1</td>
+                                            <td>
+                                                <form th:action="@{/admin/subscribers/update}" method="post" style="display:flex; gap:8px; align-items:center;">
+                                                    <input type="hidden" name="id" th:value="${s.id}">
+                                                    <input type="email" name="email" class="search-input" th:value="${s.email}" required>
+                                                    <button type="submit" class="btn-info">Update</button>
+                                                </form>
+                                            </td>
+                                            <td th:text="${s.subscribedAt}">2025-09-06T12:00:00</td>
+                                            <td>
+                                                <form th:action="@{/admin/subscribers/delete}" method="post" onsubmit="return confirm('Delete this subscriber?');" style="display:inline;">
+                                                    <input type="hidden" name="id" th:value="${s.id}">
+                                                    <button type="submit" class="btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${subs == null or #lists.isEmpty(subs)}">
+                                            <td colspan="4">No subscribers yet.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Subscriptions Tab -->
+                        <div class="admin-tab" id="subscriptions-tab">
+                            <div class="tab-header">
+                                <h2>Subscriptions (Payments)</h2>
+                                <div class="tab-actions">
+                                    <a th:href="@{/admin/subscriptions}" class="btn-secondary">Refresh</a>
+                                    <a th:href="@{/admin/subscriptions/export/csv}" class="btn-primary">Export CSV</a>
+                                    <a th:href="@{/admin/subscriptions/export/png}" class="btn-secondary">Download PNG</a>
+                                </div>
+                            </div>
+                            <div class="poets-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Email</th>
+                                            <th>Plan</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Transaction ID</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="p : ${payments}">
+                                            <td th:text="${p.id}">1</td>
+                                            <td th:text="${p.email}">user@example.com</td>
+                                            <td th:text="${p.planType}">BASIC</td>
+                                            <td th:text="${p.amount}">$9.99</td>
+                                            <td th:text="${p.paymentStatus}">SUCCESS</td>
+                                            <td th:text="${p.transactionId}">txn-123</td>
+                                            <td th:text="${p.paymentDate}">2025-09-06T12:00:00</td>
+                                        </tr>
+                                        <tr th:if="${payments == null or #lists.isEmpty(payments)}">
+                                            <td colspan="7">No payments found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="admin-tab" id="contests-tab">
+                            <div class="tab-header">
+                                <h2>Contest Management</h2>
+                            </div>
+                            <p>Contest management features coming soon...</p>
+                        </div>
+
+                        <div class="admin-tab" id="reports-tab">
+                            <div class="tab-header">
+                                <h2>Reports & Analytics</h2>
+                            </div>
+                            <p>Reporting features coming soon...</p>
+                        </div>
+
+                        <div class="admin-tab" id="settings-tab">
+                            <div class="tab-header">
+                                <h2>Platform Settings</h2>
+                            </div>
+                            <p>Platform settings coming soon...</p>
+                        </div>
+
+                        <!-- Users Management Tab -->
+                        <div class="admin-tab" id="users-tab">
+                            <div class="tab-header">
+                                <h2>Users</h2>
+                                <div class="tab-actions">
+                                    <a th:href="@{/admin/users}" class="btn-secondary">Refresh</a>
+                                </div>
+                            </div>
+                            <div class="poets-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Reset Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="u : ${users}">
+                                            <td th:text="${u.id}">1</td>
+                                            <td th:text="${u.firstName}">First</td>
+                                            <td th:text="${u.lastName}">Last</td>
+                                            <td th:text="${u.email}">email@example.com</td>
+                                            <td>
+                                                <form th:action="@{/admin/users/update-role}" method="post" style="display:flex; gap:8px; align-items:center;">
+                                                    <input type="hidden" name="id" th:value="${u.id}">
+                                                    <select name="role" class="filter-select">
+                                                        <option th:selected="${u.role}=='Poet'" value="Poet">Poet</option>
+                                                        <option th:selected="${u.role}=='Reader'" value="Reader">Reader</option>
+                                                        <option th:selected="${u.role}=='Admin'" value="Admin">Admin</option>
+                                                    </select>
+                                                    <button type="submit" class="btn-info">Update</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form th:action="@{/admin/users/reset-password}" method="post" style="display:flex; gap:8px; align-items:center;">
+                                                    <input type="hidden" name="id" th:value="${u.id}">
+                                                    <input type="password" name="password" class="search-input" placeholder="New password" required>
+                                                    <button type="submit" class="btn-danger">Set</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${users == null or #lists.isEmpty(users)}">
+                                            <td colspan="6">No users found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="">
+                    <p>A community for poetry lovers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h3>Navigation</h3>
+                        <ul>
+                            <li><a href="/index">Home</a></li>
+                            <li><a href="/poems">Poems</a></li>
+                            <li><a href="/contests">Contests</a></li>
+                            <li><a href="/pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="./faq.html">FAQ</a></li>
+                            <li><a href="./guidelines.html">Writing Guidelines</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="./terms.html">Terms of Service</a></li>
+                            <li><a href="./privacy.html">Privacy Policy</a></li>
+                            <li><a href="./copyright.html">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inked Mind. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Inline main.js essentials
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.addEventListener('click', () => { body.classList.toggle('dark-mode'); localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'); });
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (navToggle) navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+        const header = document.getElementById('site-header');
+        if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+    });
+    // Admin dashboard tab behavior + activate subscribers tab if requested
+    document.addEventListener('DOMContentLoaded', function(){
+        const links = document.querySelectorAll('.admin-menu a');
+        const tabs = document.querySelectorAll('.admin-tab');
+        links.forEach(l => l.addEventListener('click', function(e){ e.preventDefault(); const tab = this.getAttribute('data-tab'); links.forEach(a=>a.classList.remove('active')); this.classList.add('active'); tabs.forEach(t=>{ t.classList.remove('active'); if (t.id === `${tab}-tab`) t.classList.add('active'); }); }));
+        // If server sets activeAdminTab, open it
+        const activeAdminTab = /*[[${activeAdminTab}]]*/ '';
+        if (activeAdminTab) {
+            const link = document.querySelector(`.admin-menu a[data-tab="${activeAdminTab}"]`);
+            if (link) link.click();
+        }
+        // Save subscribers table to localStorage as JSON
+        const saveBtn = document.getElementById('save-local');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function(){
+                const rows = Array.from(document.querySelectorAll('#subscribers-tab tbody tr'));
+                const data = rows.filter(r=>r.querySelector('input[name="id"]')).map(r=>({
+                    id: r.querySelector('input[name="id"]').value,
+                    email: r.querySelector('input[name="email"]').value,
+                    subscribedAt: r.children[2]?.textContent?.trim() || ''
+                }));
+                localStorage.setItem('inkedMind_newsletter_export', JSON.stringify(data));
+                alert('Saved subscribers list to localStorage as "inkedMind_newsletter_export"');
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>
