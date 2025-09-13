@@ -7,10 +7,13 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Contest Submission | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .submission-page {
+             top:100px;
+             position:relative;
+             margin-bottom:130px;
             padding: 60px 0;
         }
         
@@ -215,15 +218,17 @@
                     <div class="submission-form">
                         <h2>Submit Your Poem</h2>
                         
-                        <form id="contest-submission-form">
+                        <form id="contest-submission-form" method="post">
+                            <input type="hidden" name="contestId" th:value="${contestId}">
+                            
                             <div class="form-group">
                                 <label for="poem-title">Poem Title</label>
-                                <input type="text" id="poem-title" placeholder="Enter your poem title" required>
+                                <input type="text" id="poem-title" name="title" placeholder="Enter your poem title" required>
                             </div>
                             
                             <div class="form-group">
                                 <label for="poem-content">Your Poem</label>
-                                <textarea id="poem-content" placeholder="Write your poem here..." required></textarea>
+                                <textarea id="poem-content" name="content" placeholder="Write your poem here..." required></textarea>
                                 <div class="character-count">0/2000 characters</div>
                             </div>
                             
@@ -236,7 +241,7 @@
                             
                             <div class="form-actions">
                                 <button type="button" class="btn-secondary" id="save-draft-btn">Save as Draft</button>
-                                <button type="submit" class="btn-primary">Submit Entry</button>
+                                <button type="submit" class="btn-primary" id="submit-entry-btn">Submit Entry</button>
                             </div>
                         </form>
                     </div>
@@ -257,11 +262,11 @@
                     <div class="footer-section">
                         <h3>Navigation</h3>
                         <ul>
-                            <li><a href="../index.html">Home</a></li>
-                            <li><a href="./poems.html">Poems</a></li>
-                            <li><a href="./contests.html">Contests</a></li>
-                            <li><a href="./pricing.html">Pricing</a></li>
-                            <li><a href="./dashboard.html" >Dashboard</a></li>
+                            <li><a href="index">Home</a></li>
+                            <li><a href="poems">Poems</a></li>
+                            <li><a href="contests">Contests</a></li>
+                            <li><a href="pricing">Pricing</a></li>
+                            <li><a href="dashboard" >Dashboard</a></li>
                         </ul>
                     </div>
                     <div class="footer-section">
@@ -323,14 +328,8 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn') === 'true';
-            
-            if (!isLoggedIn) {
-                alert('Please log in to submit to contests');
-                window.location.href = './login.html';
-                return;
-            }
+            // Server-side authentication check handles login redirect
+            // No client-side authentication check needed
             
             // Get contest ID from URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -396,7 +395,7 @@
                         <div>
                             <strong>Premium Contest</strong>
                             <p>This contest is only available to Premium members. Please upgrade your account to participate.</p>
-                            <a href="./pricing.html" class="btn-primary" style="display: inline-block; margin-top: 10px;">Upgrade Now</a>
+                            <a href="pricing" class="btn-primary" style="display: inline-block; margin-top: 10px;">Upgrade Now</a>
                         </div>
                     `;
                     
@@ -426,9 +425,9 @@
             }
             
             // Form submission
-            const submissionForm = document.getElementById('contest-submission-form');
-            if (submissionForm) {
-                submissionForm.addEventListener('submit', function(e) {
+            const form = document.getElementById('contest-submission-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
                     const title = document.getElementById('poem-title').value;
@@ -440,19 +439,19 @@
                         return;
                     }
                     
-                    if (content.length > 2000) {
-                        alert('Your poem exceeds the maximum length. Please edit it to be under 2000 characters.');
-                        return;
-                    }
-                    
                     if (!rulesCheck) {
-                        alert('You must agree to the contest rules');
+                        alert('Please agree to the contest rules');
                         return;
                     }
                     
-                    // In a real app, we would submit to an API here
-                    alert('Your poem has been submitted successfully!');
-                    window.location.href = './contests.html';
+                    if (content.length > 2000) {
+                        alert('Your poem exceeds the 2000 character limit');
+                        return;
+                    }
+                    
+                    // Submit to backend
+                    form.action = '/contest-submission/submit';
+                    form.submit();
                 });
             }
             
@@ -468,15 +467,32 @@
                         return;
                     }
                     
-                    // In a real app, we would save to API/localStorage
-                    const draftKey = `contest_${contestId}_draft`;
-                    localStorage.setItem(draftKey, JSON.stringify({
-                        title,
-                        content,
-                        savedAt: new Date().toISOString()
-                    }));
+                    // Create a temporary form to submit as draft
+                    const tempForm = document.createElement('form');
+                    tempForm.method = 'post';
+                    tempForm.action = '/contest-submission/draft';
                     
-                    alert('Draft saved successfully');
+                    // Add form data
+                    const contestIdInput = document.createElement('input');
+                    contestIdInput.type = 'hidden';
+                    contestIdInput.name = 'contestId';
+                    contestIdInput.value = contestId;
+                    tempForm.appendChild(contestIdInput);
+                    
+                    const titleInput = document.createElement('input');
+                    titleInput.type = 'hidden';
+                    titleInput.name = 'title';
+                    titleInput.value = title;
+                    tempForm.appendChild(titleInput);
+                    
+                    const contentInput = document.createElement('input');
+                    contentInput.type = 'hidden';
+                    contentInput.name = 'content';
+                    contentInput.value = content;
+                    tempForm.appendChild(contentInput);
+                    
+                    document.body.appendChild(tempForm);
+                    tempForm.submit();
                 });
                 
                 // Check for existing draft

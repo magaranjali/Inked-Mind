@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Login | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .login-page {
@@ -192,7 +192,7 @@
                         <ul>
                             <li><a th:href="@{/index}" href="../index.html">Home</a></li>
                             <li><a th:href="@{/poems}" href="./poems.html">Poems</a></li>
-                            <li><a th:href="@{/contests}" href="./contests.html">Contests</a></li>
+                            <li><a th:href="${currentUser != null} ? '/contests' : '/login'" href="/contests">Contests</a></li>
                             <li><a th:href="@{/pricing}" href="./pricing.html">Pricing</a></li>
                         </ul>
                     </div>

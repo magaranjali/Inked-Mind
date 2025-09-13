@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Poems | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .mainContainer{
@@ -113,8 +113,8 @@
         }
         
         .author-avatar {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background-color: var(--secondary-color);
             border-radius: 50%;
             display: flex;
@@ -313,13 +313,13 @@
                                       th:each="tag : ${#strings.arraySplit(poem.tags, ',')}" 
                                       class="poem-tag" th:text="${#strings.trim(tag)}">Tag</span>
                             </div>
-                            <a th:href="@{'/poem/' + ${poem.id}}" class="btn-text">Read More</a>
+                            <a th:href="${currentUser != null} ? @{'/poem/' + ${poem.id}} : @{/login}" href="/login" class="btn-text">Read More</a>
                         </div>
                         <div class="poem-meta">
                             <div class="poem-stats">
                                 <span><i class="fas fa-eye"></i> 0</span>
-                                <span><i class="fas fa-heart"></i> 0</span>
-                                <span><i class="fas fa-comment"></i> 0</span>
+                                <span><i class="fas fa-heart"></i> <span th:text="${poemCounts[poem.id]?.likes ?: 0}">0</span></span>
+                                <span><i class="fas fa-comment"></i> <span th:text="${poemCounts[poem.id]?.comments ?: 0}">0</span></span>
                             </div>
                         </div>
                     </div>

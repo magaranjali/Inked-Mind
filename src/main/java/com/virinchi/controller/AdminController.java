@@ -7,10 +7,15 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.virinchi.model.ContestEntry;
+import com.virinchi.model.Poem;
 import com.virinchi.model.UserClass;
+import com.virinchi.repository.ContestEntryRepository;
 import com.virinchi.repository.NewsletterSubscriptionRepository;
 import com.virinchi.repository.PaymentRepository;
+import com.virinchi.repository.PoemRepository;
 import com.virinchi.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +31,12 @@ public class AdminController {
 
     @Autowired
     private PaymentRepository paymentRepo;
+    
+    @Autowired
+    private ContestEntryRepository contestEntryRepo;
+    
+    @Autowired
+    private PoemRepository poemRepo;
 
     @GetMapping("/admin/login")
     public String adminLoginPage(HttpSession session) {
@@ -63,30 +74,66 @@ public class AdminController {
     }
 
     @GetMapping("/admin/dashboard")
-    public String adminDashboard(HttpSession session, Model m) {
+    public String adminDashboard(HttpSession session, Model m, 
+                                @RequestParam(value = "tab", defaultValue = "overview") String tab) {
         String activeUser = (String) session.getAttribute("activeUser");
         if (activeUser == null) return "redirect:/admin/login";
         UserClass user = uRepo.findTopByEmailOrderByIdDesc(activeUser);
         if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
             return "redirect:/login";
         }
+        
+        // Get all contest entries with user information
+        java.util.List<ContestEntry> allContestEntries = contestEntryRepo.findAllByOrderByCreatedAtDesc();
+        
+        // Calculate contest statistics
+        long totalContestEntries = allContestEntries.size();
+        long submittedEntries = allContestEntries.stream().mapToLong(c -> c.getStatus().name().equals("SUBMITTED") ? 1 : 0).sum();
+        long draftEntries = totalContestEntries - submittedEntries;
+        
+        // Get all poems for admin management
+        java.util.List<Poem> allPoems = poemRepo.findAll();
+        long totalPoems = allPoems.size();
+        long publishedPoems = allPoems.stream().mapToLong(p -> p.isPublished() ? 1 : 0).sum();
+        long draftPoems = totalPoems - publishedPoems;
+        
+        // Create a map to get user information for each poem
+        java.util.Map<Long, UserClass> userMap = new java.util.HashMap<>();
+        for (Poem poem : allPoems) {
+            if (poem.getUserId() != null && !userMap.containsKey(poem.getUserId())) {
+                UserClass poemAuthor = uRepo.findById(poem.getUserId().intValue()).orElse(null);
+                if (poemAuthor != null) {
+                    userMap.put(poem.getUserId(), poemAuthor);
+                }
+            }
+        }
+        
+        // Add all necessary data for all tabs
         m.addAttribute("subs", newsletterRepo.findAll());
         m.addAttribute("payments", paymentRepo.findAll());
-        m.addAttribute("activeAdminTab", "overview");
+        m.addAttribute("users", uRepo.findAll());
+        m.addAttribute("contestEntries", allContestEntries);
+        m.addAttribute("totalContestEntries", totalContestEntries);
+        m.addAttribute("submittedEntries", submittedEntries);
+        m.addAttribute("draftEntries", draftEntries);
+        m.addAttribute("allPoems", allPoems);
+        m.addAttribute("userMap", userMap);
+        m.addAttribute("totalPoems", totalPoems);
+        m.addAttribute("publishedPoems", publishedPoems);
+        m.addAttribute("draftPoems", draftPoems);
+        m.addAttribute("activeAdminTab", tab);
         return "admin-dashboard";
     }
 
     @GetMapping("/admin/subscriptions")
-    public String subscriptions(HttpSession session, Model m) {
+    public String subscriptions(HttpSession session) {
         String activeUser = (String) session.getAttribute("activeUser");
         if (activeUser == null) return "redirect:/admin/login";
         UserClass user = uRepo.findTopByEmailOrderByIdDesc(activeUser);
         if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
             return "redirect:/login";
         }
-        m.addAttribute("payments", paymentRepo.findAll());
-        m.addAttribute("activeAdminTab", "subscriptions");
-        return "admin-dashboard";
+        return "redirect:/admin/dashboard/subscriptions";
     }
 
     @GetMapping("/admin/subscriptions/export/csv")
@@ -165,16 +212,14 @@ public class AdminController {
     private String nullToEmpty(String s) { return s == null ? "" : s; }
 
     @GetMapping("/admin/users")
-    public String adminUsers(HttpSession session, Model m) {
+    public String adminUsers(HttpSession session) {
         String activeUser = (String) session.getAttribute("activeUser");
         if (activeUser == null) return "redirect:/admin/login";
         UserClass user = uRepo.findTopByEmailOrderByIdDesc(activeUser);
         if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
             return "redirect:/login";
         }
-        m.addAttribute("users", uRepo.findAll());
-        m.addAttribute("activeAdminTab", "users");
-        return "admin-dashboard";
+        return "redirect:/admin/dashboard/users";
     }
 
     @PostMapping("/admin/users/update-role")
@@ -192,7 +237,7 @@ public class AdminController {
                 uRepo.save(u);
             }
         }
-        return "redirect:/admin/users";
+        return "redirect:/admin/dashboard/users";
     }
 
     @PostMapping("/admin/users/reset-password")
@@ -211,12 +256,57 @@ public class AdminController {
                 uRepo.save(u);
             }
         }
-        return "redirect:/admin/users";
+        return "redirect:/admin/dashboard/users";
+    }
+
+    @GetMapping("/admin/poems")
+    public String adminPoems(HttpSession session) {
+        String activeUser = (String) session.getAttribute("activeUser");
+        if (activeUser == null) return "redirect:/admin/login";
+        UserClass user = uRepo.findTopByEmailOrderByIdDesc(activeUser);
+        if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
+            return "redirect:/login";
+        }
+        return "redirect:/admin/dashboard/poems";
+    }
+    
+    @PostMapping("/admin/poems/publish")
+    public String togglePoemPublish(@ModelAttribute Poem payload, HttpSession session) {
+        String activeUser = (String) session.getAttribute("activeUser");
+        if (activeUser == null) return "redirect:/admin/login";
+        UserClass admin = uRepo.findTopByEmailOrderByIdDesc(activeUser);
+        if (admin == null || admin.getRole() == null || !admin.getRole().equalsIgnoreCase("Admin")) {
+            return "redirect:/login";
+        }
+        
+        if (payload.getId() != null) {
+            Poem poem = poemRepo.findById(payload.getId()).orElse(null);
+            if (poem != null) {
+                poem.setPublished(!poem.isPublished());
+                poemRepo.save(poem);
+            }
+        }
+        return "redirect:/admin/dashboard/poems";
+    }
+    
+    @PostMapping("/admin/poems/delete")
+    public String deletePoemAdmin(@ModelAttribute Poem payload, HttpSession session) {
+        String activeUser = (String) session.getAttribute("activeUser");
+        if (activeUser == null) return "redirect:/admin/login";
+        UserClass admin = uRepo.findTopByEmailOrderByIdDesc(activeUser);
+        if (admin == null || admin.getRole() == null || !admin.getRole().equalsIgnoreCase("Admin")) {
+            return "redirect:/login";
+        }
+        
+        if (payload.getId() != null) {
+            poemRepo.deleteById(payload.getId());
+        }
+        return "redirect:/admin/dashboard/poems";
     }
 
     @GetMapping("/admin/logout")
     public String adminLogout(HttpSession session) {
         session.invalidate();
-        return "redirect:/index";
+        return "redirect:/admin/login";
     }
 }

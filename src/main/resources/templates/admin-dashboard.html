@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
     <title>Admin Dashboard | Inked Mind</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
     <div th:insert="navbar.html"></div>
 
@@ -333,92 +332,98 @@
 
                         <!-- Manage Poems Tab -->
                         <div class="admin-tab" id="poems-tab">
-                            <div class="tab-header">
-                                <h2>Manage Poems</h2>
-                                <div class="tab-actions">
-                                    <input type="text" placeholder="Search poems..." class="search-input">
-                                    <select class="filter-select">
-                                        <option value="all">All Poems</option>
-                                        <option value="published">Published</option>
-                                        <option value="draft">Draft</option>
-                                        <option value="reported">Reported</option>
-                                    </select>
+                            <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 20px 0; border-bottom: 1px solid #e9ecef;">
+                                <h2 style="margin: 0; font-size: 24px; font-weight: 600; color: #2c3e50;">Manage Poems</h2>
+                                <div style="display: flex; align-items: center; gap: 40px; background: #f8f9fa; padding: 15px 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 28px; font-weight: 700; color: #8B4513; margin-bottom: 2px;" th:text="${totalPoems ?: 0}">0</div>
+                                        <div style="font-size: 11px; color: #6c757d; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">TOTAL POEMS</div>
+                                    </div>
+                                    <div style="width: 1px; height: 35px; background: #dee2e6;"></div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 28px; font-weight: 700; color: #8B4513; margin-bottom: 2px;" th:text="${publishedPoems ?: 0}">0</div>
+                                        <div style="font-size: 11px; color: #6c757d; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">PUBLISHED</div>
+                                    </div>
+                                    <div style="width: 1px; height: 35px; background: #dee2e6;"></div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 28px; font-weight: 700; color: #8B4513; margin-bottom: 2px;" th:text="${draftPoems ?: 0}">0</div>
+                                        <div style="font-size: 11px; color: #6c757d; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">DRAFTS</div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="tab-actions" style="margin-bottom: 20px; display: flex; gap: 15px; align-items: center;">
+                                <input type="text" placeholder="Search poems..." class="search-input">
+                                <select class="filter-select">
+                                    <option value="all">All Poems</option>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="reported">Reported</option>
+                                </select>
+                            </div>
 
-                            <div class="poems-grid">
-                                <div class="poem-card-admin">
-                                    <div class="poem-header">
-                                        <h4>Whispers of Dawn</h4>
-                                        <span class="poem-status published">Published</span>
-                                    </div>
-                                    <p class="poem-author">by Emily Rodriguez</p>
-                                    <p class="poem-excerpt">In the quiet moments before sunrise, when the world holds its breath...</p>
-                                    <div class="poem-stats">
-                                        <span><i class="fas fa-heart"></i> 45 likes</span>
-                                        <span><i class="fas fa-comment"></i> 12 comments</span>
-                                    </div>
-                                    <div class="poem-actions">
-                                        <button class="btn-sm btn-info" onclick="viewPoem('poem1')">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn-sm btn-warning" onclick="editPoem('poem1')">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem1')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="poem-card-admin">
-                                    <div class="poem-header">
-                                        <h4>Ocean's Embrace</h4>
-                                        <span class="poem-status reported">Reported</span>
-                                    </div>
-                                    <p class="poem-author">by David Kim</p>
-                                    <p class="poem-excerpt">Waves crash against the weathered shore, carrying stories untold...</p>
-                                    <div class="poem-stats">
-                                        <span><i class="fas fa-heart"></i> 32 likes</span>
-                                        <span><i class="fas fa-comment"></i> 8 comments</span>
-                                        <span><i class="fas fa-flag text-danger"></i> 2 reports</span>
-                                    </div>
-                                    <div class="poem-actions">
-                                        <button class="btn-sm btn-info" onclick="viewPoem('poem2')">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn-sm btn-success" onclick="resolveReports('poem2')">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem2')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="poem-card-admin">
-                                    <div class="poem-header">
-                                        <h4>Autumn Memories</h4>
-                                        <span class="poem-status draft">Draft</span>
-                                    </div>
-                                    <p class="poem-author">by Sarah Johnson</p>
-                                    <p class="poem-excerpt">Golden leaves dance in the crisp October air...</p>
-                                    <div class="poem-stats">
-                                        <span><i class="fas fa-heart"></i> 0 likes</span>
-                                        <span><i class="fas fa-comment"></i> 0 comments</span>
-                                    </div>
-                                    <div class="poem-actions">
-                                        <button class="btn-sm btn-info" onclick="viewPoem('poem3')">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn-sm btn-success" onclick="publishPoem('poem3')">
-                                            <i class="fas fa-upload"></i>
-                                        </button>
-                                        <button class="btn-sm btn-danger" onclick="deletePoem('poem3')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="poems-table" style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                                    <thead>
+                                        <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                                            <th style="padding: 12px 8px; text-align: left; font-weight: 600; color: #495057; font-size: 13px; width: 60px;">ID</th>
+                                            <th style="padding: 12px 15px; text-align: left; font-weight: 600; color: #495057; font-size: 13px; width: 30%;">Title</th>
+                                            <th style="padding: 12px 15px; text-align: left; font-weight: 600; color: #495057; font-size: 13px; width: 20%;">Author</th>
+                                            <th style="padding: 12px 10px; text-align: center; font-weight: 600; color: #495057; font-size: 13px; width: 10%;">Status</th>
+                                            <th style="padding: 12px 10px; text-align: left; font-weight: 600; color: #495057; font-size: 13px; width: 12%;">Category</th>
+                                            <th style="padding: 12px 10px; text-align: left; font-weight: 600; color: #495057; font-size: 13px; width: 10%;">Created</th>
+                                            <th style="padding: 12px 15px; text-align: center; font-weight: 600; color: #495057; font-size: 13px; width: 13%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="poem : ${allPoems}" th:if="${allPoems != null and !allPoems.isEmpty()}" style="border-bottom: 1px solid #e9ecef; transition: background-color 0.2s;">
+                                            <td style="padding: 15px 8px; color: #6c757d; font-weight: 500;" th:text="${poem.id}">1</td>
+                                            <td style="padding: 15px;">
+                                                <div class="poem-title-cell">
+                                                    <div style="font-weight: 600; color: #212529; margin-bottom: 4px; line-height: 1.4;" th:text="${poem.title}">Poem Title</div>
+                                                    <div style="font-size: 12px; color: #6c757d; line-height: 1.3;" th:text="${#strings.abbreviate(poem.content, 60)}">Poem excerpt...</div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 15px;">
+                                                <div class="author-cell" th:if="${userMap[poem.userId] != null}">
+                                                    <div style="font-weight: 500; color: #495057; margin-bottom: 3px;" th:text="${userMap[poem.userId].firstName + ' ' + userMap[poem.userId].lastName}">Author Name</div>
+                                                    <div style="font-size: 12px; color: #6c757d;" th:text="${userMap[poem.userId].email}">author@email.com</div>
+                                                </div>
+                                                <div class="author-cell" th:unless="${userMap[poem.userId] != null}">
+                                                    <div style="font-weight: 500; color: #495057; margin-bottom: 3px;">Unknown Author</div>
+                                                    <div style="font-size: 12px; color: #6c757d;">User ID: <span th:text="${poem.userId}">N/A</span></div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 15px 10px; text-align: center;">
+                                                <span th:if="${poem.published}" style="display: inline-block; padding: 4px 8px; background: #d4edda; color: #155724; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Published</span>
+                                                <span th:unless="${poem.published}" style="display: inline-block; padding: 4px 8px; background: #fff3cd; color: #856404; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Draft</span>
+                                            </td>
+                                            <td style="padding: 15px 10px; color: #495057; font-weight: 500;" th:text="${poem.category ?: 'Uncategorized'}">Category</td>
+                                            <td style="padding: 15px 10px; color: #6c757d; font-size: 13px;" th:text="${#temporals.format(poem.createdAt, 'MMM dd, yyyy')}">Date</td>
+                                            <td style="padding: 15px; text-align: center;">
+                                                <div class="action-buttons" style="display: flex; gap: 5px; justify-content: center;">
+                                                    <a th:href="@{/poem/{id}(id=${poem.id})}" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #17a2b8; color: white; border-radius: 6px; text-decoration: none; transition: all 0.2s;" title="View Poem">
+                                                        <i class="fas fa-eye" style="font-size: 12px;"></i>
+                                                    </a>
+                                                    <form th:action="@{/admin/poems/toggle-publish}" method="post" style="display:inline;" title="Toggle Publish Status">
+                                                        <input type="hidden" name="id" th:value="${poem.id}">
+                                                        <button type="submit" th:style="${poem.published} ? 'display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #ffc107; color: white; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;' : 'display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;'">
+                                                            <i th:class="${poem.published} ? 'fas fa-eye-slash' : 'fas fa-upload'" style="font-size: 12px;"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form th:action="@{/admin/poems/delete}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this poem?');" title="Delete Poem">
+                                                        <input type="hidden" name="id" th:value="${poem.id}">
+                                                        <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                                                            <i class="fas fa-trash" style="font-size: 12px;"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${allPoems == null or allPoems.isEmpty()}">
+                                            <td colspan="7" style="text-align: center; padding: 40px 20px; color: #6c757d; font-style: italic;">No poems found in the database.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -513,9 +518,79 @@
                         </div>
                         <div class="admin-tab" id="contests-tab">
                             <div class="tab-header">
-                                <h2>Contest Management</h2>
+                                <h2>Contest Entries Management</h2>
+                                <div class="contest-stats-horizontal">
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${totalContestEntries ?: 0}">0</span>
+                                        <span class="stat-text">Total Entries</span>
+                                    </div>
+                                    <div class="stat-divider">|</div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${submittedEntries ?: 0}">0</span>
+                                        <span class="stat-text">Submitted</span>
+                                    </div>
+                                    <div class="stat-divider">|</div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${draftEntries ?: 0}">0</span>
+                                        <span class="stat-text">Drafts</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p>Contest management features coming soon...</p>
+                            
+                            <!-- Contest Entries Table -->
+                            <div class="contest-entries-admin-section" style="margin-top: 5px;">
+                                <h3 style="margin-bottom: 15px;">All Contest Submissions</h3>
+                                <div class="admin-table-container" th:if="${contestEntries != null and !contestEntries.isEmpty()}">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Contest</th>
+                                                <th>Title</th>
+                                                <th>Type</th>
+                                                <th>Author</th>
+                                                <th>Status</th>
+                                                <th>Submitted</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="entry : ${contestEntries}">
+                                                <td th:text="${entry.id}">1</td>
+                                                <td th:text="${entry.contestId}">Contest 1</td>
+                                                <td th:text="${entry.title}">Poem Title</td>
+                                                <td>
+                                                    <span class="type-badge"
+                                                          th:classappend="${#strings.equalsIgnoreCase((entry.contestType != null ? entry.contestType.name() : 'BASIC'), 'PREMIUM')} ? ' premium' : ' basic'"
+                                                          th:text="${entry.contestType != null ? entry.contestType.name() : 'BASIC'}">BASIC</span>
+                                                </td>
+                                                <td th:text="${entry.authorName}">Author Name</td>
+                                                <td>
+                                                    <span class="admin-status-badge" 
+                                                          th:classappend="${entry.status.name() == 'SUBMITTED'} ? 'status-submitted' : 'status-draft'" 
+                                                          th:text="${entry.status.name()}">DRAFT</span>
+                                                </td>
+                                                <td th:text="${#temporals.format(entry.createdAt, 'MMM dd, yyyy HH:mm')}">Date</td>
+                                                <td class="admin-actions">
+                                                    <button class="btn-sm btn-secondary view-admin-entry-btn" th:data-entry-id="${entry.id}">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                    <button class="btn-sm btn-outline delete-entry-btn" th:data-entry-id="${entry.id}">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div class="empty-state" th:if="${contestEntries == null or contestEntries.isEmpty()}">
+                                    <i class="fas fa-trophy"></i>
+                                    <h3>No Contest Entries Yet</h3>
+                                    <p>No contest entries have been submitted yet.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="admin-tab" id="reports-tab">
@@ -655,17 +730,51 @@
         const header = document.getElementById('site-header');
         if (header) window.addEventListener('scroll', () => { if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
     });
-    // Admin dashboard tab behavior + activate subscribers tab if requested
+    // Admin dashboard tab behavior + activate tab based on URL parameter
     document.addEventListener('DOMContentLoaded', function(){
         const links = document.querySelectorAll('.admin-menu a');
         const tabs = document.querySelectorAll('.admin-tab');
-        links.forEach(l => l.addEventListener('click', function(e){ e.preventDefault(); const tab = this.getAttribute('data-tab'); links.forEach(a=>a.classList.remove('active')); this.classList.add('active'); tabs.forEach(t=>{ t.classList.remove('active'); if (t.id === `${tab}-tab`) t.classList.add('active'); }); }));
-        // If server sets activeAdminTab, open it
-        const activeAdminTab = /*[[${activeAdminTab}]]*/ '';
-        if (activeAdminTab) {
-            const link = document.querySelector(`.admin-menu a[data-tab="${activeAdminTab}"]`);
-            if (link) link.click();
+        
+        // Function to switch tabs
+        function switchTab(tabName) {
+            links.forEach(a => a.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`.admin-menu a[data-tab="${tabName}"]`);
+            const activeTab = document.getElementById(`${tabName}-tab`);
+            
+            if (activeLink && activeTab) {
+                activeLink.classList.add('active');
+                activeTab.classList.add('active');
+            }
         }
+        
+        // Handle tab clicks with URL update
+        links.forEach(l => l.addEventListener('click', function(e){ 
+            e.preventDefault(); 
+            const tab = this.getAttribute('data-tab');
+            
+            // Update URL without page reload
+            const newUrl = `/admin/dashboard?tab=${tab}`;
+            window.history.pushState({tab: tab}, '', newUrl);
+            
+            switchTab(tab);
+        }));
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(e) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab') || 'overview';
+            switchTab(tab);
+        });
+        
+        // Get active tab from server or URL parameter
+        const activeAdminTab = /*[[${activeAdminTab}]]*/ '';
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlTab = urlParams.get('tab');
+        const currentTab = activeAdminTab || urlTab || 'overview';
+        
+        switchTab(currentTab);
         // Save subscribers table to localStorage as JSON
         const saveBtn = document.getElementById('save-local');
         if (saveBtn) {

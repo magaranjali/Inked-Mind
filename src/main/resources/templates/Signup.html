@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Sign Up | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
 	    .mainContainer{
@@ -182,7 +182,7 @@
                             <label for="termsCheck">I agree to the <a href="./terms.html">Terms of Service</a> and <a href="./privacy.html">Privacy Policy</a></label>
                         </div>
                        
-                        <input type="submit" class="btn-primary" value="Create Account" style="text-align:center;">
+                        <input type="submit" value="Create Account" style="width: 100%; padding: 15px; font-size: 1.1rem; background-color: #8B4513; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-align: center; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#7A3A0F'" onmouseout="this.style.backgroundColor='#8B4513'">
                     </form>
 
                     <div class="signup-footer">

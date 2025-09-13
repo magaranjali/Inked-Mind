@@ -57,6 +57,11 @@ public class PaymentController {
         if (user == null) {
             return "redirect:/login";
         }
+        
+        // Check if user is a reader - readers cannot access payment features
+        if (isReader(user)) {
+            return "redirect:/poems?error=readers-cannot-access-payment";
+        }
 
         model.addAttribute("user", user);
         return "payment"; // A JSP/HTML page for subscription
@@ -68,6 +73,12 @@ public class PaymentController {
         if (email == null) return "redirect:/login";
 
         UserClass user = uRepo.findTopByEmailOrderByIdDesc(email);
+        
+        // Check if user is a reader - readers cannot subscribe
+        if (user != null && isReader(user)) {
+            return "redirect:/poems?error=readers-cannot-access-payment";
+        }
+        
         if (user != null) {
             user.setSubscribed(true);
             user.setPlanType("BASIC");
@@ -104,6 +115,11 @@ public class PaymentController {
 
         UserClass user = uRepo.findTopByEmailOrderByIdDesc(email);
         if (user == null) return "USER_NOT_FOUND";
+        
+        // Check if user is a reader - readers cannot make payments
+        if (isReader(user)) {
+            return "READERS_CANNOT_MAKE_PAYMENTS";
+        }
 
         try {
             // Update user subscription info (fixed 30-day duration)
@@ -141,29 +157,6 @@ public class PaymentController {
             return "ERROR";
         }
     }
-
-
-//    // Check subscription status
-//    @GetMapping("/subscription-status")
-//    public String subscriptionStatus(HttpSession session, Model model) {
-//        String email = (String) session.getAttribute("activeUser");
-//        if (email == null) {
-//            return "redirect:/login";
-//        }
-//
-//        UserClass user = uRepo.findByEmail(email);
-//        if (user == null) {
-//            return "redirect:/login";
-//        }
-//
-//        boolean isActive = user.isSubscribed() && user.getSubscriptionEnd() != null
-//                && user.getSubscriptionEnd().isAfter(LocalDate.now());
-//
-//        model.addAttribute("user", user);
-//        model.addAttribute("activeSub", isActive);
-//
-//        return "subscription-status"; // a page to show subscription details
-//    }
 
     private void sendPaymentEmails(String userEmail, Payment payment) {
         try {
@@ -206,4 +199,9 @@ public class PaymentController {
     }
 
     private String safe(String v) { return v == null ? "" : v; }
+    
+    private boolean isReader(UserClass user) {
+        if (user == null || user.getRole() == null) return false;
+        return "reader".equalsIgnoreCase(user.getRole().trim());
+    }
 }

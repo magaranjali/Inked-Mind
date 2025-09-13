@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Pricing | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .mainContainer{
@@ -475,7 +475,7 @@
                         <ul>
                             <li><a href="index">Home</a></li>
                             <li><a href="poems">Poems</a></li>
-                            <li><a href="contests">Contests</a></li>
+                            <li><a th:href="${currentUser != null} ? '/contests' : '/login'" href="/contests">Contests</a></li>
                             <li><a href="pricing">Pricing</a></li>
                         </ul>
                     </div>

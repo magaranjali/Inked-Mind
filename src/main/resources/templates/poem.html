@@ -7,10 +7,13 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Poem | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .poem-page {
+        top: 100px;
+        position: relative;
+        margin-bottom: 130px;
             padding: 60px 0;
         }
         
@@ -38,8 +41,8 @@
         }
         
         .author-avatar {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background-color: var(--secondary-color);
             border-radius: 50%;
             display: flex;
@@ -47,7 +50,7 @@
             justify-content: center;
             color: var(--primary-color);
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         
         .author-info .name {
@@ -201,8 +204,8 @@
         }
         
         .comment-avatar {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background-color: var(--secondary-color);
             border-radius: 50%;
             display: flex;
@@ -273,60 +276,36 @@
     <main>
         <section class="poem-page">
             <div class="container">
-                <div class="poem-container">
+                <div class="poem-container" id="poem-root" th:attr="data-poem-id=${poem != null ? poem.id : 0}">
                     <div class="poem-header">
-                        <h1 id="poem-title">Whispers of Dawn</h1>
+                        <h1 id="poem-title" th:text="${poem != null ? poem.title : 'Poem'}">Poem</h1>
                         <div class="poem-author">
-                            <div class="author-avatar">E</div>
+                            <div class="author-avatar" th:text="${poem != null && poem.authorName != null ? #strings.substring(poem.authorName, 0, 1) : 'A'}">A</div>
                             <div class="author-info">
-                                <div class="name">Emily Wright</div>
-                                <div class="date">Published on July 30, 2025</div>
+                                <div class="name" th:text="${poem != null ? poem.authorName : 'Author'}">Author</div>
+                                <div class="date" th:text="${poem != null ? (#temporals.format(poem.createdAt, 'MMM dd, yyyy')) : ''}">Date</div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="poem-content">
-                        <div class="poem-text">
-In the quiet moments before sunrise,
-When the world still dreams,
-I find myself in the spaces between
-Darkness and light.
-
-The whispers of dawn call to me,
-Soft tendrils of pink and gold
-Reaching across the sleeping sky,
-Promising renewal, promising hope.
-
-Dew drops glisten like scattered diamonds,
-Each one holding a universe within.
-The gentle breath of morning
-Carries secrets from yesterday.
-
-I stand at the threshold of becoming,
-As nature awakens around me,
-A symphony of birdsong and rustling leaves,
-Conducting the arrival of a new day.
-
-In this sacred space of transition,
-Where night surrenders to morning light,
-I too am transformed, reborn,
-Ready to begin again.
+                        <div class="poem-text" th:text="${poem != null ? poem.content : ''}">
+                            Poem content...
                         </div>
                         
                         <div class="poem-tags">
-                            <span class="poem-tag">Nature</span>
-                            <span class="poem-tag">Dawn</span>
-                            <span class="poem-tag">Reflection</span>
-                            <span class="poem-tag">Hope</span>
+                            <span class="poem-tag" th:if="${poem != null and poem.category != null and !#strings.isEmpty(poem.category)}" th:text="${poem.category}">Category</span>
+                            <span th:if="${poem != null and poem.tags != null and !#strings.isEmpty(poem.tags)}" th:each="tag : ${#strings.arraySplit(poem.tags, ',')}" class="poem-tag" th:text="${#strings.trim(tag)}">Tag</span>
                         </div>
                         
                         <div class="poem-meta">
                             <div class="poem-stats">
-                                <span><i class="fas fa-eye"></i> 120 Views</span>
-                                <span class="likes-count"><i class="fas fa-heart"></i> 43 Likes</span>
-                                <span><i class="fas fa-comment"></i> 12 Comments</span>
+                                <span><i class="fas fa-eye"></i> 0 Views</span>
+                                <span class="likes-count"><i class="fas fa-heart"></i> <span id="like-count" th:text="${poemCounts?.likes ?: 0}">0</span> Likes</span>
+                                <span><i class="fas fa-comment"></i> <span id="comment-count" th:text="${poemCounts?.comments ?: 0}">0</span> Comments</span>
                             </div>
                             <div class="poem-actions">
+                                <a th:href="@{/poems}" class="btn-secondary"><i class="fas fa-arrow-left"></i> Back to Poems</a>
                                 <button id="like-btn"><i class="far fa-heart"></i> Like</button>
                                 <button><i class="fas fa-share"></i> Share</button>
                             </div>
@@ -335,61 +314,17 @@ Ready to begin again.
                     
                     <div class="comments-section">
                         <div class="comments-header">
-                            <h3>Comments (12)</h3>
+                            <h3>Comments (<span th:text="${poemCounts?.comments ?: 0}">0</span>)</h3>
                         </div>
                         
                         <div class="comment-form">
-                            <textarea placeholder="Add your comment..."></textarea>
-                            <button class="btn-primary">Post Comment</button>
-                            <div style="clear: both;"></div>
+                            <form id="comment-form">
+                                <textarea id="comment-text" placeholder="Add your comment..."></textarea>
+                                <button type="submit" class="btn-primary">Post Comment</button>
+                            </form>
                         </div>
                         
-                        <div class="comments-list">
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="comment-author">
-                                        <div class="comment-avatar">S</div>
-                                        <div class="comment-author-info">
-                                            <div class="comment-author-name">Sarah Wilson</div>
-                                        </div>
-                                    </div>
-                                    <div class="comment-date">2 days ago</div>
-                                </div>
-                                <div class="comment-body">
-                                    <p>The imagery in this poem is absolutely stunning. I can almost feel the morning dew and hear the birds. The way you've captured that magical moment between night and day is beautiful.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="comment-author">
-                                        <div class="comment-avatar">M</div>
-                                        <div class="comment-author-info">
-                                            <div class="comment-author-name">Michael Thompson</div>
-                                        </div>
-                                    </div>
-                                    <div class="comment-date">1 day ago</div>
-                                </div>
-                                <div class="comment-body">
-                                    <p>I love how you've connected the physical dawn with personal transformation. It feels both intimate and universal. This really spoke to me today - thank you for sharing your gift.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="comment-author">
-                                        <div class="comment-avatar">L</div>
-                                        <div class="comment-author-info">
-                                            <div class="comment-author-name">Lisa Chen</div>
-                                        </div>
-                                    </div>
-                                    <div class="comment-date">12 hours ago</div>
-                                </div>
-                                <div class="comment-body">
-                                    <p>"Dew drops glisten like scattered diamonds, Each one holding a universe within." - This line is pure magic! Your way with words makes me want to wake up early just to experience this moment.</p>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="comments-list" id="comments-container"></div>
                     </div>
                     
                     <div class="related-poems">
@@ -399,21 +334,21 @@ Ready to begin again.
                                 <h4>Midnight Thoughts</h4>
                                 <span class="author">By Marcus Chen</span>
                                 <p>Stars scattered like memories,<br>Across the vast expanse of night...</p>
-                                <a href="./poem.html?id=2" class="btn-text">Read More</a>
+                                <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                             </div>
                             
                             <div class="related-poem-card">
                                 <h4>Autumn Leaves</h4>
                                 <span class="author">By Lily Zhang</span>
                                 <p>Crimson and gold dance in the wind,<br>Nature's final vibrant display...</p>
-                                <a href="./poem.html?id=5" class="btn-text">Read More</a>
+                                <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                             </div>
                             
                             <div class="related-poem-card">
                                 <h4>Forest Dreams</h4>
                                 <span class="author">By Thomas Green</span>
                                 <p>Ancient trees whisper secrets,<br>Their roots deep in sacred soil...</p>
-                                <a href="./poem.html?id=7" class="btn-text">Read More</a>
+                                <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                             </div>
                         </div>
                     </div>
@@ -435,7 +370,7 @@ Ready to begin again.
                         <ul>
                             <li><a href="../index.html">Home</a></li>
                             <li><a href="./poems.html">Poems</a></li>
-                            <li><a href="./contests.html">Contests</a></li>
+                            <li><a th:href="${currentUser != null} ? '/contests' : '/login'" href="/contests">Contests</a></li>
                             <li><a href="./pricing.html">Pricing</a></li>
                         </ul>
                     </div>
@@ -483,89 +418,94 @@ Ready to begin again.
 
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get poem ID from URL query params
-            const urlParams = new URLSearchParams(window.location.search);
-            const poemId = urlParams.get('id');
-            
-            // In a real app, we would fetch the poem data from an API using the poemId
-            // Here we'll just simulate with static content
-            
-            // Like button functionality
+        document.addEventListener('DOMContentLoaded', async function() {
+            const root = document.getElementById('poem-root');
+            const poemId = root ? root.getAttribute('data-poem-id') : null;
             const likeBtn = document.getElementById('like-btn');
-            const likesCount = document.querySelector('.likes-count');
-            
-            if (likeBtn) {
-                likeBtn.addEventListener('click', function() {
-                    if (localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
-                        alert('Please login to like this poem');
-                        window.location.href = './login.html';
-                        return;
-                    }
-                    
-                    const likeKey = `poem_${poemId}_liked`;
-                    const isLiked = localStorage.getItem(likeKey) === 'true';
-                    
-                    if (isLiked) {
-                        // Unlike
-                        localStorage.setItem(likeKey, 'false');
-                        this.innerHTML = '<i class="far fa-heart"></i> Like';
-                        this.classList.remove('liked');
-                        
-                        // Update count
-                        const currentLikes = parseInt(likesCount.textContent.split(' ')[1]);
-                        likesCount.innerHTML = `<i class="fas fa-heart"></i> ${currentLikes - 1} Likes`;
-                    } else {
-                        // Like
-                        localStorage.setItem(likeKey, 'true');
-                        this.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                        this.classList.add('liked');
-                        
-                        // Update count
-                        const currentLikes = parseInt(likesCount.textContent.split(' ')[1]);
-                        likesCount.innerHTML = `<i class="fas fa-heart"></i> ${currentLikes + 1} Likes`;
-                    }
-                });
-                
-                // Check if user has already liked this poem
-                const likeKey = `poem_${poemId}_liked`;
-                if (localStorage.getItem(likeKey) === 'true') {
-                    likeBtn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                    likeBtn.classList.add('liked');
-                }
+            const likeCountEl = document.getElementById('like-count');
+            const commentCountEl = document.getElementById('comment-count');
+            const commentsContainer = document.getElementById('comments-container');
+            const commentForm = document.getElementById('comment-form');
+            const commentText = document.getElementById('comment-text');
+
+            function gotoLogin(){ window.location.href = '/login'; }
+            if (!poemId) return;
+
+            async function refreshMeta(){
+                try {
+                    const res = await fetch(`/api/poems/${poemId}/meta`);
+                    const data = await res.json();
+                    likeCountEl.textContent = data.likes ?? 0;
+                    commentCountEl.textContent = data.comments ?? 0;
+                    if (likeBtn) likeBtn.innerHTML = (data.liked ? '<i class="fas fa-heart"></i> Liked' : '<i class="far fa-heart"></i> Like');
+                } catch(e) {}
             }
-            
-            // Comment form
-            const commentForm = document.querySelector('.comment-form');
-            if (commentForm) {
-                commentForm.addEventListener('submit', function(e) {
+
+            async function refreshComments(){
+                try {
+                    const res = await fetch(`/api/poems/${poemId}/comments`);
+                    const list = await res.json();
+                    commentsContainer.innerHTML = '';
+                    list.forEach(c => {
+                        const initials = (c.authorName||'U').trim().charAt(0).toUpperCase();
+                        const item = document.createElement('div');
+                        item.className = 'comment';
+                        item.innerHTML = `
+                          <div class=\"comment-header\">
+                            <div class=\"comment-author\">
+                              <div class=\"comment-avatar\">${initials}</div>
+                              <div class=\"comment-author-info\">
+                                <div class=\"comment-author-name\">${c.authorName||'User'}</div>
+                              </div>
+                            </div>
+                            <div class=\"comment-date\">${(c.createdAt||'').toString().replace('T',' ')}</div>
+                          </div>
+                          <div class=\"comment-body\"><p></p></div>`;
+                        item.querySelector('.comment-body p').textContent = c.content;
+                        commentsContainer.appendChild(item);
+                    });
+                } catch(e) {}
+            }
+
+            if (likeBtn){
+                likeBtn.addEventListener('click', async () => {
+                    try{
+                        const likedNow = likeBtn.innerText.trim().startsWith('Liked');
+                        const method = likedNow ? 'DELETE' : 'POST';
+                        const res = await fetch(`/api/poems/${poemId}/like`, { method });
+                        if (res.status === 401) { gotoLogin(); return; }
+                        const data = await res.json();
+                        likeCountEl.textContent = data.likes ?? 0;
+                        likeBtn.innerHTML = (data.liked ? '<i class="fas fa-heart"></i> Liked' : '<i class="far fa-heart"></i> Like');
+                    } catch(e) {}
+                });
+            }
+
+            if (commentForm){
+                commentForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    
-                    const commentText = commentForm.querySelector('textarea').value;
-                    
-                    if (!commentText.trim()) {
-                        alert('Please enter a comment');
-                        return;
-                    }
-                    
-                    if (localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
-                        alert('Please login to comment');
-                        window.location.href = './login.html';
-                        return;
-                    }
-                    
-                    alert('Comment posted successfully!');
-                    commentForm.reset();
-                    
-                    // In a real app, we would send the comment to an API
+                    const text = (commentText.value||'').trim();
+                    if (!text) return;
+                    try{
+                        const formData = new URLSearchParams();
+                        formData.set('content', text);
+                        const res = await fetch(`/api/poems/${poemId}/comments`, { method: 'POST', headers: { 'Content-Type':'application/x-www-form-urlencoded' }, body: formData });
+                        if (res.status === 401) { gotoLogin(); return; }
+                        const data = await res.json();
+                        commentText.value = '';
+                        commentCountEl.textContent = data.comments ?? 0;
+                        await refreshComments();
+                    } catch(e) {}
                 });
             }
-            
+
+            await refreshMeta();
+            await refreshComments();
+
             // Share button
             const shareBtn = document.querySelector('.poem-actions button:last-child');
             if (shareBtn) {
                 shareBtn.addEventListener('click', function() {
-                    // In a real app, we would use the Web Share API or show a custom share dialog
                     alert('Share this poem with the link: ' + window.location.href);
                 });
             }

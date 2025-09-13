@@ -26,6 +26,10 @@
     display: block;
 }
 
+.user-nav.open .user-dropdown {
+    display: block;
+}
+
 </style>
 <header id="site-header">
     <div class="container">
@@ -40,9 +44,9 @@
             </div>
             <ul class="nav-links">
                 <li><a th:href="@{/index}">Home</a></li>
-                <li><a th:href="${currentUser != null ? '/poems' : '/login'}">Poems</a></li>
-                <li><a th:href="${currentUser != null ? '/contests' : '/login'}">Contests</a></li>
-                <li><a th:href="${currentUser != null ? '/pricing' : '/login'}">Pricing</a></li>
+                <li><a th:href="@{/poems}">Poems</a></li>
+                <li th:if="${currentUser == null or (currentUser != null and currentUser.role != null and !#strings.equalsIgnoreCase(currentUser.role, 'reader'))}"><a th:href="${currentUser != null ? '/contests' : '/login'}">Contests</a></li>
+                <li th:if="${currentUser == null or (currentUser != null and currentUser.role != null and !#strings.equalsIgnoreCase(currentUser.role, 'reader'))}"><a th:href="${currentUser != null ? '/pricing' : '/login'}">Pricing</a></li>
 
                 <!-- Show when NOT logged in -->
                 <li class="auth-links" data-rendered="server" th:if="${currentUser == null}">
@@ -63,8 +67,9 @@
 				        </button>
 				        <div class="user-dropdown" role="menu">
 				            <a th:if="${currentUser != null and currentUser.role != null and #strings.equalsIgnoreCase(currentUser.role, 'Admin')}"
-				               th:href="@{/admin/subscribers}" role="menuitem"><i class="fas fa-shield-alt"></i> Admin Panel</a>
-				            <a th:href="@{/dashboard}" role="menuitem"><i class="fas fa-user"></i> Dashboard</a>
+				               th:href="@{/admin/dashboard}" role="menuitem"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+				            <a th:if="${currentUser != null and currentUser.role != null and !#strings.equalsIgnoreCase(currentUser.role, 'Admin')}"
+				               th:href="@{/dashboard}" role="menuitem"><i class="fas fa-user"></i> Dashboard</a>
 				            <a th:href="@{/logout}" role="menuitem"><i class="fas fa-sign-out-alt"></i> Log Out</a>
 				        </div>
 				    </div>
@@ -107,4 +112,3 @@ function toggleDropdown(btn) {
     });
 }
 </script>
-

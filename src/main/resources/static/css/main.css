@@ -8,6 +8,181 @@
    6) Admin Dashboard (admin-dashboard.css)
 */
 
+/* Admin Contest Entry Styles */
+.contest-stats-horizontal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    background: var(--light-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(139, 69, 19, 0.2);
+    margin: 1rem 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-text {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+}
+
+.stat-divider {
+    color: rgba(139, 69, 19, 0.3);
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.contest-entries-admin-section {
+    margin-top: 2rem;
+}
+
+.contest-entries-admin-section h3 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.admin-table-container {
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+    color: var(--text-color);
+}
+
+.admin-table tr:hover {
+    background: rgba(139, 69, 19, 0.05);
+}
+
+.admin-status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.admin-status-badge.status-submitted {
+    background-color: #e8f5e8;
+    color: #2d5a2d;
+}
+
+.admin-status-badge.status-draft {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+body.dark-mode .admin-status-badge.status-submitted {
+    background-color: #2d5a2d;
+    color: #90ee90;
+}
+
+body.dark-mode .admin-status-badge.status-draft {
+    background-color: #856404;
+    color: #ffeaa7;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-sm.btn-secondary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-sm.btn-secondary:hover {
+    background: #6b3410;
+}
+
+.btn-sm.btn-outline {
+    background: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+}
+
+.btn-sm.btn-outline:hover {
+    background: #dc3545;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .contest-stats-horizontal {
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .stat-text {
+        font-size: 0.8rem;
+    }
+    
+    .admin-table {
+        font-size: 0.9rem;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .admin-actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+
 /* ===== 1) style.css ===== */
 :root {
     --primary-color: #8B4513; /* Dark Brown */
@@ -193,9 +368,9 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 #main-nav .nav-links a:hover { color: var(--primary-color); }
 #main-nav .nav-links a.active:after, #main-nav .nav-links a:not(.btn-login):not(.btn-primary):hover:after { content: ''; position: absolute; left: 0; bottom: -5px; width: 100%; height: 2px; background-color: var(--primary-color); }
 .auth-links { display: flex; align-items: center; gap: 15px; margin-left: auto; }
-.user-menu .user-nav { display: flex; align-items: center; gap: 10px; position: relative; }
-.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--secondary-color); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-color); }
-.user-name-btn { background: none; border: 1px solid var(--secondary-color); padding: 6px 10px; border-radius: var(--border-radius); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.user-menu .user-nav { display: flex; align-items: center; gap: 8px; position: relative; }
+.user-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-color); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-color); font-size: 0.9rem; }
+.user-name-btn { background: none; border: 1px solid var(--secondary-color); padding: 4px 8px; border-radius: var(--border-radius); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 0.9rem; line-height: 1; }
 .user-dropdown { position: absolute; top: 110%; right: 0; background: var(--light-color); border: 1px solid var(--secondary-color); border-radius: var(--border-radius); box-shadow: var(--box-shadow); min-width: 180px; display: none; flex-direction: column; z-index: 200; }
 .user-dropdown a { padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
 .user-nav.open .user-dropdown { display: flex; }
@@ -214,6 +389,11 @@ body.dark-mode .theme-toggle-btn .fa-moon { display: none; }
   .user-dropdown { right: 10px; }
   .nav-toggle { display: block; }
 }
+
+/* Generic type badge */
+.type-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--secondary-color); color: var(--text-color); background: var(--light-color); }
+.type-badge.basic { background: #eef2ff; color: #334155; border-color: #c7d2fe; }
+.type-badge.premium { background: #fff4ed; color: #7c2d12; border-color: #fdba74; }
 
 /* ===== 3) footer.css ===== */
 #site-footer { background-color: var(--footer-bg); color: var(--footer-color); padding: 60px 0 20px; }
@@ -269,7 +449,7 @@ body.dark-mode .theme-toggle-btn .fa-moon { display: none; }
 .sidebar-menu a:hover, .sidebar-menu a.active { background-color: rgba(98, 70, 234, 0.1); color: var(--primary-color); }
 .sidebar-menu a i { width: 20px; text-align: center; }
 .user-info { display: flex; align-items: center; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--secondary-color); }
-.user-avatar { width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 .user-details h3 { margin-bottom: 5px; }
 .user-role { display: inline-block; background-color: var(--secondary-color); padding: 3px 10px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; }
 .dashboard-content { background-color: var(--light-color); border-radius: var(--border-radius); box-shadow: var(--box-shadow); padding: 30px; }
@@ -304,7 +484,7 @@ body.dark-mode .theme-toggle-btn .fa-moon { display: none; }
 @media (max-width: 768px) { .dashboard-header { flex-direction: column; align-items: flex-start; gap: 20px; } .dashboard-actions { width: 100%; } .dashboard-actions a { width: 100%; text-align: center; } }
 
 /* ===== 6) admin-dashboard.css ===== */
-.admin-dashboard { min-height: 100vh; background-color: var(--background-color); padding: 2rem 0; }
+.admin-dashboard { top:100px; position:relative; margin-bottom:130px; min-height: 100vh; background-color: var(--background-color); padding: 2rem 0; }
 .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1.5rem; background: var(--card-background); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
 .admin-welcome h1 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
 .admin-welcome p { color: var(--text-secondary); margin: 0; }
@@ -343,7 +523,7 @@ body.dark-mode .theme-toggle-btn .fa-moon { display: none; }
 .poets-table th, .poets-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
 .poets-table th { background: var(--background-color); color: var(--text-color); font-weight: 600; }
 .poet-info { display: flex; align-items: center; gap: 0.75rem; }
-.poet-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-color-light); display: flex; align-items: center; justify-content: center; color: var(--primary-color); }
+.poet-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-color-light); display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 0.95rem; }
 .status-badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500; }
 .status-badge.active { background: #d4edda; color: #155724; }
 .status-badge.suspended { background: #f8d7da; color: #721c24; }

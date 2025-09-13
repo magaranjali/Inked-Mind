@@ -244,6 +244,244 @@
             font-style: italic;
         }
         
+        /* Contest Entry Styles */
+        .contest-entry-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contest-entry-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .entry-header h4 {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+        
+        .entry-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-submitted {
+            background-color: #e8f5e8;
+            color: #2d5a2d;
+        }
+        
+        .status-draft {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        body.dark-mode .status-submitted {
+            background-color: #2d5a2d;
+            color: #90ee90;
+        }
+        
+        body.dark-mode .status-draft {
+            background-color: #856404;
+            color: #ffeaa7;
+        }
+        
+        .entry-details {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-contest, .entry-date {
+            margin: 0.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .entry-content-preview {
+            background: var(--light-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--primary-color);
+            margin: 0.75rem 0;
+        }
+        
+        .entry-content-preview p {
+            margin: 0;
+            color: var(--text-color);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        .entry-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .contest-entries-section, .available-contests-section {
+            margin-bottom: 2rem;
+        }
+        
+        .contest-entries-section h3, .available-contests-section h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Horizontal Contest Stats */
+        .contest-stats-horizontal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            background: var(--light-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-divider {
+            color: var(--border-color);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+        
+        @media (max-width: 768px) {
+            .contest-stats-horizontal {
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-text {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Modal Styles */
+        .entry-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .entry-modal {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .entry-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .entry-modal-header h3 {
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0.25rem;
+        }
+        
+        .close-modal:hover {
+            color: var(--text-color);
+        }
+        
+        .entry-modal-body {
+            padding: 1.5rem;
+        }
+        
+        .entry-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .entry-info {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .entry-full-content {
+            background: var(--light-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .entry-full-content pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-color);
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        
         /* Style for file input */
         .file-upload {
             margin-top: 0.5rem;
@@ -374,7 +612,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Dashboard | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -397,12 +635,10 @@
                 <div class="dashboard-container">
                     <div class="dashboard-sidebar">
                         <div class="user-info">
-                            <div class="user-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
+                            <div class="user-avatar" th:text="${(user != null && user.firstName != null && !#strings.isEmpty(user.firstName)) ? #strings.substring(user.firstName, 0, 1) : 'U'}">U</div>
                             <div class="user-details">
                                 <h3 class="user-name" th:text="${(user != null) ? user.firstName : 'User'}">User</h3>
-                                <span class="user-role" th:text="${(user != null) ? user.role : 'Poet'}">Poet</span>
+                                <span class="user-role" th:text="${(user != null) ? (user.subscribed == true ? (user.planType != null ? user.planType + ' Poet' : 'Premium Poet') : 'Poet') : 'Poet'}">Poet</span>
                             </div>
                         </div>
                         <ul class="sidebar-menu">
@@ -449,62 +685,43 @@
                                 </div>
                                 <div class="stat-card">
                                     <i class="fas fa-heart"></i>
-                                    <div class="stat-value">43</div>
+                                    <div class="stat-value" th:text="${likesReceived ?: 0}">0</div>
                                     <div class="stat-label">Likes Received</div>
                                 </div>
                                 <div class="stat-card">
                                     <i class="fas fa-comment"></i>
-                                    <div class="stat-value">12</div>
+                                    <div class="stat-value" th:text="${commentsReceived ?: 0}">0</div>
                                     <div class="stat-label">Comments</div>
                                 </div>
                             </div>
                             
-                            <h3>Recent Poems</h3>
+                            <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;margin-top:30px;">
+                                <h3>Recent Poems</h3>
+                                <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-secondary">View All Poems</a>
+                            </div>
+                            
                             <div class="poems-list">
-                                <div class="poem-item">
+                                <!-- Dynamic recently viewed poems -->
+                                <div th:if="${recentlyViewedPoems != null and !recentlyViewedPoems.isEmpty()}" th:each="poem : ${recentlyViewedPoems}" class="poem-item">
                                     <div class="poem-details">
-                                        <h3>Whispers in the Wind</h3>
+                                        <h3 th:text="${poem.title}">Poem Title</h3>
                                         <div class="poem-meta">
-                                            <span>Published: 3 days ago</span> • 
-                                            <span>Views: 43</span> • 
-                                            <span>Likes: 12</span>
+                                            <span th:text="'By: ' + ${poem.authorName}">By: Author</span> • 
+                                            <span th:text="'Published: ' + ${#temporals.format(poem.createdAt, 'MMM dd, yyyy')}">Published: Date</span>
                                         </div>
                                     </div>
                                     <div class="poem-actions">
-                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
-                                        <a href="#"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                        <a th:href="@{'/poem/' + ${poem.id}}" href="#"><i class="fas fa-eye"></i></a>
+                                        <a th:if="${poem.userId != null and currentUser != null and poem.userId.intValue() == currentUser.id}" href="#"><i class="fas fa-edit"></i></a>
                                     </div>
                                 </div>
-                                <div class="poem-item">
-                                    <div class="poem-details">
-                                        <h3>Autumn Memories</h3>
-                                        <div class="poem-meta">
-                                            <span>Published: 1 week ago</span> • 
-                                            <span>Views: 72</span> • 
-                                            <span>Likes: 24</span>
-                                        </div>
-                                    </div>
-                                    <div class="poem-actions">
-                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
-                                        <a href="#"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </div>
-                                </div>
-                                <div class="poem-item">
-                                    <div class="poem-details">
-                                        <h3>Ocean's Embrace</h3>
-                                        <div class="poem-meta">
-                                            <span>Published: 2 weeks ago</span> • 
-                                            <span>Views: 12</span> • 
-                                            <span>Likes: 7</span>
-                                        </div>
-                                    </div>
-                                    <div class="poem-actions">
-                                        <a th:href="@{/poems}" href="poems"><i class="fas fa-eye"></i></a>
-                                        <a href="#"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </div>
+                                
+                                <!-- Fallback message when no poems viewed -->
+                                <div th:if="${recentlyViewedPoems == null or recentlyViewedPoems.isEmpty()}" class="no-recent-poems">
+                                    <p style="text-align: center; color: var(--text-muted); padding: 20px;">
+                                        <i class="fas fa-book-open" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                                        No poems viewed yet. <a th:href="@{/poems}" href="/poems">Explore poems</a> to see your recent activity here.
+                                    </p>
                                 </div>
                             </div>
                             
@@ -543,7 +760,8 @@
                                             </div>
                                         </div>
                                         <div class="poem-actions">
-                                            <a href="#" title="View"><i class="fas fa-eye"></i></a>
+                                            <a th:if="${poem.published}" th:href="@{'/poem/' + ${poem.id}}" title="View"><i class="fas fa-eye"></i></a>
+                                            <a th:if="${!poem.published}" href="#" title="View" style="opacity:0.5; cursor:not-allowed"><i class="fas fa-eye"></i></a>
                                             <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
                                             <a th:if="${!poem.published}" href="#" class="btn-primary btn-sm" title="Publish">Publish</a>
                                             <a href="#" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
@@ -562,36 +780,68 @@
                         <!-- Contests Tab -->
                         <div class="dashboard-tab" id="contests-tab">
                             <div class="dashboard-tab-header">
-                                <h2>Poetry Contests</h2>
-                            </div>
-                            <div class="contest-cards">
-                                <div class="contest-card">
-                                    <h3>"Nature's Whispers"</h3>
-                                    <ul class="contest-details">
-                                        <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
-                                        <li><i class="fas fa-users"></i> Participants: 47</li>
-                                        <li><i class="fas fa-award"></i> Prize: Featured spot + Premium subscription</li>
-                                        <li><i class="fas fa-tag"></i> Theme: Nature, Environment</li>
-                                    </ul>
-                                    <div class="contest-actions">
-                                        <a href="#" class="btn-primary">Participate</a>
-                                        <a href="#" class="btn-secondary">View Details</a>
+                                <h2>My Contest Entries</h2>
+                                <div class="contest-stats-horizontal">
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${totalContestEntries ?: 0}">0</span>
+                                        <span class="stat-text">Total Entries</span>
                                     </div>
-                                </div>
-                                <div class="contest-card">
-                                    <h3>"Love & Relationships"</h3>
-                                    <ul class="contest-details">
-                                        <li><i class="fas fa-calendar"></i> Deadline: September 1, 2025</li>
-                                        <li><i class="fas fa-users"></i> Participants: 23</li>
-                                        <li><i class="fas fa-award"></i> Prize: $500 + Publication</li>
-                                        <li><i class="fas fa-tag"></i> Theme: Love, Romance, Relationships</li>
-                                    </ul>
-                                    <div class="contest-actions">
-                                        <a href="#" class="btn-primary">Participate</a>
-                                        <a href="#" class="btn-secondary">View Details</a>
+                                    <div class="stat-divider">|</div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${submittedEntries ?: 0}">0</span>
+                                        <span class="stat-text">Submitted</span>
+                                    </div>
+                                    <div class="stat-divider">|</div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" th:text="${draftContestEntries ?: 0}">0</span>
+                                        <span class="stat-text">Drafts</span>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Contest Entries List -->
+                            <div class="contest-entries-section">
+                                <h3>Your Contest Submissions</h3>
+                                <div class="contest-entries-list" th:if="${contestEntries != null and !contestEntries.isEmpty()}">
+                                    <div class="contest-entry-card" th:each="entry : ${contestEntries}">
+                                        <div class="entry-header">
+                                            <h4 th:text="${entry.title}">Entry Title</h4>
+                                            <span class="entry-status" th:classappend="${entry.status.name() == 'SUBMITTED'} ? 'status-submitted' : 'status-draft'" 
+                                                  th:text="${entry.status.name()}">DRAFT</span>
+                                        </div>
+                                        <div class="entry-details">
+                                            <p class="entry-contest">Contest ID: <span th:text="${entry.contestId}">1</span></p>
+                                            <p class="entry-type">
+                                                <span class="type-badge"
+                                                      th:classappend="${#strings.equalsIgnoreCase((entry.contestType != null ? entry.contestType.name() : 'BASIC'), 'PREMIUM')} ? ' premium' : ' basic'"
+                                                      th:text="${entry.contestType != null ? entry.contestType.name() : 'BASIC'}">BASIC</span>
+                                            </p>
+                                            <p class="entry-date">Submitted: <span th:text="${#temporals.format(entry.createdAt, 'MMM dd, yyyy HH:mm')}">Date</span></p>
+                                            <div class="entry-content-preview">
+                                                <p th:text="${#strings.abbreviate(entry.content, 150)}">Content preview...</p>
+                                            </div>
+                                        </div>
+                                        <div class="entry-actions">
+                                            <button class="btn-secondary view-entry-btn" th:data-entry-id="${entry.id}">
+                                                <i class="fas fa-eye"></i> View Full Entry
+                                            </button>
+                                            <button class="btn-outline edit-entry-btn" th:if="${entry.status.name() == 'DRAFT'}" th:data-entry-id="${entry.id}">
+                                                <i class="fas fa-edit"></i> Edit Draft
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div class="empty-state" th:if="${contestEntries == null or contestEntries.isEmpty()}">
+                                    <i class="fas fa-trophy"></i>
+                                    <h3>No Contest Entries Yet</h3>
+                                    <p>You haven't submitted any contest entries. Start participating in contests to see your submissions here.</p>
+                                    <a th:href="@{/contests}" class="btn-primary">Browse Contests</a>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
 
                         <!-- Subscription Tab -->
@@ -876,22 +1126,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== User Dropdown =====
-    var userNameBtn = document.querySelector('.user-name-btn');
-    var userNav = document.querySelector('.user-nav');
-    if (userNameBtn && userNav) {
-        userNameBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            var isOpen = userNav.classList.contains('open');
-            document.querySelectorAll('.user-nav.open').forEach(function(el){ el.classList.remove('open'); });
-            if (!isOpen) userNav.classList.add('open');
-        });
-        document.addEventListener('click', function(){ userNav.classList.remove('open'); });
-    }
+    // Remove duplicate dropdown logic - navbar.html handles this
 
     // ===== Dashboard Tabs =====
     var tabLinks = document.querySelectorAll('.sidebar-menu a');
     var tabs = document.querySelectorAll('.dashboard-tab');
+
+    // Open tab from query param if provided (e.g., ?tab=my-poems)
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var initialTab = params.get('tab');
+      if (initialTab) {
+        var link = document.querySelector('.sidebar-menu a[data-tab="' + initialTab + '"]');
+        if (link) { link.click(); }
+      }
+    } catch (e) {}
     tabLinks.forEach(function(link){
         link.addEventListener('click', function(e){
             e.preventDefault();
@@ -904,6 +1153,61 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tab === 'write-poem') showPoemForm(); else hidePoemForm();
         });
     });
+
+    // ===== Contest Entry Actions =====
+    document.querySelectorAll('.view-entry-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var entryId = this.getAttribute('data-entry-id');
+            // Find the entry card and show full content
+            var entryCard = this.closest('.contest-entry-card');
+            var preview = entryCard.querySelector('.entry-content-preview p');
+            var fullContent = preview.getAttribute('title') || preview.textContent;
+            
+            // Create modal or expand content
+            showEntryModal(entryId, entryCard);
+        });
+    });
+    
+    function showEntryModal(entryId, entryCard) {
+        var title = entryCard.querySelector('.entry-header h4').textContent;
+        var content = entryCard.querySelector('.entry-content-preview p').textContent;
+        var status = entryCard.querySelector('.entry-status').textContent;
+        var contestId = entryCard.querySelector('.entry-contest span').textContent;
+        var date = entryCard.querySelector('.entry-date span').textContent;
+        
+        var modal = document.createElement('div');
+        modal.className = 'entry-modal-overlay';
+        modal.innerHTML = `
+            <div class="entry-modal">
+                <div class="entry-modal-header">
+                    <h3>${title}</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="entry-modal-body">
+                    <div class="entry-meta">
+                        <span class="entry-status ${status === 'SUBMITTED' ? 'status-submitted' : 'status-draft'}">${status}</span>
+                        <span class="entry-info">Contest: ${contestId} | ${date}</span>
+                    </div>
+                    <div class="entry-full-content">
+                        <pre>${content}</pre>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal functionality
+        modal.querySelector('.close-modal').addEventListener('click', function() {
+            document.body.removeChild(modal);
+        });
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+    }
 
     // ===== Write Poem Buttons =====
     var writePoemBtn = document.getElementById('write-poem-btn'); // top button
@@ -1054,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var userName=localStorage.getItem('inkedMind_userName');
         var userRole=localStorage.getItem('inkedMind_userRole');
         if(userName) document.querySelectorAll('.user-name').forEach(function(el){ el.textContent=userName; });
-        if(userRole) document.querySelectorAll('.user-role').forEach(function(el){ el.textContent=userRole; });
+        // Removed: Don't override server-side subscription logic with localStorage
         var firstInitial=(userName||'U').charAt(0).toUpperCase();
         document.querySelectorAll('.user-avatar').forEach(function(el){ if(el.querySelector('i')) el.innerHTML=firstInitial; });
         var firstNameInput=document.getElementById('profile-first-name');

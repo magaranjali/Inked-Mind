@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Contests | Inked Mind</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
          .mainContainer{
@@ -204,6 +204,9 @@
                 grid-template-columns: 1fr;
             }
         }
+        .alert { padding: 10px 14px; border-radius: 8px; }
+        .alert.success { background: #e6ffed; color: #1a7f37; border: 1px solid #abdfb3; }
+        .alert.error { background: #fff1f0; color: #a61b1b; border: 1px solid #f3b1ad; }
     </style>
 </head>
 
@@ -226,6 +229,8 @@
 
         <section class="contests-content">
             <div class="container">
+                <div th:if="${successMessage != null}" class="alert success" th:text="${successMessage}" style="margin-bottom:15px;"></div>
+                <div th:if="${errorMessage != null}" class="alert error" th:text="${errorMessage}" style="margin-bottom:15px;"></div>
                 <!-- Active Contests -->
                 <div class="contest-section active" id="active-contests">
                     <div class="contests-grid">
@@ -245,7 +250,14 @@
                                     <div class="participants">
                                         <span class="participants-count">47 poets participating</span>
                                     </div>
-                                    <a href="./contest-submission.html?id=1" class="btn-primary">Enter Contest</a>
+                                    <div th:if="${currentUser == null}">
+                                        <a th:href="@{/login}" class="btn-primary">Log in to Enter</a>
+                                    </div>
+                                    <form th:if="${currentUser != null}" th:action="@{/contests/join}" method="post" style="margin:0">
+                                        <input type="hidden" name="contestId" value="1" />
+                                        <input type="hidden" name="type" value="BASIC" />
+                                        <button type="submit" class="btn-primary">Enter Contest</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -266,14 +278,21 @@
                                     <div class="participants">
                                         <span class="participants-count">23 poets participating</span>
                                     </div>
-                                    <a href="./contest-submission.html?id=2" class="btn-primary">Enter Contest</a>
+                                    <div th:if="${currentUser == null}">
+                                        <a th:href="@{/login}" class="btn-primary">Log in to Enter</a>
+                                    </div>
+                                    <form th:if="${currentUser != null}" th:action="@{/contests/join}" method="post" style="margin:0">
+                                        <input type="hidden" name="contestId" value="2" />
+                                        <input type="hidden" name="type" value="BASIC" />
+                                        <button type="submit" class="btn-primary">Enter Contest</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="contest-card">
                             <div class="contest-image">
-                                <img src="https://www.artsy.net/artwork/mayumi-yamae-emotions-unveiled" alt="Emotions Unveiled">
+                             <img src="images/emotion uneviled.jpeg" alt="Emotions Unveiled">
                             </div>
                             <div class="contest-content">
                                 <span class="premium-badge">Premium Only</span>
@@ -288,7 +307,16 @@
                                     <div class="participants">
                                         <span class="participants-count">31 poets participating</span>
                                     </div>
-                                    <a href="./pricing.html" class="btn-primary">Upgrade to Enter</a>
+                                    <div th:if="${currentUser != null and currentUser.subscribed and currentUser.planType != null and (#strings.equalsIgnoreCase(currentUser.planType, 'PREMIUM') or #strings.equalsIgnoreCase(currentUser.planType, 'PRO'))}">
+                                        <form th:action="@{/contests/join}" method="post" style="margin:0">
+                                            <input type="hidden" name="contestId" value="3" />
+                                            <input type="hidden" name="type" value="PREMIUM" />
+                                            <button type="submit" class="btn-primary">Enter Contest</button>
+                                        </form>
+                                    </div>
+                                    <a th:if="${currentUser == null}" th:href="@{/login}" class="btn-primary">Log in to Enter</a>
+                                    <a th:if="${currentUser != null and (!currentUser.subscribed or currentUser.planType == null or !(#strings.equalsIgnoreCase(currentUser.planType, 'PREMIUM') or #strings.equalsIgnoreCase(currentUser.planType, 'PRO')))}" 
+                                       th:href="@{/pricing}" class="btn-primary">Upgrade to Enter</a>
                                 </div>
                             </div>
                         </div>
@@ -315,7 +343,7 @@
                                     <div class="participants">
                                         <span class="participants-count">68 poets participated</span>
                                     </div>
-                                    <a href="./poem.html?id=10" class="btn-secondary">View Winning Poem</a>
+                                    <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-secondary">View Winning Poem</a>
                                 </div>
                             </div>
                         </div>
@@ -337,7 +365,7 @@
                                     <div class="participants">
                                         <span class="participants-count">52 poets participated</span>
                                     </div>
-                                    <a href="./poem.html?id=11" class="btn-secondary">View Winning Poem</a>
+                                    <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-secondary">View Winning Poem</a>
                                 </div>
                             </div>
                         </div>
@@ -359,7 +387,7 @@
                                     <div class="participants">
                                         <span class="participants-count">73 poets participated</span>
                                     </div>
-                                    <a href="./poem.html?id=12" class="btn-secondary">View Winning Poem</a>
+                                    <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-secondary">View Winning Poem</a>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +396,49 @@
                 
                 <!-- My Submissions -->
                 <div class="contest-section" id="my-submissions">
-                    <div class="contest-empty">
+                    <div th:if="${currentUser == null}">
+                        <div class="contest-empty">
+                            <i class="fas fa-user-lock"></i>
+                            <h3>Please Log In</h3>
+                            <p>Log in to view your contest submissions and drafts.</p>
+                            <a th:href="@{/login}" class="btn-primary">Log In</a>
+                        </div>
+                    </div>
+
+                    <div class="contests-grid" th:if="${currentUser != null and myContestEntries != null and !myContestEntries.isEmpty()}">
+                        <div class="contest-card" th:each="entry : ${myContestEntries}">
+                            <div class="contest-image">
+                                <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80" alt="Contest">
+                            </div>
+                            <div class="contest-content">
+                                <h3 th:text="${entry.title}">Entry Title</h3>
+                                <p>
+                                    <strong>Contest:</strong> <span th:text="${entry.contestId}">1</span>
+                                </p>
+                                <ul class="contest-details">
+                                    <li><i class="fas fa-clock"></i> <span th:text="${#temporals.format(entry.createdAt, 'MMM dd, yyyy HH:mm')}">Date</span></li>
+                                    <li>
+                                        <i class="fas fa-layer-group"></i>
+                                        <span class="type-badge" 
+                                              th:classappend="${#strings.equalsIgnoreCase((entry.contestType != null ? entry.contestType.name() : 'BASIC'), 'PREMIUM')} ? ' premium' : ' basic'"
+                                              th:text="${entry.contestType != null ? entry.contestType.name() : 'BASIC'}">BASIC</span>
+                                    </li>
+                                    <li><i class="fas fa-info-circle"></i> Status: 
+                                        <span th:text="${entry.status.name()}" th:classappend="${entry.status.name() == 'SUBMITTED'} ? ' text-success' : ' text-muted'">DRAFT</span>
+                                    </li>
+                                </ul>
+                                <div class="contest-footer">
+                                    <div class="participants">
+                                        <span class="participants-count" th:text="${entry.status.name() == 'SUBMITTED' ? 'Submitted' : 'Draft'}">Draft</span>
+                                    </div>
+                                    <a th:if="${entry.status.name() == 'DRAFT'}" th:href="@{/contest-submission(id=${entry.contestId})}" class="btn-primary">Continue Draft</a>
+                                    <a th:if="${entry.status.name() == 'SUBMITTED'}" th:href="@{/contest-submission(id=${entry.contestId})}" class="btn-secondary">View Submission</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contest-empty" th:if="${currentUser != null and (myContestEntries == null or myContestEntries.isEmpty())}">
                         <i class="fas fa-file-alt"></i>
                         <h3>No Submissions Yet</h3>
                         <p>You haven't submitted any poems to our contests. Participate in a contest to see your submissions here.</p>
@@ -393,7 +463,7 @@
                         <ul>
                             <li><a href="index">Home</a></li>
                             <li><a href="poems">Poems</a></li>
-                            <li><a href="contests">Contests</a></li>
+                            <li><a th:href="${currentUser != null} ? '/contests' : '/login'" href="/contests">Contests</a></li>
                             <li><a href="pricing">Pricing</a></li>
                             
                         </ul>
@@ -456,18 +526,11 @@
                     this.classList.add('active');
                     
                     // Show correct section
+                    const targetId = tabId === 'my' ? 'my-submissions' : (tabId + '-contests');
                     sections.forEach(section => {
                         section.classList.remove('active');
-                        if (section.id === tabId + '-contests') {
-                            section.classList.add('active');
-                        }
+                        if (section.id === targetId) section.classList.add('active');
                     });
-                    
-                    // If user is not logged in and clicks on "My Submissions"
-                    if (tabId === 'my' && localStorage.getItem('inkedMind_userLoggedIn') !== 'true') {
-                        alert('Please login to view your submissions');
-                        window.location.href = './login.html';
-                    }
                 });
             });
             
@@ -480,45 +543,9 @@
                 });
             }
             
-            // Check if user is logged in
-            updateMySubmissionsTab();
+            // Server renders My Submissions; no client mock needed
         });
         
-        function updateMySubmissionsTab() {
-            const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn') === 'true';
-            
-            if (isLoggedIn) {
-                const mySubmissionsSection = document.getElementById('my-submissions');
-                const hasMockSubmissions = Math.random() > 0.5; // Random for demo purposes
-                
-                if (hasMockSubmissions) {
-                    mySubmissionsSection.innerHTML = `
-                        <div class="contests-grid">
-                            <div class="contest-card">
-                                <div class="contest-image">
-                                    <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nature's Whispers">
-                                </div>
-                                <div class="contest-content">
-                                    <h3>"Nature's Whispers"</h3>
-                                    <p>Your submission: "Forest Echoes"</p>
-                                    <ul class="contest-details">
-                                        <li><i class="fas fa-calendar"></i> Deadline: August 15, 2025</li>
-                                        <li><i class="fas fa-check-circle"></i> Status: Submitted on July 28, 2025</li>
-                                        <li><i class="fas fa-users"></i> Participants: 47</li>
-                                    </ul>
-                                    <div class="contest-footer">
-                                        <div class="participants">
-                                            <span>Submission pending review</span>
-                                        </div>
-                                        <a href="#" class="btn-secondary">View Submission</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-        }
     </script>
     <script>
     // Inline main.js essentials

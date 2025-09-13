@@ -7,7 +7,7 @@
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
         type="image/png">
     <title>Inked Mind | Poetry Community</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <style>
@@ -23,8 +23,8 @@
 
     <main class="mainContainer">
         <section class="hero">
-            <video autoplay muted loop id="hero-video">
-                <source src="video/poet.mp4" type="video/mp4">
+            <video autoplay muted playsinline loop preload="auto" id="hero-video">
+                <source th:src="@{/video/poet.mp4}" src="/video/poet.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="container">
@@ -83,7 +83,7 @@
                                 <span class="date">2 days ago</span>
                             </div>
                         </div>
-                        <a href="poem.html?id=1" class="btn-text">Read More</a>
+                        <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                     </div>
                     <div class="poem-card">
                         <div class="poem-content">
@@ -96,7 +96,7 @@
                                 <span class="date">1 week ago</span>
                             </div>
                         </div>
-                        <a href="poem.html?id=2" class="btn-text">Read More</a>
+                        <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                     </div>
                     <div class="poem-card">
                         <div class="poem-content">
@@ -109,11 +109,11 @@
                                 <span class="date">3 days ago</span>
                             </div>
                         </div>
-                        <a href="poem.html?id=3" class="btn-text">Read More</a>
+                        <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-text">Read More</a>
                     </div>
                 </div>
                 <div class="center-btn">
-                    <a href="poems.html" class="btn-secondary">View All Poems</a>
+                    <a th:href="${currentUser != null} ? '/poems' : '/login'" href="/poems" class="btn-secondary">View All Poems</a>
                 </div>
             </div>
         </section>
@@ -250,6 +250,14 @@
     <script>
     // Inline main.js
     document.addEventListener('DOMContentLoaded', () => {
+        // Ensure hero video autoplays across browsers
+        const heroVideo = document.getElementById('hero-video');
+        if (heroVideo) {
+            heroVideo.muted = true; // required for autoplay on mobile
+            const tryPlay = () => { try { heroVideo.play(); } catch (e) {} };
+            tryPlay();
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+        }
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
         const savedTheme = localStorage.getItem('theme');
@@ -269,76 +277,11 @@
         const newsletterForm = document.querySelector('.newsletter-form');
         if (newsletterForm) newsletterForm.addEventListener('submit', function(e) { e.preventDefault(); const emailInput = this.querySelector('input[type="email"]'); if (emailInput.value) { alert('Thank you for subscribing to our newsletter!'); emailInput.value = ''; }});
         updateUserInterface();
-        // ===== User Dropdown =====
-        const userNameBtn = document.querySelector('.user-name-btn');
-        const userNav = document.querySelector('.user-nav');
-        if (userNameBtn && userNav) {
-            userNameBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isOpen = userNav.classList.contains('open');
-                document.querySelectorAll('.user-nav.open').forEach(function(el){ el.classList.remove('open'); });
-                if (!isOpen) userNav.classList.add('open');
-            });
-            document.addEventListener('click', function(){ userNav.classList.remove('open'); });
-        }
-        
-        // ===== Dropdown Toggle Function (for navbar compatibility) =====
-        window.toggleDropdown = function(btn) {
-            const userNav = btn.parentElement;
-            const isOpen = userNav.classList.contains('open');
-            
-            // Close all open dropdowns first
-            document.querySelectorAll('.user-nav.open').forEach(nav => nav.classList.remove('open'));
-            
-            // Toggle current dropdown
-            if (!isOpen) {
-                userNav.classList.add('open');
-                btn.setAttribute('aria-expanded', 'true');
-            } else {
-                btn.setAttribute('aria-expanded', 'false');
-            }
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function handler(e) {
-                if (!userNav.contains(e.target)) {
-                    userNav.classList.remove('open');
-                    btn.setAttribute('aria-expanded', 'false');
-                    document.removeEventListener('click', handler);
-                }
-            });
-        };
+        // Remove duplicate dropdown logic - navbar.html handles this
     });
     function updateUserInterface() {
-        const isLoggedIn = localStorage.getItem('inkedMind_userLoggedIn');
-        const userName = localStorage.getItem('inkedMind_userName');
-        const authLinks = document.querySelector('.auth-links');
-        
-        // Check if server-side rendering already handled this
-        if (authLinks && authLinks.getAttribute('data-rendered') === 'server') return;
-        
-        // If user is logged in but no server-side dropdown, create client-side dropdown
-        if (isLoggedIn === 'true' && authLinks && !document.querySelector('.user-menu')) {
-            const userInitial = userName ? userName.charAt(0).toUpperCase() : 'U';
-            const displayName = userName || 'User';
-            
-            authLinks.innerHTML = `
-                <div class="user-nav">
-                    <span class="user-avatar">${userInitial}</span>
-                    <button class="user-name-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown(this)">
-                        <span class="user-name">${displayName}</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="user-dropdown" role="menu">
-                        <a href="/dashboard" role="menuitem"><i class="fas fa-user"></i> Dashboard</a>
-                        <a href="#" id="logout-btn" role="menuitem"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-                    </div>
-                </div>
-            `;
-            authLinks.classList.add('user-menu');
-            
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) logoutBtn.addEventListener('click', function(e) { e.preventDefault(); logoutUser(); });
-        }
+        // Server-side rendering handles user interface - no client-side dropdown needed
+        return;
     }
     function logoutUser() {
         localStorage.removeItem('inkedMind_userLoggedIn');
